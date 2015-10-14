@@ -1,0 +1,13 @@
+{
+  "name": "medconnect",
+  "version": "0.0",
+  "description": "",
+  "scripts": {
+    "test": "node test/all.js"
+  },
+  "repository":{
+    "type": "git",
+    "url": "https://github.com/tannerwj/medconnect"
+  }
+  "license": "MIT"
+}
