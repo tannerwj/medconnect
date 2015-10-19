@@ -17,7 +17,8 @@
 		"express": "*",
 		"express-session": "*",
 		"mysql-promise": "*",
-		"q": "*"
+		"q": "*",
+		"morgan": "*"
 	},
 	"license": "MIT"
 }
