@@ -1,2 +1,2 @@
 # medconnect
-[![Build Status](https://travis-ci.org/tannerwj/medconnect.svg?branch=master)](https://travis-ci.org/tannerwj/medconnect)
+[![Build Status](https://travis-ci.org/tannerwj/medconnect.svg?branch=master)](https://travis-ci.org/tannerwj/medconnect)[![Code Climate](https://codeclimate.com/repos/56250cffe30ba07ecb0011d8/badges/b7d4f0ce6c807b3480bd/gpa.svg)](https://codeclimate.com/repos/56250cffe30ba07ecb0011d8/feed)[![Test Coverage](https://codeclimate.com/repos/56250cffe30ba07ecb0011d8/badges/b7d4f0ce6c807b3480bd/coverage.svg)](https://codeclimate.com/repos/56250cffe30ba07ecb0011d8/coverage)
