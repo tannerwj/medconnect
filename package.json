@@ -2,6 +2,7 @@
 	"name": "medconnect",
 	"version": "0.0.1",
 	"description": "",
+	"main": "server.js",
 	"scripts": {
 		"test": "node test/all.js"
 	},
@@ -11,12 +12,14 @@
 	},
 	"dependencies":{
 		"async-q": "*",
-		"bcryptjs": "*",
+		"bcrypt": "*",
 		"body-parser": "*",
 		"cookie-parser": "*",
 		"express": "*",
 		"express-session": "*",
 		"mysql-promise": "*",
+		"passport": "*",
+		"passport-local": "*",
 		"q": "*",
 		"morgan": "*"
 	},
