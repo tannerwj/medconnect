@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Patient Login</title>
+  
+
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.0-rc.2/angular.min.js"></script>
+  
+
+  
+</head>
+<body ng-app="patient registration">
+  <div ng-controller="PRController">
+  <form novalidate class="simple-form">
+    First Name: <input type="text" ng-model="patient.firstname" /><br />
+    Last Name: <input type="text" ng-model="patient.lastname" /><br />
+    Gender: <input type="radio" ng-model="user.gender" value="male" />male
+    <input type="radio" ng-model="user.gender" value="female" />female<br />
+    Address: <input type="text" ng-model="patient.address" /><br />
+    Phone: <input type="text" ui-mask="{{'999-999-9999'}}" ng-model="emer.phone" /><br />
+    E-mail: <input type="email" ng-model="user.email" /><br />
+    Password: <input type="text" ng-model="patient.password" /><br />
+    Confirm Password: <input type="text" ng-model="patient.confirmpassword" /><br />
+    <input type="submit" ng-click="update(user)" value="Register" />
+  </form>
+</div>
