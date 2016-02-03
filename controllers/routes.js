@@ -32,16 +32,30 @@ router.post('/login', function (req, res, next) {
 	})(req, res, next)
 })
 
-router.post('/register', function(req, res) {
+router.post('/doctor-register', function (req, res) {
 	var user = { 
 		email	: req.body.email,
-		type 	: req.body.type,
+		type 	: 0,
 		pass 	: req.body.pass,
 		first 	: req.body.first,
 		last 	: req.body.last
 	}
+	register(req, res, user)
+})
 
-	db.query('SELECT 1 FROM Users WHERE email=? LIMIT 1;', [user.email]).then( function (result){
+router.post('/patient-register', function (req, res) {
+	var user = { 
+		email	: req.body.email,
+		type 	: 1,
+		pass 	: req.body.pass,
+		first 	: req.body.first,
+		last 	: req.body.last
+	}
+	register(req, res, user)
+})
+
+var register = function (req, res, user){
+	return db.query('SELECT 1 FROM Users WHERE email=? LIMIT 1;', [user.email]).then( function (result){
 		if(result[0][0]){
 			res.send('0')
 		}else{
@@ -55,7 +69,7 @@ router.post('/register', function(req, res) {
 	}).catch( function (err){
 		console.error(err)
 	}).done()
-})
+}
 
 router.get('/logout', function (req, res){
 	if(req.user){ req.logout() }
