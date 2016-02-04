@@ -12,7 +12,7 @@
 	},
 	"dependencies":{
 		"async-q": "*",
-		"bcrypt": "*",
+		"bcryptjs": "*",
 		"body-parser": "*",
 		"cookie-parser": "*",
 		"express": "*",
