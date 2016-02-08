@@ -1,8 +1,13 @@
-var medconnect = angular.module('medconnect', []);
+var template = angular.module('template', ['ngRoute', 'medconnect']);
 
-  medconnect.config(function($routeProvider){
+template.config(['$routeProvider',
+  function($routeProvider) {
     $routeProvider.
-      when('/about', {template:'partials/about.html'}).
-      when('/experiments', {template:'partials/experiments.html'}).
-      otherwise({redirectTo:'/home', template:'partials/home.html'});
-  });
+      when('/', {
+        templateUrl: 'about.html',
+        controller: 'register'
+      })
+      // otherwise({
+      //   redirectTo: '/phones'
+      // });
+  }]);

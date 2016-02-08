@@ -1,27 +1,28 @@
 {
-	"name": "medconnect",
-	"version": "0.0.1",
-	"description": "",
-	"main": "server.js",
-	"scripts": {
-		"test": "node test/all.js"
-	},
-	"repository":{
-		"type": "git",
-		"url": "https://github.com/tannerwj/medconnect"
-	},
-	"dependencies":{
-		"async-q": "*",
-		"bcryptjs": "*",
-		"body-parser": "*",
-		"cookie-parser": "*",
-		"express": "*",
-		"express-session": "*",
-		"mysql-promise": "*",
-		"passport": "*",
-		"passport-local": "*",
-		"q": "*",
-		"morgan": "*"
-	},
-	"license": "MIT"
+  "name": "medconnect",
+  "version": "0.0.1",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "node test/all.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tannerwj/medconnect"
+  },
+  "dependencies": {
+    "angular-route": "^1.5.0",
+    "async-q": "*",
+    "bcryptjs": "*",
+    "body-parser": "*",
+    "cookie-parser": "*",
+    "express": "*",
+    "express-session": "*",
+    "morgan": "*",
+    "mysql-promise": "*",
+    "passport": "*",
+    "passport-local": "*",
+    "q": "*"
+  },
+  "license": "MIT"
 }
