@@ -28,6 +28,8 @@ CREATE TABLE `UserType` (
 	PRIMARY KEY (`typeID`)
 );
 
+INSERT INTO `UserType` (`typeName`) VALUES ('doctor'), ('patient');
+
 CREATE TABLE `Vitals` (
 	`userID` int(15) NOT NULL,
 	`visitID` int(15) NOT NULL,
@@ -163,4 +165,3 @@ ALTER TABLE `ExternalData` ADD CONSTRAINT `ExternalData_fk0` FOREIGN KEY (`userI
 ALTER TABLE `ExternalData` ADD CONSTRAINT `ExternalData_fk1` FOREIGN KEY (`visitID`) REFERENCES `Visits`(`visitID`);
 
 ALTER TABLE `ExternalData` ADD CONSTRAINT `ExternalData_fk2` FOREIGN KEY (`dataTypeID`) REFERENCES `DataType`(`dataID`);
-

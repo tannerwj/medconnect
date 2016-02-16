@@ -1,6 +1,7 @@
 //medconnect
 //using node 4.2.5 LTS
 
+require('dotenv').config()
 const express		= require('express')
 const http 			= require('http')
 const https			= require('https')
@@ -24,7 +25,7 @@ app.disable('x-powered-by')
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser('byuITsecret'))
-app.use(session({ 
+app.use(session({
 	secret: 'byuITsecret',
 	duration: 1 * 60 * 60 * 1000,
 	cookie: {
@@ -33,7 +34,7 @@ app.use(session({
 		secure: false
 	},
 	resave: true,
-	saveUninitialized: true 
+	saveUninitialized: true
 }))
 app.use(express.static(__dirname + '/public'))
 

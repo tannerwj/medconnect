@@ -5,11 +5,12 @@ const passport 	= require('passport')
 const router = express.Router()
 
 const db = require('../config/db')
+const acc = require('../src/account')
 
 const BCRYPT_ROUNDS = 13
 
-router.get('/', function (req, res) { 
-	res.sendFile('index.html', { root: path.join(__dirname, '../views') }) 
+router.get('/', function (req, res) {
+	res.sendFile('index.html', { root: path.join(__dirname, '../views') })
 })
 
 router.get('/loggedin', function (req, res) {
@@ -33,43 +34,30 @@ router.post('/login', function (req, res, next) {
 })
 
 router.post('/doctor-register', function (req, res) {
-	var user = { 
+	var user = {
 		email	: req.body.email,
 		type 	: 0,
 		pass 	: req.body.pass,
 		first 	: req.body.first,
 		last 	: req.body.last
 	}
-	register(req, res, user)
+	acc.register(user).then(function (val){
+		val ? res.send('1') : res.send('0')
+	})
 })
 
 router.post('/patient-register', function (req, res) {
-	var user = { 
+	var user = {
 		email	: req.body.email,
 		type 	: 1,
 		pass 	: req.body.pass,
 		first 	: req.body.first,
 		last 	: req.body.last
 	}
-	register(req, res, user)
+	acc.register(user).then(function (val){
+		val ? res.send('1') : res.send('0')
+	})
 })
-
-var register = function (req, res, user){
-	return db.query('SELECT 1 FROM Users WHERE email=? LIMIT 1;', [user.email]).then( function (result){
-		if(result[0][0]){
-			res.send('0')
-		}else{
-			return bcrypt.hash(user.pass, BCRYPT_ROUNDS, function (err, hash) {
-				return db.query('INSERT INTO Users (userType, email, lastName, firstName, password) VALUES (?,?,?,?,?);', [user.type, user.email, user.first, user.last, hash]).then( function (result){
-					user.user_id = result[0].insertId
-					res.send('2')
-				})
-			})
-		}
-	}).catch( function (err){
-		console.error(err)
-	}).done()
-}
 
 router.get('/logout', function (req, res){
 	if(req.user){ req.logout() }
