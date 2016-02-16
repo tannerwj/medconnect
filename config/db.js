@@ -1,10 +1,10 @@
 var database = require('mysql-promise')()
 
 database.configure({
-	'host': 'YOUR_HOST',
-	'user': 'YOUR_USER',
-	'password': 'YOUR_PASSWORD',
-	'database': 'YOUR_DB'
+	'host': process.env.DB_HOST,
+	'user': process.env.DB_USER,
+	'password': process.env.DB_PASSWORD,
+	'database': 'medconnect'
 })
 
 database.escape = function (str) {
@@ -26,10 +26,9 @@ database.escape = function (str) {
 			case "'":
 			case "\\":
 			case "%":
-				return "\\"+char; 
+				return "\\"+char;
 		}
 	})
 }
-
 
 module.exports = database

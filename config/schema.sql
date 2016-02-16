@@ -1,3 +1,5 @@
+USE `medconnect`;
+
 CREATE TABLE `Visits` (
 	`visitID` int(15) NOT NULL AUTO_INCREMENT,
 	`visitStatus` tinyint(1) NOT NULL,
@@ -23,10 +25,11 @@ CREATE TABLE `Users` (
 );
 
 CREATE TABLE `UserType` (
-	`typeID` tinyint(1) NOT NULL AUTO_INCREMENT,
-	`typeName` varchar(80) NOT NULL UNIQUE,
-	PRIMARY KEY (`typeID`)
+	`typeID` tinyint(1) NOT NULL UNIQUE,
+	`typeName` varchar(80) NOT NULL UNIQUE
 );
+
+INSERT INTO `UserType` (`typeID`, `typeName`) VALUES (0, 'doctor'), (1, 'patient');
 
 CREATE TABLE `Vitals` (
 	`userID` int(15) NOT NULL,
@@ -163,4 +166,3 @@ ALTER TABLE `ExternalData` ADD CONSTRAINT `ExternalData_fk0` FOREIGN KEY (`userI
 ALTER TABLE `ExternalData` ADD CONSTRAINT `ExternalData_fk1` FOREIGN KEY (`visitID`) REFERENCES `Visits`(`visitID`);
 
 ALTER TABLE `ExternalData` ADD CONSTRAINT `ExternalData_fk2` FOREIGN KEY (`dataTypeID`) REFERENCES `DataType`(`dataID`);
-
