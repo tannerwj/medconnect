@@ -25,12 +25,11 @@ CREATE TABLE `Users` (
 );
 
 CREATE TABLE `UserType` (
-	`typeID` tinyint(1) NOT NULL AUTO_INCREMENT,
-	`typeName` varchar(80) NOT NULL UNIQUE,
-	PRIMARY KEY (`typeID`)
+	`typeID` tinyint(1) NOT NULL UNIQUE,
+	`typeName` varchar(80) NOT NULL UNIQUE
 );
 
-INSERT INTO `UserType` (`typeName`) VALUES ('doctor'), ('patient');
+INSERT INTO `UserType` (`typeID`, `typeName`) VALUES (0, 'doctor'), (1, 'patient');
 
 CREATE TABLE `Vitals` (
 	`userID` int(15) NOT NULL,
