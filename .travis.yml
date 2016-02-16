@@ -6,3 +6,4 @@ services:
 before_script:
   - mysql -e 'CREATE DATABASE medconnect;'
   - mysql < ./config/schema.sql
+  
