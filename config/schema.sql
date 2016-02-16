@@ -1,3 +1,5 @@
+USE `medconnect`;
+
 CREATE TABLE `Visits` (
 	`visitID` int(15) NOT NULL AUTO_INCREMENT,
 	`visitStatus` tinyint(1) NOT NULL,
