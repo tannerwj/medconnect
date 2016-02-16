@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt')
+const bcrypt = require(process.env.BCRYPT || 'bcryptjs')
 const db = require('../config/db')
 
 const BCRYPT_ROUNDS = 10
