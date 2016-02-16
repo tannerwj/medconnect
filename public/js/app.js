@@ -1,4 +1,13 @@
-;(function ( window, document) { 'use strict'
+var template = angular.module('template', ['ngRoute', 'medconnect']);
 
-
-}( window, document))
+template.config(['$routeProvider',
+  function($routeProvider) {
+    $routeProvider.
+      when('/', {
+        templateUrl: 'about.html',
+        controller: 'register'
+      })
+      // otherwise({
+      //   redirectTo: '/phones'
+      // });
+  }]);
