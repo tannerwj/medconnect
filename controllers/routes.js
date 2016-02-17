@@ -10,7 +10,7 @@ const acc = require('../src/account')
 const BCRYPT_ROUNDS = 13
 
 router.get('/', function (req, res) {
-	res.sendFile('index.html', { root: path.join(__dirname, '../views') })
+	res.sendFile('index.html', { root: path.join(__dirname, '../public/views') })
 })
 
 router.get('/loggedin', function (req, res) {
@@ -66,7 +66,7 @@ router.get('/logout', function (req, res){
 
 router.get('*', function (req, res) {
 	//catch all other requests
-	res.sendFile('index.html', { root: path.join(__dirname, '../views') })
+	res.sendFile('index.html', { root: path.join(__dirname, '../public/views') })
 })
 
 module.exports = router

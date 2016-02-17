@@ -1,0 +1,35 @@
+<div ng-controller='login'>
+	<div class="container">
+		<div class="row">
+		  <div class="main">
+		    <h1>Medconnect</h1>
+		    <form role="form" ng-submit="medconnect.postForm()">
+		      <div class="form-group">
+		        <label for="username">Username</label>
+		        <input type="text" class="form-control" id="username" ng-model= "username" required>
+		      </div>
+		      <div class="form-group">
+		        <label for="password">Password</label>
+		        <input type="password" class="form-control" id="password" ng-model="password" required>
+		      </div>
+		      <button type="submit" class="btn btn-lg btn-primary btn-block">
+		        Log In
+		      </button>
+		    </form>
+				<div class="login-or">
+					<hr class="hr-or">
+					<span class="span-or">Register</span>
+				</div>
+
+				<div class="row">
+					<div class="col-xs-6 col-sm-6 col-md-6">
+						<a href="register-patient" class="btn btn-lg btn-success btn-block">Patient</a>
+					</div>
+					<div class="col-xs-6 col-sm-6 col-md-6">
+						<a href="register-doctor" class="btn btn-lg btn-info btn-block">Doctor</a>
+					</div>
+				</div>
+		  </div>
+		</div>
+	</div>
+</div>
