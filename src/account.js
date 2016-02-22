@@ -1,4 +1,4 @@
-const bcrypt = require(process.env.BCRYPT || 'bcryptjs')
+const bcrypt = require('bcrypt-nodejs')
 const db = require('../config/db')
 
 const BCRYPT_ROUNDS = 10
@@ -7,11 +7,13 @@ var register = function (user){
   return userExists(user).then( function (exists){
     if(!exists){
 			return new Promise( function (resolve, reject){
-        bcrypt.hash(user.pass, BCRYPT_ROUNDS, function (err, hash) {
-          if(err) return reject(err)
-          return resolve(db.query('INSERT INTO Users (userType, email, lastName, firstName, password) VALUES (?,?,?,?,?);', [user.type, user.email, user.first, user.last, hash]).then( function (result){
-          	return true
-          }))
+        bcrypt.genSalt(BCRYPT_ROUNDS, function (salt){
+          bcrypt.hash(user.pass, salt, null, function (err, hash) {
+            if(err) return reject(err)
+            return resolve(db.query('INSERT INTO Users (userType, email, lastName, firstName, password) VALUES (?,?,?,?,?);', [user.type, user.email, user.first, user.last, hash]).then( function (result){
+              return true
+            }))
+          })
         })
       })
 		}
