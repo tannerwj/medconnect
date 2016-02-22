@@ -13,10 +13,10 @@
 	},
 	"dependencies":{
 		"async-q": "*",
-		"bcryptjs": "*",
+		"bcrypt-nodejs": "*",
 		"body-parser": "*",
 		"cookie-parser": "*",
-    		"dotenv": "^2.0.0",
+    	"dotenv": "^2.0.0",
 		"express": "*",
 		"express-session": "*",
 		"morgan": "*",
