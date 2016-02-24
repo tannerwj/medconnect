@@ -52,20 +52,21 @@ function (email, password, done) {
 
 		bcrypt.compare(password, user.password, function (err, res) {
 			if(res){
-				return done(null, { id: usser.userID, type: user.userType, email: user.email, first: user.firstName, last: user.lastName })
-			}else{
-				return done(null, false)
+				return done(null, { id: user.userID, type: user.userType, email: user.email, first: user.firstName, last: user.lastName })
 			}
+			return done(null, false)
 		})
 	}).catch( function (err){
 		console.error(err)
-	}).done()
+	})
 }))
 passport.serializeUser(function (user, done) {
-	done(null, user)
+	done(null, user.userID)
 })
-passport.deserializeUser(function (user, done) {
-	done(null, user)
+passport.deserializeUser(function (id, done) {
+	db.query('SELECT * FROM Users WHERE userID =? LIMIT 1;', [id]).then( function (user){
+		done(null, user)
+	})
 })
 
 app.use('/', routes)
