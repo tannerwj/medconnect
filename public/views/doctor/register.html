@@ -1,54 +1,55 @@
+<h1>Doctor Register</h1>
 <form class="form-horizontal" ng-controller="DRController">
   <div class="form-group">
     <label for="firstName" class="col-sm-4 control-label">First Name:</label>
-    <div class="col-sm-8">
+    <div class="col-sm-4">
     	<input type="text" class="form-control" id="firstName" ng-model="doctor.firstname">
     </div>
   </div>
   <div class="form-group">
     <label for="lastName" class="col-sm-4 control-label">Last Name:</label>
-    <div class="col-sm-8">
+    <div class="col-sm-4">
     	<input type="text" class="form-control" id="lastName" ng-model="doctor.lastname">
     </div>
   </div>
   <div class="form-group">
     <label for="address" class="col-sm-4 control-label">Address:</label>
-    <div class="col-sm-8">
+    <div class="col-sm-4">
       <input type="text" class="form-control" id="address" ng-model="doctor.address">
     </div>
   </div>
   <div class="form-group">
     <label for="phone" class="col-sm-4 control-label">Phone:</label>
-    <div class="col-sm-8">
+    <div class="col-sm-4">
       <input type="text" class="form-control" id="phone" ng-model="doctor.phone" ui-mask="{{'999-999-9999'}}">
     </div>
   </div>
   <div class="form-group">
     <label for="email" class="col-sm-4 control-label">Email:</label>
-    <div class="col-sm-8">
+    <div class="col-sm-4">
       <input type="text" class="form-control" id="email" ng-model="doctor.email">
     </div>
   </div>
   <div class="form-group">
     <label for="pass" class="col-sm-4 control-label">Password:</label>
-    <div class="col-sm-8">
+    <div class="col-sm-4">
       <input type="password" class="form-control" id="pass" ng-model="doctor.password">
     </div>
   </div>
   <div class="form-group">
     <label for="passcfm" class="col-sm-4 control-label">Confirm Password:</label>
-    <div class="col-sm-8">
+    <div class="col-sm-4">
       <input type="password" class="form-control" id="passcfm" ng-model="doctor.passcfm">
     </div>
   </div>
     <div class="form-group">
     <label for="docverfy" class="col-sm-4 control-label">Doctor Verification Number:</label>
-    <div class="col-sm-8">
+    <div class="col-sm-4">
       <input type="text" class="form-control" id="docverfy" ng-model="doctor.docverfy">
     </div>
   </div>
   <div class="form-group">
-    <div class="col-sm-offset-9 col-sm-3">
+    <div class="col-sm-offset-4 col-sm-3">
       <button type="submit" class="btn btn-primary" ng-click="register()">Register</button>
     </div>
   </div>
