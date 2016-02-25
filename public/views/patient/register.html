@@ -1,62 +1,62 @@
 <h1>Patient Register</h1>
-<form class="form-horizontal" ng-controller="PRController" ng-submit="register()">
+<form class="form-horizontal" ng-controller="PRController as patient" ng-submit="patient.register()">
   <div class="form-group">
     <label for="username" class="col-sm-4 control-label">Username:</label>
     <div class="col-sm-4">
-    	<input type="text" class="form-control" id="username" ng-model="username">
+    	<input type="text" class="form-control" id="username" ng-model="patient.username">
     </div>
   </div>
   <div class="form-group">
     <label for="firstName" class="col-sm-4 control-label">First Name:</label>
     <div class="col-sm-4">
-    	<input type="text" class="form-control" id="firstName" ng-model="firstName">
+    	<input type="text" class="form-control" id="firstName" ng-model="patient.firstName">
     </div>
   </div>
   <div class="form-group">
     <label for="lastName" class="col-sm-4 control-label">Last Name:</label>
     <div class="col-sm-4">
-    	<input type="text" class="form-control" id="lastName" ng-model="lastName">
+    	<input type="text" class="form-control" id="lastName" ng-model="patient.lastName">
     </div>
   </div>
   <div class="form-group">
     <label class="col-sm-4 control-label">Gender:</label>
     <div class="col-sm-4">
       <label class="radio-inline">
-        <input type="radio" name="gender" ng-model="gender" value="male"> male
+        <input type="radio" name="gender" ng-model="patient.gender" value="male"> male
       </label>
       <label class="radio-inline">
-        <input type="radio" name="gender" ng-model="gender" value="female"> female
+        <input type="radio" name="gender" ng-model="patient.gender" value="female"> female
       </label>
     </div>
   </div>
   <div class="form-group">
     <label for="address" class="col-sm-4 control-label">Address:</label>
     <div class="col-sm-4">
-      <input type="text" class="form-control" id="address" ng-model="address">
+      <input type="text" class="form-control" id="address" ng-model="patient.address">
     </div>
   </div>
   <div class="form-group">
     <label for="phoneNumber" class="col-sm-4 control-label">Phone:</label>
     <div class="col-sm-4">
-      <input type="text" class="form-control" id="phoneNumber" ng-model="phoneNumber" ui-mask="{{'999-999-9999'}}">
+      <input type="text" class="form-control" id="phoneNumber" ng-model="patient.phoneNumber" ui-mask="{{'999-999-9999'}}">
     </div>
   </div>
   <div class="form-group">
     <label for="email" class="col-sm-4 control-label">Email:</label>
     <div class="col-sm-4">
-      <input type="text" class="form-control" id="email" ng-model="email">
+      <input type="text" class="form-control" id="email" ng-model="patient.email">
     </div>
   </div>
   <div class="form-group">
     <label for="password" class="col-sm-4 control-label">Password:</label>
     <div class="col-sm-4">
-      <input type="password" class="form-control" id="password" ng-model="password">
+      <input type="password" class="form-control" id="password" ng-model="patient.password">
     </div>
   </div>
   <div class="form-group">
     <label for="passwordConfirm" class="col-sm-4 control-label">Confirm Password:</label>
     <div class="col-sm-4">
-      <input type="password" class="form-control" id="passwordConfirm" ng-model="passwordConfirm">
+      <input type="password" class="form-control" id="passwordConfirm" ng-model="patient.passwordConfirm">
     </div>
   </div>
   <div class="form-group">
