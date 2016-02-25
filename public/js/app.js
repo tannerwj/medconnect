@@ -1,4 +1,4 @@
-var medconnect = angular.module('medconnect', ['ngRoute']);
+var medconnect = angular.module('medconnect', ['ngRoute', 'ngMessages']);
 
 medconnect.config(['$routeProvider', '$locationProvider',
   function($routeProvider, $locationProvider) {
@@ -28,7 +28,7 @@ medconnect.controller('Login', ['$http', function($http){
         method:'POST',
         url:'/login',
         data: {
-          'email' : vm.username,
+          'email' : vm.email,
           'password' : vm.password
         }
       }).success(function(data){
@@ -43,6 +43,7 @@ medconnect.controller('Login', ['$http', function($http){
 medconnect.controller('PRController', ['$http', function($http){
 
   var vm = this;
+  vm.error = true;
 
   vm.register = function(){
     if(vm.firstName && vm.lastName && vm.password && vm.email){
@@ -60,6 +61,8 @@ medconnect.controller('PRController', ['$http', function($http){
       }).error(function(err){
         console.log('Server error: ' + err);
       })
+  }else{
+    vm.error = false;
   }
 
 }}]);
@@ -67,6 +70,7 @@ medconnect.controller('PRController', ['$http', function($http){
 medconnect.controller('DRController', ['$http', function($http){
 
   var vm = this;
+  vm.error = true;
 
   vm.register = function(){
     if(vm.firstName && vm.lastName && vm.password && vm.email){
@@ -84,6 +88,8 @@ medconnect.controller('DRController', ['$http', function($http){
       }).error(function(err){
         console.log('Server error: ' + err);
       })
+  }else{
+    vm.error = false;
   }
 
 }}]);
