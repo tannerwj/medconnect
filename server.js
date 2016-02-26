@@ -2,24 +2,22 @@
 //using node 4.2.5 LTS
 
 require('dotenv').config()
-const express		= require('express')
-const http 			= require('http')
-const https			= require('https')
-const bodyParser	= require('body-parser')
-const cookieParser 	= require('cookie-parser')
-const bcrypt 		= require('bcrypt-nodejs')
-const session 		= require('express-session')
-const Q				= require('q')
-const async			= require('async-q')
-const passport 		= require('passport')
+const express	= require('express')
+const http = require('http')
+const https = require('https')
+const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser')
+const bcrypt = require('bcrypt-nodejs')
+const session = require('express-session')
+const Q = require('q')
+const async = require('async-q')
+const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
-const app			= express()
-
+const app	= express()
 
 const port = process.env.PORT || 80
 
 const db = require('./config/db')
-const routes = require('./controllers/routes')
 
 app.disable('x-powered-by')
 app.use(bodyParser.json())
@@ -52,16 +50,16 @@ function (email, password, done) {
 
 		bcrypt.compare(password, user.password, function (err, res) {
 			if(res){
-				return done(null, { id: user.userID, type: user.userType, email: user.email, first: user.firstName, last: user.lastName })
+				done(null, { id: user.userID, type: user.userType, email: user.email, first: user.firstName, last: user.lastName })
 			}
-			return done(null, false)
+			done(null, false)
 		})
 	}).catch( function (err){
 		console.error(err)
 	})
 }))
 passport.serializeUser(function (user, done) {
-	done(null, user.userID)
+	done(null, user.id)
 })
 passport.deserializeUser(function (id, done) {
 	db.query('SELECT * FROM Users WHERE userID =? LIMIT 1;', [id]).then( function (user){
@@ -69,7 +67,9 @@ passport.deserializeUser(function (id, done) {
 	})
 })
 
-app.use('/', routes)
+app.use('/patient/*', require('./controllers/patientRoutes'))
+app.use('/doctor/*', require('./controllers/doctorRoutes'))
+app.use('/*', require('./controllers/routes'))
 
 http.createServer(app).listen(port, function (){
 	console.log('SERVER STARTED ' + port)
