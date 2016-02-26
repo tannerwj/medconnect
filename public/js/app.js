@@ -1,4 +1,4 @@
-var medconnect = angular.module('medconnect', ['ngRoute']);
+var medconnect = angular.module('medconnect', ['ngRoute', 'ngMessages']);
 
 medconnect.config(['$routeProvider', '$locationProvider',
   function($routeProvider, $locationProvider) {
@@ -6,7 +6,7 @@ medconnect.config(['$routeProvider', '$locationProvider',
     $routeProvider
       .when('/', {
         templateUrl: 'views/login.html',
-        controller: 'login'
+        controller: 'Login'
       })
       .when('/register-patient', {
         templateUrl: 'views/patient/register.html',
@@ -18,95 +18,78 @@ medconnect.config(['$routeProvider', '$locationProvider',
       })
   }]);
 
-medconnect.controller('login', ['$http','$scope', function($http, $scope){
+medconnect.controller('Login', ['$http', function($http){
 
-  $scope.postForm = function(){
-    if($scope.username && $scope.password){
-      var username = $scope.username;
-      var password = $scope.password;
+  var vm = this;
 
+  vm.postForm = function(){
+    if(vm.username && vm.password){
       $http({
         method:'POST',
         url:'/login',
         data: {
-          'username': username,
-          'password': password
+          'email' : vm.email,
+          'password' : vm.password
         }
-        // headers:{'Content-Type': 'application/x-www-form-urlencoded'}
-      }).success(function(data, status, headers, config){
+      }).success(function(data){
         console.log(data);
-      }).error(function(data,status,headers,config){
-        console.log('Unable to submit form');
+      }).error(function(err){
+        console.log('Server error: ' + err);
       })
-    }
-    else{
-      $scope.errMessage = "Missing one or more fields";
-    }
   }
-}]);
 
-medconnect.controller('PRController', ['$http','$scope', function($http, $scope){
+}}]);
 
-  $scope.register = function(){
-    if($scope.firstName && $scope.lastName && $scope.password && $scope.email){
-      var firstName = $scope.firstName;
-      var lastName = $scope.lastName;
-      var password = $scope.password;
-      var email = $scope.email;
+medconnect.controller('PRController', ['$http', function($http){
 
+  var vm = this;
+  vm.error = true;
+
+  vm.register = function(){
+    if(vm.firstName && vm.lastName && vm.password && vm.email){
       $http({
         method:'POST',
         url:'/patient-register',
         data: {
-          'email' : email,
-          'first' : firstName,
-          'last' : lastName,
-          'pass': password
+          'email' : vm.email,
+          'first' : vm.firstName,
+          'last' : vm.lastName,
+          'pass': vm.password
         }
-        // headers:{'Content-Type': 'application/x-www-form-urlencoded'}
-      }).success(function(data, status, headers, config){
-        console.log('succeeded');
+      }).success(function(data){
         console.log(data);
-      }).error(function(data,status,headers,config){
-        console.log('Unable to submit form');
+      }).error(function(err){
+        console.log('Server error: ' + err);
       })
-    }
-    else{
-      $scope.errMessage = "Missing one or more fields";
-    }
+  }else{
+    vm.error = false;
   }
 
-}]);
+}}]);
 
-medconnect.controller('DRController', ['$http','$scope', function($http, $scope){
+medconnect.controller('DRController', ['$http', function($http){
 
-  $scope.register = function(){
-    if($scope.firstName && $scope.lastName && $scope.password && $scope.email){
-      var firstName = $scope.firstName;
-      var lastName = $scope.lastName;
-      var password = $scope.password;
-      var email = $scope.email;
+  var vm = this;
+  vm.error = true;
 
+  vm.register = function(){
+    if(vm.firstName && vm.lastName && vm.password && vm.email){
       $http({
         method:'POST',
         url:'/doctor-register',
         data: {
-          'email' : email,
-          'first' : firstName,
-          'last' : lastName,
-          'pass': password
+          'email' : vm.email,
+          'first' : vm.firstName,
+          'last' : vm.lastName,
+          'pass': vm.password
         }
-        // headers:{'Content-Type': 'application/x-www-form-urlencoded'}
-      }).success(function(data, status, headers, config){
-        console.log('succeeded');
+      }).success(function(data){
         console.log(data);
-      }).error(function(data,status,headers,config){
-        console.log('Unable to submit form');
+      }).error(function(err){
+        console.log('Server error: ' + err);
       })
-    }
-    else{
-      $scope.errMessage = "Missing one or more fields";
-    }
+  }else{
+    vm.error = false;
   }
 
-}]);
+}}]);
