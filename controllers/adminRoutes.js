@@ -3,10 +3,10 @@ const path = require('path')
 const router = express.Router()
 
 const db = require('../config/db')
-const pat = require('../src/patient')
+const admin = require('../src/admin')
 
 router.get('*', function (req, res) {
-	console.log('ACCESSING PATIENT ROUTES')
+	console.log('ACCESSING ADMIN ROUTES')
 	res.sendFile('index.html', { root: path.join(__dirname, '../public/views') })
 })
 

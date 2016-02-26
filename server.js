@@ -34,6 +34,8 @@ app.use(session({
 	resave: true,
 	saveUninitialized: true
 }))
+app.use(passport.initialize())
+app.use(passport.session())
 app.use(express.static(__dirname + '/public'))
 
 passport.use(new LocalStrategy({
@@ -50,7 +52,7 @@ function (email, password, done) {
 
 		bcrypt.compare(password, user.password, function (err, res) {
 			if(res){
-				done(null, { id: user.userID, type: user.userType, email: user.email, first: user.firstName, last: user.lastName })
+				return done(null, { id: user.userID, type: user.userType, email: user.email, first: user.firstName, last: user.lastName })
 			}
 			done(null, false)
 		})
@@ -63,13 +65,14 @@ passport.serializeUser(function (user, done) {
 })
 passport.deserializeUser(function (id, done) {
 	db.query('SELECT * FROM Users WHERE userID =? LIMIT 1;', [id]).then( function (user){
-		done(null, user)
+		done(null, user[0][0])
 	})
 })
 
 app.use('/patient/*', require('./controllers/patientRoutes'))
 app.use('/doctor/*', require('./controllers/doctorRoutes'))
-app.use('/*', require('./controllers/routes'))
+app.use('/admin/*', require('./controllers/adminRoutes'))
+app.use('/', require('./controllers/routes'))
 
 http.createServer(app).listen(port, function (){
 	console.log('SERVER STARTED ' + port)
