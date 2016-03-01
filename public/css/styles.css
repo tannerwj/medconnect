@@ -1,6 +1,6 @@
 body {
-  padding-top: 15px;
-  font-size: 12px
+  font-size: 12px;
+  /*padding-top:15px;*/
 }
 .main {
   max-width: 320px;
@@ -11,7 +11,7 @@ body {
   font-size: 18px;
   color: #aaa;
   margin-top: 10px;
-          margin-bottom: 10px;
+  margin-bottom: 10px;
   padding-top: 10px;
   padding-bottom: 10px;
 }
@@ -34,4 +34,14 @@ body {
 h1 {
   text-align: center;
   line-height: 300%;
+}
+
+.form-horizontal .form-group {
+  margin-right:0;
+  margin-left:0;
+}
+
+.help-block{
+  margin-top:0;
+  margin-bottom:0;
 }

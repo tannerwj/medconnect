@@ -1,6 +1,6 @@
-const express 	= require('express')
-const path 		= require('path')
-const passport 	= require('passport')
+const express = require('express')
+const path = require('path')
+const passport = require('passport')
 
 const router = express.Router()
 
@@ -10,11 +10,11 @@ const acc = require('../src/account')
 const BCRYPT_ROUNDS = 13
 
 router.get('/', function (req, res) {
-	res.sendFile('index.html', { root: path.join(__dirname, '../views') })
+	res.sendFile('index.html', { root: path.join(__dirname, '../public/views') })
 })
 
 router.get('/loggedin', function (req, res) {
-	res.send(req.isAuthenticated() ? req.user : '0')
+	res.send(req.isAuthenticated() ? req.user.userType+'' : false)
 })
 
 router.post('/login', function (req, res, next) {
@@ -28,7 +28,7 @@ router.post('/login', function (req, res, next) {
 		}
 		req.logIn(user, function (err) {
 			if (err) { return next(err) }
-			return res.send(req.user)
+			return res.send(user.type+'')
 		})
 	})(req, res, next)
 })
@@ -66,7 +66,7 @@ router.get('/logout', function (req, res){
 
 router.get('*', function (req, res) {
 	//catch all other requests
-	res.sendFile('index.html', { root: path.join(__dirname, '../views') })
+	res.sendFile('index.html', { root: path.join(__dirname, '../public/views') })
 })
 
 module.exports = router
