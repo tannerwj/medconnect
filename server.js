@@ -14,6 +14,7 @@ const async = require('async-q')
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const app	= express()
+const acc = require('../src/account')
 
 const port = process.env.PORT || 80
 
@@ -64,8 +65,8 @@ passport.serializeUser(function (user, done) {
 	done(null, user.id)
 })
 passport.deserializeUser(function (id, done) {
-	db.query('SELECT * FROM Users WHERE userID =? LIMIT 1;', [id]).then( function (user){
-		done(null, user[0][0])
+	acc.findUserById(id).then(function (user){
+		done(null, user)
 	})
 })
 

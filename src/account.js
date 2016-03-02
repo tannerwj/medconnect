@@ -4,14 +4,14 @@ const db = require('../config/db')
 const BCRYPT_ROUNDS = 10
 
 var register = function (user){
-  return userExists(user).then( function (exists){
+  return emailExists(user.email).then(function (exists){
     if(!exists){
-			return new Promise( function (resolve, reject){
+			return new Promise(function (resolve, reject){
         bcrypt.genSalt(BCRYPT_ROUNDS, function (salt){
           bcrypt.hash(user.pass, salt, null, function (err, hash) {
             if(err) return reject(err)
             return resolve(db.query('INSERT INTO Users (userType, email, lastName, firstName, password) VALUES (?,?,?,?,?);', [user.type, user.email, user.first, user.last, hash]).then( function (result){
-              return true
+              return { id: result[0].insertId }
             }))
           })
         })
@@ -21,24 +21,44 @@ var register = function (user){
 	})
 }
 
-var deleteUser = function (user){
-  return userExists(user).then( function (exists){
+var deleteUser = function (id){
+  return userExists(id).then( function (exists){
     if(exists){
-      return db.query('DELETE FROM Users WHERE email=?;', [user.email]).then( function (){
-        return true
+      return db.query('DELETE FROM Users WHERE userID =?;', [id]).then( function (result){
+        return result[0].changedRows === '1'
       })
     }
-    return false
   })
 }
 
-var userExists = function (user){
-  return db.query('SELECT 1 FROM Users WHERE email=? LIMIT 1;', [user.email]).then( function (result){
+var emailExists = function (email){
+  return db.query('SELECT 1 FROM Users WHERE email=? LIMIT 1;', [email]).then( function (result){
     return result[0][0] !== undefined
+  })
+}
+
+var userExists = function (id){
+  return db.query('SELECT 1 FROM Users WHERE userID=? LIMIT 1;', [id]).then( function (result){
+    return result[0][0] !== undefined
+  })
+}
+
+var findUserByEmail = function (email){
+  return db.query('SELECT * FROM Users WHERE email =? LIMIT 1;', [email]).then(function (result){
+    return result[0][0]
+  })
+}
+
+var findUserById = function (id){
+  return db.query('SELECT * FROM Users WHERE userID =? LIMIT 1;', [id]).then(function (result){
+    return result[0][0]
   })
 }
 
 module.exports = {
   register: register,
-  deleteUser: deleteUser
+  deleteUser: deleteUser,
+  findUserById: findUserById,
+  findUserByEmail: findUserByEmail,
+  userExists: userExists
 }

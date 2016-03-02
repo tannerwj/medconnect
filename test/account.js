@@ -2,48 +2,29 @@ require('dotenv').config()
 const expect = require('chai').expect
 const acc = require('../src/account')
 
-describe('Test patient backend', function(){
+describe('Test user backend', function(){
   var user = {
-    email	: 'test@email.com',
-    pass 	: 'password',
-    first 	: 'test',
-    last 	: 'user',
-    type : 1
+    email: 'test@email.com',
+    pass: 'password',
+    first: 'test',
+    last: 'user',
+    type: 0
   }
 	before(function () {
-		return acc.deleteUser(user)
+    return acc.findUserByEmail(user.email).then(function (user){
+      if(user){
+        return acc.deleteUser(user.userID)
+      }
+    })
 	})
-	it('Create new patient', function(){
+	it('Create new user', function(){
 		return acc.register(user).then(function (val){
-			expect(val).to.equal(true)
+			expect(val).to.not.equal(false)
 		})
 	})
-	it('Does not create duplicate patient', function(){
+	it('Does not create duplicate user', function(){
 		return acc.register(user).then(function (val){
 			expect(val).to.equal(false)
 		})
 	})
-})
-
-describe('Test doctor backend', function(){
-  var user = {
-    email	: 'test@email.com',
-    pass 	: 'password',
-    first 	: 'test',
-    last 	: 'user',
-    type : 0
-  }
-	before(function () {
-		return acc.deleteUser(user)
-	})
-  it('Create new doctor', function(){
-    return acc.register(user).then(function (val){
-      expect(val).to.equal(true)
-    })
-  })
-  it('Does not create duplicate doctor', function(){
-    return acc.register(user).then(function (val){
-      expect(val).to.equal(false)
-    })
-  })
 })
