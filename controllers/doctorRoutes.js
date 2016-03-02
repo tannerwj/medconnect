@@ -5,20 +5,25 @@ const router = express.Router()
 const db = require('../config/db')
 const doc = require('../src/doctor')
 
-router.get('*', function (req, res) {
-	console.log('ACCESSING DOCTOR ROUTES')
-	res.sendFile('index.html', { root: path.join(__dirname, '../public/views') })
-})
+const USERTYPE = 0
 
-router.post('/doctor/specific-doctor', function (req, res){
+router.post('/doctor/specific-doctor', auth, function (req, res){
   var docId = req.body.id
   doc.getDoctorDetails(docId).then(function (doctor){
     if(doctor){
-      req.send(doctor)
+      res.send(doctor)
     }else{
-      re.send('0')
+      res.send('0')
     }
   })
 })
+
+var auth = function (req, res, next){
+	if (req.isAuthenticated() && req.user.userType === USERTYPE){
+		return next()
+	}else{
+		res.sendStatus(401)
+	}
+}
 
 module.exports = router
