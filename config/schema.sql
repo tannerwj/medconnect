@@ -46,7 +46,8 @@ CREATE TABLE `Vitals` (
 );
 
 CREATE TABLE `PatientProfile` (
-	`userID` int(15) NOT NULL AUTO_INCREMENT,
+	`userID` int(15) NOT NULL,
+	`gender` varchar(1) NOT NULL,
 	`bloodType` varchar(3) NOT NULL,
 	`address` varchar(255) NOT NULL,
 	`phone` varchar(12) NOT NULL,
@@ -54,7 +55,7 @@ CREATE TABLE `PatientProfile` (
 );
 
 CREATE TABLE `DoctorProfile` (
-	`userID` int(15) NOT NULL AUTO_INCREMENT,
+	`userID` int(15) NOT NULL,
 	`locationID` int(15) NOT NULL,
 	`verified` tinyint(1) NOT NULL,
 	`verificationCode` varchar(255) NOT NULL,

@@ -1,25 +1,40 @@
 <h1>Patient Register</h1>
-<form class="form-horizontal" ng-controller="PRController">
-  <div class="form-group">
-    <label for="firstName" class="col-sm-4 control-label">First Name:</label>
+<form class="form-horizontal" name="patientForm" ng-controller="PRController as patient" ng-submit="patient.register()" novalidate>
+  <div class="form-group" ng-class="{ 'has-error': patientForm.email.$touched && patientForm.email.$invalid }">
+    <label for="email" class="col-sm-4 control-label">Email:</label>
     <div class="col-sm-4">
-    	<input type="text" class="form-control" id="firstName" ng-model="patient.firstname">
+      <input placeholder="example@gmail.com" type="email" name="email" class="form-control" id="email" ng-model="patient.email" ng-maxlength="80" required>
+        <div class="help-block" ng-messages="patientForm.email.$error" ng-show="patientForm.email.$touched">
+          <div ng-messages-include="my-custom-messages"></div>
+      </div>
     </div>
   </div>
-  <div class="form-group">
+  <div class="form-group" ng-class="{ 'has-error': patientForm.firstName.$touched && patientForm.firstName.$invalid }">
+    <label for="firstName" class="col-sm-4 control-label">First Name:</label>
+    <div class="col-sm-4">
+    	<input placeholder="bishal" type="text" name="firstName" class="form-control" id="firstName" ng-model="patient.firstName" ng-maxlength="80" required>
+        <div class="help-block" ng-messages="patientForm.firstName.$error" ng-show="patientForm.firstName.$touched">
+          <div ng-messages-include="my-custom-messages"></div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group" ng-class="{ 'has-error': patientForm.lastName.$touched && patientForm.lastName.$invalid }">
     <label for="lastName" class="col-sm-4 control-label">Last Name:</label>
     <div class="col-sm-4">
-    	<input type="text" class="form-control" id="lastName" ng-model="patient.lastname">
+    	<input placeholder="Tamang" type="text" name="lastName" class="form-control" id="lastName" ng-model="patient.lastName" ng-maxlength="80" required>
+        <div class="help-block" ng-messages="patientForm.lastName.$error" ng-show="patientForm.lastName.$touched">
+          <div ng-messages-include="my-custom-messages"></div>
+      </div>
     </div>
   </div>
   <div class="form-group">
     <label class="col-sm-4 control-label">Gender:</label>
     <div class="col-sm-4">
       <label class="radio-inline">
-        <input type="radio" name="gender" ng-model="user.gender" value="male"> male
+        <input type="radio" name="gender" ng-model="patient.gender" value="male"> male
       </label>
       <label class="radio-inline">
-        <input type="radio" name="gender" ng-model="user.gender" value="female"> female
+        <input type="radio" name="gender" ng-model="patient.gender" value="female"> female
       </label>
     </div>
   </div>
@@ -30,32 +45,38 @@
     </div>
   </div>
   <div class="form-group">
-    <label for="phone" class="col-sm-4 control-label">Phone:</label>
+    <label for="phoneNumber" class="col-sm-4 control-label">Phone:</label>
     <div class="col-sm-4">
-      <input type="text" class="form-control" id="phone" ng-model="patient.phone" ui-mask="{{'999-999-9999'}}">
+      <input type="text" class="form-control" id="phoneNumber" ng-model="patient.phoneNumber" ui-mask="{{'999-999-9999'}}">
+    </div>
+  </div>
+  <div class="form-group" ng-class="{ 'has-error': patientForm.password.$touched && patientForm.password.$invalid }">
+    <label for="password" class="col-sm-4 control-label">Password:</label>
+    <div class="col-sm-4">
+      <input placeholder="********" type="password" name="password" class="form-control" id="password" ng-model="patient.password" ng-maxlength="120" required>
+        <div class="help-block" ng-messages="patientForm.password.$error" ng-show="patientForm.password.$touched">
+          <div ng-messages-include="my-custom-messages"></div>
+      </div>
     </div>
   </div>
   <div class="form-group">
-    <label for="email" class="col-sm-4 control-label">Email:</label>
+    <label for="passwordConfirm" class="col-sm-4 control-label">Confirm Password:</label>
     <div class="col-sm-4">
-      <input type="text" class="form-control" id="email" ng-model="patient.email">
+      <input type="password" class="form-control" id="passwordConfirm" ng-model="patient.passwordConfirm">
     </div>
   </div>
   <div class="form-group">
-    <label for="pass" class="col-sm-4 control-label">Password:</label>
-    <div class="col-sm-4">
-      <input type="password" class="form-control" id="pass" ng-model="patient.password">
+    <div class="col-sm-offset-4 col-sm-2">
+      <button type="submit" class="btn btn-primary">Register</button>
     </div>
-  </div>
-  <div class="form-group">
-    <label for="passcfm" class="col-sm-4 control-label">Confirm Password:</label>
-    <div class="col-sm-4">
-      <input type="password" class="form-control" id="passcfm" ng-model="patient.passcfm">
-    </div>
-  </div>
-  <div class="form-group">
-    <div class="col-sm-offset-4 col-sm-14">
-      <button type="submit" class="btn btn-primary" ng-click="register()">Register</button>
+    <div ng-if="!patient.error" class="col-sm-2">
+      <button class="btn btn-danger">Missing Field/s!</button>
     </div>
   </div>
 </form>
+
+<script type="text/ng-template" id="my-custom-messages">
+  <p ng-message="maxlength">There has to be less characters.</p>
+  <p ng-message="required">This field is required.</p>
+  <p ng-message="email">This needs to be a valid email</p>
+</script>

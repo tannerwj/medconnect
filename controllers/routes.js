@@ -1,6 +1,6 @@
-const express 	= require('express')
-const path 		= require('path')
-const passport 	= require('passport')
+const express = require('express')
+const path = require('path')
+const passport = require('passport')
 
 const router = express.Router()
 
@@ -14,7 +14,7 @@ router.get('/', function (req, res) {
 })
 
 router.get('/loggedin', function (req, res) {
-	res.send(req.isAuthenticated() ? req.user : '0')
+	res.send(req.isAuthenticated() ? req.user.userType+'' : false)
 })
 
 router.post('/login', function (req, res, next) {
@@ -28,7 +28,7 @@ router.post('/login', function (req, res, next) {
 		}
 		req.logIn(user, function (err) {
 			if (err) { return next(err) }
-			return res.send(req.user)
+			return res.send(user.type+'')
 		})
 	})(req, res, next)
 })
@@ -37,19 +37,6 @@ router.post('/doctor-register', function (req, res) {
 	var user = {
 		email	: req.body.email,
 		type 	: 0,
-		pass 	: req.body.pass,
-		first 	: req.body.first,
-		last 	: req.body.last
-	}
-	acc.register(user).then(function (val){
-		val ? res.send('1') : res.send('0')
-	})
-})
-
-router.post('/patient-register', function (req, res) {
-	var user = {
-		email	: req.body.email,
-		type 	: 1,
 		pass 	: req.body.pass,
 		first 	: req.body.first,
 		last 	: req.body.last
