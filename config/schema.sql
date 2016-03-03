@@ -5,7 +5,7 @@ CREATE TABLE `Visits` (
 	`visitStatus` tinyint(1) NOT NULL,
 	`patientID` int(15) NOT NULL,
 	`doctorID` int(15) NOT NULL,
-	`locationID` int(15) NOT NULL,
+	`address` varchar(255) NOT NULL,
 	`visitDate` DATETIME NOT NULL,
 	`reason` varchar(255) NOT NULL,
 	`diagnosis` varchar(255) NOT NULL,
@@ -56,7 +56,8 @@ CREATE TABLE `PatientProfile` (
 
 CREATE TABLE `DoctorProfile` (
 	`userID` int(15) NOT NULL,
-	`locationID` int(15) NOT NULL,
+	`address` varchar(255) NOT NULL,
+	`phone` varchar(12) NOT NULL,
 	`verified` tinyint(1) NOT NULL,
 	`verificationCode` varchar(255) NOT NULL,
 	`experience` varchar(10) NOT NULL,
@@ -122,17 +123,9 @@ CREATE TABLE `DataType` (
 	PRIMARY KEY (`dataID`)
 );
 
-CREATE TABLE `Locations` (
-	`locationID` int(15) NOT NULL AUTO_INCREMENT,
-	`locationName` varchar(80) NOT NULL UNIQUE,
-	PRIMARY KEY (`locationID`)
-);
-
 ALTER TABLE `Visits` ADD CONSTRAINT `Visits_fk0` FOREIGN KEY (`patientID`) REFERENCES `Users`(`userID`);
 
 ALTER TABLE `Visits` ADD CONSTRAINT `Visits_fk1` FOREIGN KEY (`doctorID`) REFERENCES `Users`(`userID`);
-
-ALTER TABLE `Visits` ADD CONSTRAINT `Visits_fk2` FOREIGN KEY (`locationID`) REFERENCES `Locations`(`locationID`);
 
 ALTER TABLE `Users` ADD CONSTRAINT `Users_fk0` FOREIGN KEY (`userType`) REFERENCES `UserType`(`typeID`);
 
@@ -143,8 +136,6 @@ ALTER TABLE `Vitals` ADD CONSTRAINT `Vitals_fk1` FOREIGN KEY (`visitID`) REFEREN
 ALTER TABLE `PatientProfile` ADD CONSTRAINT `PatientProfile_fk0` FOREIGN KEY (`userID`) REFERENCES `Users`(`userID`);
 
 ALTER TABLE `DoctorProfile` ADD CONSTRAINT `DoctorProfile_fk0` FOREIGN KEY (`userID`) REFERENCES `Users`(`userID`);
-
-ALTER TABLE `DoctorProfile` ADD CONSTRAINT `DoctorProfile_fk1` FOREIGN KEY (`locationID`) REFERENCES `Locations`(`locationID`);
 
 ALTER TABLE `AllergyPatient` ADD CONSTRAINT `AllergyPatient_fk0` FOREIGN KEY (`allergyID`) REFERENCES `Allergies`(`allergyID`);
 

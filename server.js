@@ -14,7 +14,7 @@ const async = require('async-q')
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const app	= express()
-const acc = require('../src/account')
+const acc = require('./src/account')
 
 const port = process.env.PORT || 80
 
