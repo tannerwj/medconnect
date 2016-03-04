@@ -119,11 +119,14 @@ medconnect.controller('PRController', ['$http', function($http){
     if(vm.firstName && vm.lastName && vm.password && vm.email){
       $http({
         method:'POST',
-        url:'/patient-register',
+        url:'/patient/register',
         data: {
           'email' : vm.email,
           'first' : vm.firstName,
           'last' : vm.lastName,
+          'gender' : vm.gender,
+          'address' : vm.address,
+          'phone' : vm.phone,
           'pass': vm.password
         }
       }).success(function(data){
