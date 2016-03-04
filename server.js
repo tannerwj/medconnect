@@ -70,10 +70,10 @@ passport.deserializeUser(function (id, done) {
 	})
 })
 
-app.use('/patient/*', require('./controllers/patientRoutes'))
-app.use('/doctor/*', require('./controllers/doctorRoutes'))
-app.use('/admin/*', require('./controllers/adminRoutes'))
-app.use('/', require('./controllers/routes'))
+app.all('/patient/*', require('./controllers/patientRoutes'))
+app.all('/doctor/*', require('./controllers/doctorRoutes'))
+app.all('/admin/*', require('./controllers/adminRoutes'))
+app.all('/*', require('./controllers/routes'))
 
 http.createServer(app).listen(port, function (){
 	console.log('SERVER STARTED ' + port)
