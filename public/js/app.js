@@ -127,7 +127,7 @@ medconnect.controller('PRController', ['$http', function($http){
           'gender' : vm.gender,
           'address' : vm.address,
           'phone' : vm.phone,
-          'pass': vm.password
+          'password': vm.password
         }
       }).success(function(data){
         console.log(data);
