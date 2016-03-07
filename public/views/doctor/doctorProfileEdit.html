@@ -1,0 +1,82 @@
+<h1>Doctor Profile Edit</h1>
+<form class="form-horizontal" name ="doctorEdit" ng-controller="DRController as doctor" ng-submit="doctor.register()" novalidate>
+    <div class="form-group" ng-class="{ 'has-error': doctorForm.firstName.$touched && doctorForm.firstName.$invalid }">
+    <label for="firstName" class="col-sm-4 control-label">First Name:</label>
+    <div class="col-sm-4">
+    	<input placeholder="shirisha" type="text" name="firstName" class="form-control" id="firstName" ng-model="doctor.firstName" ng-maxlength="80" required>
+        <div class="help-block" ng-messages="doctorForm.firstName.$error" ng-show="doctorForm.firstName.$touched">
+          <div ng-messages-include="my-custom-messages"></div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group" ng-class="{ 'has-error': doctorForm.lastName.$touched && doctorForm.lastName.$invalid }">
+    <label for="lastName" class="col-sm-4 control-label">Last Name:</label>
+    <div class="col-sm-4">
+    	<input placeholder="Gurung" type="text" name="lastName" class="form-control" id="lastName" ng-model="doctor.lastName" ng-maxlength="80" required>
+        <div class="help-block" ng-messages="doctorForm.lastName.$error" ng-show="doctorForm.lastName.$touched">
+          <div ng-messages-include="my-custom-messages"></div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group" ng-class="{ 'has-error': doctorForm.email.$touched && doctorForm.email.$invalid }">
+    <label for="email" class="col-sm-4 control-label">Email:</label>
+    <div class="col-sm-4">
+      <input placeholder="example.google.com" type="email" name="email" class="form-control" id="email" ng-model="doctor.email" ng-maxlength="80" required>
+        <div class="help-block" ng-messages="doctorForm.email.$error" ng-show="doctorForm.email.$touched">
+          <div ng-messages-include="my-custom-messages"></div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="address" class="col-sm-4 control-label">Address:</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" id="address" ng-model="doctor.address">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="phoneNumber" class="col-sm-4 control-label">Phone:</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" id="phoneNumber" ng-model="doctor.phoneNumber" ui-mask="{{'999-999-9999'}}">
+    </div>
+  </div>
+  <label for="Password" class="col-sm-4 control-label">Password:</label>
+    <div class="col-sm-4">
+      <input placeholder="********" type="password" name="Password" class="form-control" id="Password" ng-model="doctor.Password" ng-maxlength="120">
+        <div class="help-block" ng-messages="doctorForm.password.$error" ng-show="doctorForm.password.$touched">
+          <div ng-messages-include="my-custom-messages"></div>
+      </div>
+    </div>
+  <div class="form-group" ng-class="{ 'has-error': doctorForm.password.$touched && doctorForm.password.$invalid }">
+    <label for="newPassword" class="col-sm-4 control-label">New Password:</label>
+    <div class="col-sm-4">
+      <input placeholder="********" type="password" name="newPassword" class="form-control" id="newPassword" ng-model="doctor.newPassword" ng-maxlength="120" required>
+        <div class="help-block" ng-messages="doctorForm.password.$error" ng-show="doctorForm.password.$touched">
+          <div ng-messages-include="my-custom-messages"></div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="newPasswordConfirm" class="col-sm-4 control-label">Confirm New Password:</label>
+    <div class="col-sm-4">
+      <input placeholder="********" type="password" class="form-control" id="newPasswordConfirm" ng-model="doctor.newPasswordConfirm">
+    </div>
+  </div>
+  <div>
+    <label for="servicWork" class="col-sm-4 control-label">Service Work/Accomplishments</label>
+    <textarea ng-model="txtcomment" placeholder="Your Comment" style='width:550px'></textarea>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-4 col-sm-2">
+      <button type="submit" class="btn btn-primary">Save Edits</button>
+    </div>
+    <div ng-if="!doctor.error" class="col-sm-2">
+      <button class="btn btn-danger">Missing Field/s!</button>
+    </div>
+  </div>
+</form>
+
+<script type="text/ng-template" id="my-custom-messages">
+  <p ng-message="maxlength">There has to be less characters.</p>
+  <p ng-message="required">This field is required.</p>
+  <p ng-message="email">This needs to be a valid email</p>
+</script>
