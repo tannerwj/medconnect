@@ -149,12 +149,15 @@ medconnect.controller('DRController', ['$http', function($http){
     if(vm.firstName && vm.lastName && vm.password && vm.email){
       $http({
         method:'POST',
-        url:'/doctor-register',
+        url:'/doctor/register',
         data: {
           'email' : vm.email,
           'first' : vm.firstName,
           'last' : vm.lastName,
-          'pass': vm.password
+          'address' : vm.address,
+          'phone' : vm.phoneNumber,
+          'password': vm.password,
+          'code' : vm.code
         }
       }).success(function(data){
         console.log(data);
