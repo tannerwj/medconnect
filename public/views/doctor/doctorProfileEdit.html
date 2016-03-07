@@ -1,15 +1,6 @@
-<h1>Doctor Register</h1>
-<form class="form-horizontal" name ="doctorForm" ng-controller="DRController as doctor" ng-submit="doctor.register()" novalidate>
-  <div class="form-group" ng-class="{ 'has-error': doctorForm.username.$touched && doctorForm.username.$invalid }">
-    <label for="username" class="col-sm-4 control-label">Username:</label>
-    <div class="col-sm-4">
-      <input type="username" name="email" class="form-control" id="email" ng-model="doctor.email" ng-maxlength="20" required>
-        <div class="help-block" ng-messages="doctorForm.username.$error" ng-show="doctorForm.username.$touched">
-          <div ng-messages-include="my-custom-messages"></div>
-      </div>
-    </div>
-  </div>
-  <div class="form-group" ng-class="{ 'has-error': doctorForm.firstName.$touched && doctorForm.firstName.$invalid }">
+<h1>Doctor Profile Edit</h1>
+<form class="form-horizontal" name ="doctorEdit" ng-controller="DRController as doctor" ng-submit="doctor.register()" novalidate>
+    <div class="form-group" ng-class="{ 'has-error': doctorForm.firstName.$touched && doctorForm.firstName.$invalid }">
     <label for="firstName" class="col-sm-4 control-label">First Name:</label>
     <div class="col-sm-4">
     	<input placeholder="shirisha" type="text" name="firstName" class="form-control" id="firstName" ng-model="doctor.firstName" ng-maxlength="80" required>
@@ -27,12 +18,6 @@
       </div>
     </div>
   </div>
-  <div class="form-group">
-    <label for="address" class="col-sm-4 control-label">Address:</label>
-    <div class="col-sm-4">
-      <input type="text" class="form-control" id="address" ng-model="doctor.address">
-    </div>
-  </div>
   <div class="form-group" ng-class="{ 'has-error': doctorForm.email.$touched && doctorForm.email.$invalid }">
     <label for="email" class="col-sm-4 control-label">Email:</label>
     <div class="col-sm-4">
@@ -43,35 +28,46 @@
     </div>
   </div>
   <div class="form-group">
+    <label for="address" class="col-sm-4 control-label">Address:</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" id="address" ng-model="doctor.address">
+    </div>
+  </div>
+  <div class="form-group">
     <label for="phoneNumber" class="col-sm-4 control-label">Phone:</label>
     <div class="col-sm-4">
       <input type="text" class="form-control" id="phoneNumber" ng-model="doctor.phoneNumber" ui-mask="{{'999-999-9999'}}">
     </div>
   </div>
-  <div class="form-group" ng-class="{ 'has-error': doctorForm.password.$touched && doctorForm.password.$invalid }">
-    <label for="password" class="col-sm-4 control-label">Password:</label>
+  <label for="Password" class="col-sm-4 control-label">Password:</label>
     <div class="col-sm-4">
-      <input placeholder="********" type="password" name="password" class="form-control" id="password" ng-model="doctor.password" ng-maxlength="120" required>
+      <input placeholder="********" type="password" name="Password" class="form-control" id="Password" ng-model="doctor.Password" ng-maxlength="120">
+        <div class="help-block" ng-messages="doctorForm.password.$error" ng-show="doctorForm.password.$touched">
+          <div ng-messages-include="my-custom-messages"></div>
+      </div>
+    </div>
+  <div class="form-group" ng-class="{ 'has-error': doctorForm.password.$touched && doctorForm.password.$invalid }">
+    <label for="newPassword" class="col-sm-4 control-label">New Password:</label>
+    <div class="col-sm-4">
+      <input placeholder="********" type="password" name="newPassword" class="form-control" id="newPassword" ng-model="doctor.newPassword" ng-maxlength="120" required>
         <div class="help-block" ng-messages="doctorForm.password.$error" ng-show="doctorForm.password.$touched">
           <div ng-messages-include="my-custom-messages"></div>
       </div>
     </div>
   </div>
   <div class="form-group">
-    <label for="passwordConfirm" class="col-sm-4 control-label">Confirm Password:</label>
+    <label for="newPasswordConfirm" class="col-sm-4 control-label">Confirm New Password:</label>
     <div class="col-sm-4">
-      <input type="password" class="form-control" id="passwordConfirm" ng-model="doctor.passwordConfirm">
+      <input placeholder="********" type="password" class="form-control" id="newPasswordConfirm" ng-model="doctor.newPasswordConfirm">
     </div>
   </div>
-    <div class="form-group">
-    <label for="verify" class="col-sm-4 control-label">Doctor Verification Number:</label>
-    <div class="col-sm-4">
-      <input type="text" class="form-control" id="verify" ng-model="doctor.verify">
-    </div>
+  <div>
+    <label for="servicWork" class="col-sm-4 control-label">Service Work/Accomplishments</label>
+    <textarea ng-model="txtcomment" placeholder="Your Comment" style='width:550px'></textarea>
   </div>
   <div class="form-group">
     <div class="col-sm-offset-4 col-sm-2">
-      <button type="submit" class="btn btn-primary">Register</button>
+      <button type="submit" class="btn btn-primary">Save Edits</button>
     </div>
     <div ng-if="!doctor.error" class="col-sm-2">
       <button class="btn btn-danger">Missing Field/s!</button>
