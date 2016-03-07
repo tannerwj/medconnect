@@ -1,10 +1,10 @@
 <h1>Doctor Register</h1>
 <form class="form-horizontal" name ="doctorForm" ng-controller="DRController as doctor" ng-submit="doctor.register()" novalidate>
-  <div class="form-group" ng-class="{ 'has-error': doctorForm.email.$touched && doctorForm.email.$invalid }">
-    <label for="email" class="col-sm-4 control-label">Email:</label>
+  <div class="form-group" ng-class="{ 'has-error': doctorForm.username.$touched && doctorForm.username.$invalid }">
+    <label for="username" class="col-sm-4 control-label">Username:</label>
     <div class="col-sm-4">
-      <input placeholder="example.google.com" type="email" name="email" class="form-control" id="email" ng-model="doctor.email" ng-maxlength="80" required>
-        <div class="help-block" ng-messages="doctorForm.email.$error" ng-show="doctorForm.email.$touched">
+      <input type="username" name="email" class="form-control" id="email" ng-model="doctor.email" ng-maxlength="20" required>
+        <div class="help-block" ng-messages="doctorForm.username.$error" ng-show="doctorForm.username.$touched">
           <div ng-messages-include="my-custom-messages"></div>
       </div>
     </div>
@@ -31,6 +31,15 @@
     <label for="address" class="col-sm-4 control-label">Address:</label>
     <div class="col-sm-4">
       <input type="text" class="form-control" id="address" ng-model="doctor.address">
+    </div>
+  </div>
+  <div class="form-group" ng-class="{ 'has-error': doctorForm.email.$touched && doctorForm.email.$invalid }">
+    <label for="email" class="col-sm-4 control-label">Email:</label>
+    <div class="col-sm-4">
+      <input placeholder="example.google.com" type="email" name="email" class="form-control" id="email" ng-model="doctor.email" ng-maxlength="80" required>
+        <div class="help-block" ng-messages="doctorForm.email.$error" ng-show="doctorForm.email.$touched">
+          <div ng-messages-include="my-custom-messages"></div>
+      </div>
     </div>
   </div>
   <div class="form-group">
