@@ -115,8 +115,17 @@ medconnect.controller('PRController', ['$http', function($http){
   var vm = this;
   vm.error = true;
 
+  var receiveInputs = function(){
+    if(vm.email && vm.firstName && vm.lastName && vm.gender && vm.address && vm.phoneNumber && vm.password && vm.passwordConfirm){
+      if(vm.password === vm.passwordConfirm){
+        return true;
+      }
+    }
+    return false;
+  }
+
   vm.register = function(){
-    if(vm.firstName && vm.lastName && vm.password && vm.email){
+    if(receiveInputs()){
       $http({
         method:'POST',
         url:'/patient/register',
@@ -126,7 +135,7 @@ medconnect.controller('PRController', ['$http', function($http){
           'last' : vm.lastName,
           'gender' : vm.gender,
           'address' : vm.address,
-          'phone' : vm.phone,
+          'phone' : vm.phoneNumber,
           'password': vm.password
         }
       }).success(function(data){
@@ -145,8 +154,17 @@ medconnect.controller('DRController', ['$http', function($http){
   var vm = this;
   vm.error = true;
 
+  var receiveInputs = function(){
+    if(vm.email && vm.firstName && vm.lastName && vm.address && vm.phoneNumber && vm.password && vm.passwordConfirm && vm.code){
+      if(vm.password === vm.passwordConfirm){
+        return true;
+      }
+    }
+    return false;
+  }
+
   vm.register = function(){
-    if(vm.firstName && vm.lastName && vm.password && vm.email){
+    if(receiveInputs()){
       $http({
         method:'POST',
         url:'/doctor/register',
