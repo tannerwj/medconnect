@@ -1,6 +1,15 @@
 <h1>Doctor Profile Edit</h1>
 <form class="form-horizontal" name ="doctorEdit" ng-controller="DRController as doctor" ng-submit="doctor.register()" novalidate>
-    <div class="form-group" ng-class="{ 'has-error': doctorForm.firstName.$touched && doctorForm.firstName.$invalid }">
+  <div class="form-group" ng-class="{ 'has-error': doctorForm.email.$touched && doctorForm.email.$invalid }">
+    <label for="email" class="col-sm-4 control-label">Email:</label>
+    <div class="col-sm-4">
+      <input placeholder="example.google.com" type="email" name="email" class="form-control" id="email" ng-model="doctor.email" ng-maxlength="80" ng-readonly="true">
+        <div class="help-block" ng-messages="doctorForm.email.$error" ng-show="doctorForm.email.$touched">
+          <div ng-messages-include="my-custom-messages"></div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group" ng-class="{ 'has-error': doctorForm.firstName.$touched && doctorForm.firstName.$invalid }">
     <label for="firstName" class="col-sm-4 control-label">First Name:</label>
     <div class="col-sm-4">
     	<input placeholder="shirisha" type="text" name="firstName" class="form-control" id="firstName" ng-model="doctor.firstName" ng-maxlength="80" required>
@@ -14,15 +23,6 @@
     <div class="col-sm-4">
     	<input placeholder="Gurung" type="text" name="lastName" class="form-control" id="lastName" ng-model="doctor.lastName" ng-maxlength="80" required>
         <div class="help-block" ng-messages="doctorForm.lastName.$error" ng-show="doctorForm.lastName.$touched">
-          <div ng-messages-include="my-custom-messages"></div>
-      </div>
-    </div>
-  </div>
-  <div class="form-group" ng-class="{ 'has-error': doctorForm.email.$touched && doctorForm.email.$invalid }">
-    <label for="email" class="col-sm-4 control-label">Email:</label>
-    <div class="col-sm-4">
-      <input placeholder="example.google.com" type="email" name="email" class="form-control" id="email" ng-model="doctor.email" ng-maxlength="80" required>
-        <div class="help-block" ng-messages="doctorForm.email.$error" ng-show="doctorForm.email.$touched">
           <div ng-messages-include="my-custom-messages"></div>
       </div>
     </div>
@@ -61,8 +61,17 @@
       <input placeholder="********" type="password" class="form-control" id="newPasswordConfirm" ng-model="doctor.newPasswordConfirm">
     </div>
   </div>
+  <div class="form-group" ng-class="{ 'has-error': doctorForm.verifyNum.$touched && doctorForm.verifyNum.$invalid }">
+    <label for="verifyNum" class="col-sm-4 control-label">Doctor Verification Number:</label>
+    <div class="col-sm-4">
+      <input placeholder="1234567890" type="verifyNum" name="verifyNum" class="form-control" id="verifyNum" ng-model="doctor.verifyNum" ng-maxlength="10" ng-readonly="true">
+        <div class="help-block" ng-messages="doctorForm.verifyNum.$error" ng-show="doctorForm.verifyNum.$touched">
+          <div ng-messages-include="my-custom-messages"></div>
+      </div>
+    </div>
+  </div>
   <div>
-    <label for="servicWork" class="col-sm-4 control-label">Service Work/Accomplishments</label>
+    <label for="serviceWork" class="col-sm-4 control-label">Service Work/Accomplishments</label>
     <textarea ng-model="txtcomment" placeholder="Your Comment" style='width:550px'></textarea>
   </div>
   <div class="form-group">
