@@ -69,6 +69,12 @@ medconnect.config(['$routeProvider', '$locationProvider',
 					isPatient: isPatient
 				}
       })
+      .when('/patient/edit', { //?
+        templateUrl: 'views/patient/profile.html',
+				resolve:{
+					isPatient: isPatient
+				}
+      })
       .when('/admin', {
         templateUrl: 'views/admin/index.html',
 				resolve:{
@@ -110,13 +116,22 @@ medconnect.controller('Login', ['$http', '$location', function($http, $location)
 
 }}]);
 
-medconnect.controller('PRController', ['$http', function($http){
+medconnect.controller('PRController', ['$http', '$location', function($http, $location){
 
   var vm = this;
   vm.error = true;
 
+  var receiveInputs = function(){
+    if(vm.email && vm.firstName && vm.lastName && vm.gender && vm.address && vm.phoneNumber && vm.password && vm.passwordConfirm){
+      if(vm.password === vm.passwordConfirm){
+        return true;
+      }
+    }
+    return false;
+  }
+
   vm.register = function(){
-    if(vm.firstName && vm.lastName && vm.password && vm.email){
+    if(receiveInputs()){
       $http({
         method:'POST',
         url:'/patient/register',
@@ -126,7 +141,7 @@ medconnect.controller('PRController', ['$http', function($http){
           'last' : vm.lastName,
           'gender' : vm.gender,
           'address' : vm.address,
-          'phone' : vm.phone,
+          'phone' : vm.phoneNumber,
           'password': vm.password
         }
       }).success(function(data){
@@ -134,33 +149,57 @@ medconnect.controller('PRController', ['$http', function($http){
       }).error(function(err){
         console.log('Server error: ' + err);
       })
+      $location.url('/')
   }else{
     vm.error = false;
   }
 
 }}]);
 
-medconnect.controller('DRController', ['$http', function($http){
+medconnect.controller('Navigation', ['$location', function($location){
+
+  var vm = this;
+  vm.goTo = function(path){
+    $location.url($location.path() + path);
+    //$location.path('patient' + path);
+  }
+
+}]);
+
+medconnect.controller('DRController', ['$http', '$location', function($http, $location){
 
   var vm = this;
   vm.error = true;
 
+  var receiveInputs = function(){
+    if(vm.email && vm.firstName && vm.lastName && vm.address && vm.phoneNumber && vm.password && vm.passwordConfirm && vm.code){
+      if(vm.password === vm.passwordConfirm){
+        return true;
+      }
+    }
+    return false;
+  }
+
   vm.register = function(){
-    if(vm.firstName && vm.lastName && vm.password && vm.email){
+    if(receiveInputs()){
       $http({
         method:'POST',
-        url:'/doctor-register',
+        url:'/doctor/register',
         data: {
           'email' : vm.email,
           'first' : vm.firstName,
           'last' : vm.lastName,
-          'pass': vm.password
+          'address' : vm.address,
+          'phone' : vm.phoneNumber,
+          'password': vm.password,
+          'code' : vm.code
         }
       }).success(function(data){
         console.log(data);
       }).error(function(err){
         console.log('Server error: ' + err);
       })
+      $location.url('/')
   }else{
     vm.error = false;
   }

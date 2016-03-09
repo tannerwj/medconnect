@@ -19,8 +19,8 @@ router.post('/doctor/register', function (req, res){
 	var user = {
 		type 	: USERTYPE,
 		email : req.body.email,
-		first: req.body.firstName,
-		last: req.body.lastName,
+		first: req.body.first,
+		last: req.body.last,
 		address: req.body.address,
 		phone: req.body.phone,
 		pass: req.body.password,
