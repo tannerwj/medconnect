@@ -69,6 +69,12 @@ medconnect.config(['$routeProvider', '$locationProvider',
 					isPatient: isPatient
 				}
       })
+      .when('/patient/edit', { //?
+        templateUrl: 'views/patient/profile.html',
+				resolve:{
+					isPatient: isPatient
+				}
+      })
       .when('/admin', {
         templateUrl: 'views/admin/index.html',
 				resolve:{
@@ -110,7 +116,7 @@ medconnect.controller('Login', ['$http', '$location', function($http, $location)
 
 }}]);
 
-medconnect.controller('PRController', ['$http', function($http){
+medconnect.controller('PRController', ['$http', '$location', function($http, $location){
 
   var vm = this;
   vm.error = true;
@@ -143,13 +149,24 @@ medconnect.controller('PRController', ['$http', function($http){
       }).error(function(err){
         console.log('Server error: ' + err);
       })
+      $location.url('/')
   }else{
     vm.error = false;
   }
 
 }}]);
 
-medconnect.controller('DRController', ['$http', function($http){
+medconnect.controller('Navigation', ['$location', function($location){
+
+  var vm = this;
+  vm.goTo = function(path){
+    $location.url($location.path() + path);
+    //$location.path('patient' + path);
+  }
+
+}]);
+
+medconnect.controller('DRController', ['$http', '$location', function($http, $location){
 
   var vm = this;
   vm.error = true;
@@ -182,6 +199,7 @@ medconnect.controller('DRController', ['$http', function($http){
       }).error(function(err){
         console.log('Server error: ' + err);
       })
+      $location.url('/')
   }else{
     vm.error = false;
   }
