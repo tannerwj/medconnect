@@ -45,3 +45,32 @@ h1 {
   margin-top:0;
   margin-bottom:0;
 }
+
+/* admin */
+.admin{
+  margin: 0 auto;
+  max-width: 360px;
+  min-width: 360px;
+}
+.adminList .list{
+  min-height: 45px;
+  padding: 10px;
+}
+.adminList .adminName{
+  font-size: 1.3em;
+  word-wrap: break-word;
+  max-width: 200px;
+}
+.adminList .btn-group{
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+.adminList .dropdown-menu{
+  margin-left: -34px;
+  min-width: 110px;
+}
+.adminManage{
+  text-align: center;
+  margin-bottom: 30px;
+}

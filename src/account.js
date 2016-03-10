@@ -25,7 +25,7 @@ var deleteUser = function (id){
   return userExists(id).then( function (exists){
     if(exists){
       return db.query('DELETE FROM Users WHERE userID =?;', [id]).then( function (result){
-        return result[0].changedRows === '1'
+        return result[0].affectedRows === 1
       })
     }
   })
