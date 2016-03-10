@@ -1,0 +1,59 @@
+<div class="admin" ng-init=init('allergy')>
+  <h1>Manage Allergies</h1>
+  <form class="form-inline adminManage" ng-submit="add()">
+    <div class="form-group">
+      <div class="input-group">
+        <input type="text" class="form-control" ng-model="name" placeholder="Allergy" required>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Add Allergy</button>
+  </form>
+  <div class="alert alert-success" role="alert" ng-show='success'>
+		<button type='button' class='close' aria-label='Close' ng-click='success = false'>
+			<span aria-hidden='true'>&times;</span>
+		</button>
+    {{success}}
+  </div>
+  <div class="alert alert-info" role="alert" ng-show='failure'>
+		<button type='button' class='close' aria-label='Close' ng-click='failure = false'>
+			<span aria-hidden='true'>&times;</span>
+		</button>
+    {{failure}}
+  </div>
+	<div class="login-or">
+		<hr class="hr-or">
+		<span class="span-or">Active</span>
+	</div>
+  <div class="list-group adminList" ng-show='actives'>
+    <li class="list-group-item list" ng-repeat='d in actives'>
+      <div class='adminName'>{{d.name}}</div>
+      <div class="btn-group" uib-dropdown>
+        <button type="button" class="btn btn-default dropdown-toggle" uib-dropdown-toggle>
+          Options <span class="caret"></span>
+        </button>
+        <ul class='dropdown-menu'>
+          <li ng-click='edit(d)'><a href="#"><i class="fa fa-pencil"></i> edit</a></li>
+          <li ng-click='deactivate(d)'><a href="#"><i class="fa fa-minus"></i> deactivate</a></li>
+        </ul>
+      </div>
+    </li>
+  </div>
+	<div class="login-or">
+		<hr class="hr-or">
+		<span class="span-or">Inactive</span>
+	</div>
+  <div class="list-group adminList" ng-show='inactives'>
+    <li class="list-group-item list" ng-repeat='d in inactives'>
+      <div class='adminName'>{{d.name}}</div>
+      <div class="btn-group" uib-dropdown>
+        <button type="button" class="btn btn-default dropdown-toggle" uib-dropdown-toggle>
+          Options <span class="caret"></span>
+        </button>
+        <ul class='dropdown-menu'>
+          <li ng-click='activate(d)'><a href="#"><i class="fa fa-plus"></i> activate</a></li>
+          <li ng-click='delete(d)'><a href="#"><i class="fa fa-trash"></i> delete</a></li>
+        </ul>
+      </div>
+    </li>
+  </div>
+</div>

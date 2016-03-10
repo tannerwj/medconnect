@@ -39,7 +39,6 @@ router.get('/logout', function (req, res){
 })
 
 router.get('*', function (req, res) {
-	//catch all other requests
 	res.sendFile('index.html', { root: path.join(__dirname, '../public/views') })
 })
 

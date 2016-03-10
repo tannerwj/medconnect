@@ -32,7 +32,7 @@ var deletePatient = function (id){
         db.query('DELETE FROM PatientProfile WHERE userID=?;', [id]),
         acc.deleteUser(id)
       ]).then(function (results){
-        return results[0].changedRows && results[1]
+        return results[0].affectedRows && results[1]
       })
     }
   })
