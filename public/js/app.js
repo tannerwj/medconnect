@@ -63,6 +63,12 @@ medconnect.config(['$routeProvider', '$locationProvider',
 					isDoctor: isDoctor
 				}
       })
+      .when('/doctor/edit', {
+        templateUrl: '/views/doctor/profile.html',
+				resolve:{
+					isDoctor: isDoctor
+				}
+      })
       .when('/patient', {
         templateUrl: '/views/patient/index.html',
 				resolve:{
@@ -187,15 +193,6 @@ medconnect.controller('PRController', ['$http', '$location', function($http, $lo
 
 }}]);
 
-medconnect.controller('Navigation', ['$location', function($location){
-
-  var vm = this;
-  vm.goTo = function(path){
-    $location.url($location.path() + path);
-    //$location.path('patient' + path);
-  }
-
-}]);
 
 medconnect.controller('DRController', ['$http', '$location', function($http, $location){
 
