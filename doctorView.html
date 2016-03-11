@@ -1,0 +1,50 @@
+<html ng-app>
+<head>
+<title> Doctor View</title>
+</head>
+
+<h1>Doctor View</h1>
+<form class="form-horizontal" name="doctorView" ng-controller="DRviewController" ng-submit="patient.register()" novalidate>
+<body>  
+  <div class="form-group">
+    <p> Doctor's Name: <pre ng-model="result"> {{Display results}} </pre></p>
+  </div>
+</div>
+  
+
+<div>  
+  <div class="form-group">
+	<p> Location: <pre ng-model="result"> {{Display results}} </pre> </p>
+  </div>
+</div>
+ 
+<div>   
+  <div class="form-group">
+	<p> Specialty: <pre ng-model="result"> {{Display results}} </pre> </p>
+  </div>
+</div>
+  
+<div>  
+  <div class="form-group">
+	<p> Experience: <pre ng-model="result"> {{Display results}} </pre> </p>
+  </div>
+ </div>
+
+ <div>  
+  <div class="form-group">
+	<p> Volunter Service Work: <pre ng-model="result"> {{Display results}} </pre> </p>
+  </div>
+</div>
+  
+<div class="form-group">
+    <div class="col-sm-offset-4 col-sm-2">
+		<a href="doctorRequestAppointment.html">
+		  <input type="button" value="Request Appointment" />
+		</a>
+	</div>
+	</div>
+</form>
+
+</body>
+
+</html>

@@ -1,0 +1,28 @@
+<html ng-app>
+<head>
+<title> Doctor Search</title>
+</head>
+
+<h1>Doctor Search</h1>
+<form class="form-horizontal" name="userSearch" ng-controller="searchController" ng-submit="patient.register()" novalidate>
+  <div class="form-group">
+    <p> Symptoms: <input type="search" ng-model="search" placeholder="fever, shortness of breath, fatigue, allergies, etc...">      <button type="submit" class="btn btn-primary">Search</button> </p>
+  </div>
+ 
+<body>  
+  <div class="form-group">
+	<p> Illness: <input type="search" ng-model="search" placeholder="arthritis, asthma, chickenpox, cold, etc...">  <button type="submit" class="btn btn-primary">Search</button> </p>
+  </div>
+  
+  <div class="form-group">
+	<p> Doctor's Name: <input type="search" ng-model="search" placeholder="Neupane, Hansen, Johnson, Shim, Paulsen, etc...">  <button type="submit" class="btn btn-primary">Search</button>
+ </p>
+  </div>
+  
+  <div class="col-sm-offset-4 col-sm-2">
+  </div>
+</form>
+
+</body>
+
+</html>
