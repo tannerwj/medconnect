@@ -1,0 +1,60 @@
+<h1>Doctor Profile</h1>
+<form class="form-horizontal" name ="doctorEdit" ng-controller="DRController as doctor" ng-submit="doctor.register()" novalidate>
+  <div class="form-group" ng-class="{ 'has-error': doctorForm.email.$touched && doctorForm.email.$invalid }">
+    <label for="email" class="col-sm-4 control-label">Email:</label>
+    <div class="col-sm-4">
+      <input placeholder="example.google.com" type="email" name="email" class="form-control" id="email" ng-model="doctor.email" ng-maxlength="80" readonly="true">
+        <div class="help-block" ng-messages="doctorForm.email.$error" ng-show="doctorForm.email.$touched">
+          <div ng-messages-include="my-custom-messages"></div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group" ng-class="{ 'has-error': doctorForm.firstName.$touched && doctorForm.firstName.$invalid }">
+    <label for="firstName" class="col-sm-4 control-label">First Name:</label>
+    <div class="col-sm-4">
+    	<input readonly="true" placeholder="shirisha" type="text" name="firstName" class="form-control" id="firstName" ng-model="doctor.firstName" ng-maxlength="80" required>
+        <div class="help-block" ng-messages="doctorForm.firstName.$error" ng-show="doctorForm.firstName.$touched">
+          <div ng-messages-include="my-custom-messages"></div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group" ng-class="{ 'has-error': doctorForm.lastName.$touched && doctorForm.lastName.$invalid }">
+    <label for="lastName" class="col-sm-4 control-label">Last Name:</label>
+    <div class="col-sm-4">
+    	<input readonly="true" placeholder="Gurung" type="text" name="lastName" class="form-control" id="lastName" ng-model="doctor.lastName" ng-maxlength="80" required>
+        <div class="help-block" ng-messages="doctorForm.lastName.$error" ng-show="doctorForm.lastName.$touched">
+          <div ng-messages-include="my-custom-messages"></div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="address" class="col-sm-4 control-label">Address:</label>
+    <div class="col-sm-4">
+      <input readonly="true" type="text" class="form-control" id="address" ng-model="doctor.address">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="phoneNumber" class="col-sm-4 control-label">Phone:</label>
+    <div class="col-sm-4">
+      <input readonly="true" type="text" class="form-control" id="phoneNumber" ng-model="doctor.phoneNumber" ui-mask="{{'999-999-9999'}}">
+    </div>
+  </div>
+  <div class="form-group" ng-class="{ 'has-error': doctorForm.verifyNum.$touched && doctorForm.verifyNum.$invalid }">
+    <label for="verifyNum" class="col-sm-4 control-label">Doctor Verification Number:</label>
+    <div class="col-sm-4">
+      <input placeholder="1234567890" type="verifyNum" name="verifyNum" class="form-control" id="verifyNum" ng-model="doctor.verifyNum" ng-maxlength="10" readonly="true">
+        <div class="help-block" ng-messages="doctorForm.verifyNum.$error" ng-show="doctorForm.verifyNum.$touched">
+          <div ng-messages-include="my-custom-messages"></div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <label for="serviceWork" class="col-sm-4 control-label">Service Work/Accomplishments</label>
+    <textarea readonly="true" ng-model="txtcomment" placeholder="Your Comment" style='width:550px'></textarea>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-4 col-sm-2">
+      <button type="submit" class="btn btn-primary">Edit Information</button>
+    </div>
+  </div>
+</form>
