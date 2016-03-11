@@ -1,4 +1,4 @@
-var medconnect = angular.module('medconnect', ['ngRoute', 'ngMessages']);
+var medconnect = angular.module('medconnect', ['ngRoute', 'ngMessages', 'ui.bootstrap']);
 
 medconnect.config(['$routeProvider', '$locationProvider',
   function($routeProvider, $locationProvider) {
@@ -46,35 +46,78 @@ medconnect.config(['$routeProvider', '$locationProvider',
 
     $routeProvider
       .when('/', {
-        templateUrl: 'views/login.html',
+        templateUrl: '/views/login.html',
         controller: 'Login'
       })
       .when('/register-patient', {
-        templateUrl: 'views/patient/register.html',
+        templateUrl: '/views/patient/register.html',
         controller: 'PRController'
       })
       .when('/register-doctor', {
-        templateUrl: 'views/doctor/register.html',
+        templateUrl: '/views/doctor/register.html',
         controller: 'DRController'
       })
       .when('/doctor', {
-        templateUrl: 'views/doctor/index.html',
+        templateUrl: '/views/doctor/index.html',
+				resolve:{
+					isDoctor: isDoctor
+				}
+      })
+      .when('/doctor/edit', {
+        templateUrl: '/views/doctor/profile.html',
 				resolve:{
 					isDoctor: isDoctor
 				}
       })
       .when('/patient', {
-        templateUrl: 'views/patient/index.html',
+        templateUrl: '/views/patient/index.html',
 				resolve:{
 					isPatient: isPatient
 				}
       })
-      .when('/admin', {
-        templateUrl: 'views/admin/index.html',
+      .when('/patient/edit', {
+        templateUrl: '/views/patient/profile.html',
 				resolve:{
-					isAdmin: isAdmin
+					isPatient: isPatient
 				}
       })
+
+    $routeProvider
+      .when('/admin', {
+        templateUrl: '/views/admin/index.html',
+				resolve:{ isAdmin: isAdmin }
+      })
+      .when('/admin/verify', {
+        templateUrl: '/views/admin/verify.html',
+				resolve:{ isAdmin: isAdmin },
+        controller: 'VerifyDoctor'
+      })
+      .when('/admin/medications', {
+        templateUrl: '/views/admin/medications.html',
+				resolve:{ isAdmin: isAdmin },
+        controller: 'AdminManage'
+      })
+      .when('/admin/specialties', {
+        templateUrl: '/views/admin/specialties.html',
+				resolve:{ isAdmin: isAdmin },
+        controller: 'AdminManage'
+      })
+      .when('/admin/allergies', {
+        templateUrl: '/views/admin/allergies.html',
+				resolve:{ isAdmin: isAdmin },
+        controller: 'AdminManage'
+      })
+      .when('/admin/datatypes', {
+        templateUrl: '/views/admin/datatypes.html',
+				resolve:{ isAdmin: isAdmin },
+        controller: 'AdminManage'
+      })
+      .when('/admin/create', {
+        templateUrl: '/views/admin/create.html',
+				resolve:{ isAdmin: isAdmin },
+        controller: 'CreateAdmin'
+      })
+
   }]);
 
 medconnect.controller('Login', ['$http', '$location', function($http, $location){
@@ -110,56 +153,167 @@ medconnect.controller('Login', ['$http', '$location', function($http, $location)
 
 }}]);
 
-medconnect.controller('PRController', ['$http', function($http){
+medconnect.controller('PRController', ['$http', '$location', function($http, $location){
 
   var vm = this;
   vm.error = true;
 
+  var receiveInputs = function(){
+    if(vm.email && vm.firstName && vm.lastName && vm.gender && vm.address && vm.phoneNumber && vm.password && vm.passwordConfirm){
+      if(vm.password === vm.passwordConfirm){
+        return true;
+      }
+    }
+    return false;
+  }
+
   vm.register = function(){
-    if(vm.firstName && vm.lastName && vm.password && vm.email){
+    if(receiveInputs()){
       $http({
         method:'POST',
-        url:'/patient-register',
+        url:'/patient/register',
         data: {
           'email' : vm.email,
           'first' : vm.firstName,
           'last' : vm.lastName,
-          'pass': vm.password
+          'gender' : vm.gender,
+          'address' : vm.address,
+          'phone' : vm.phoneNumber,
+          'password': vm.password
         }
       }).success(function(data){
         console.log(data);
       }).error(function(err){
         console.log('Server error: ' + err);
       })
+      $location.url('/')
   }else{
     vm.error = false;
   }
 
 }}]);
 
-medconnect.controller('DRController', ['$http', function($http){
+
+medconnect.controller('DRController', ['$http', '$location', function($http, $location){
 
   var vm = this;
   vm.error = true;
 
+  var receiveInputs = function(){
+    if(vm.email && vm.firstName && vm.lastName && vm.address && vm.phoneNumber && vm.password && vm.passwordConfirm && vm.code){
+      if(vm.password === vm.passwordConfirm){
+        return true;
+      }
+    }
+    return false;
+  }
+
   vm.register = function(){
-    if(vm.firstName && vm.lastName && vm.password && vm.email){
+    if(receiveInputs()){
       $http({
         method:'POST',
-        url:'/doctor-register',
+        url:'/doctor/register',
         data: {
           'email' : vm.email,
           'first' : vm.firstName,
           'last' : vm.lastName,
-          'pass': vm.password
+          'address' : vm.address,
+          'phone' : vm.phoneNumber,
+          'password': vm.password,
+          'code' : vm.code
         }
       }).success(function(data){
         console.log(data);
       }).error(function(err){
         console.log('Server error: ' + err);
       })
+      $location.url('/')
   }else{
     vm.error = false;
   }
 
 }}]);
+
+medconnect.controller('VerifyDoctor', ['$http', function($http){
+
+}])
+
+medconnect.controller('AdminManage', ['$http', '$scope', function($http, $scope){
+  $scope.success = false
+  $scope.failure = false
+  $scope.actives = []
+  $scope.inactives = []
+
+  var type
+
+  $scope.init = function (t){
+    type = t
+    getData()
+  }
+
+  $scope.add = function (){
+    $http.post('/admin/add', {
+			type: type,
+			data: $scope.name
+		}).success(function (data){
+      $scope.success = $scope.name + ' successfully added'
+      $scope.failure = false
+      $scope.name = ''
+      getData()
+		}).error(function (){
+      $scope.failure = $scope.name + ' already exists'
+      $scope.success = false
+      $scope.name = ''
+		})
+  }
+
+  $scope.deactivate = function (d){
+    $http.post('/admin/deactivate', {
+      type: type,
+      id: d._id
+    }).success(function (){
+      $scope.success = d.name + ' successfully deactivated'
+      $scope.failure = false
+      getData()
+		})
+  }
+
+  $scope.edit = function (d){
+    alert(d.name)
+  }
+
+  $scope.activate = function (d){
+    $http.post('/admin/activate', {
+      type: type,
+      id: d._id
+    }).success(function (){
+      $scope.success = d.name + ' successfully activated'
+      $scope.failure = false
+      getData()
+		})
+  }
+
+  $scope.delete = function (d){
+    $http.post('/admin/delete', {
+      type: type,
+      id: d._id
+    }).success(function (){
+      $scope.success = d.name + ' successfully deleted'
+      $scope.failure = false
+      getData()
+		})
+  }
+
+  var getData = function (){
+    $http.post('/admin/view', {
+      type: type
+    }).success(function (data){
+      $scope.actives = data.actives
+      $scope.inactives = data.inactives
+		})
+  }
+}])
+
+medconnect.controller('CreateAdmin', ['$http', function($http){
+
+}])

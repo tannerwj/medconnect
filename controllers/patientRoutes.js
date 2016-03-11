@@ -7,12 +7,20 @@ const pat = require('../src/patient')
 
 const USERTYPE = 1
 
+var auth = function (req, res, next){
+	if (req.isAuthenticated() && req.user.userType === USERTYPE){
+		return next()
+	}else{
+		res.sendStatus(401)
+	}
+}
+
 router.post('/patient/register', function (req, res){
 	var user = {
 		type 	: USERTYPE,
 		email : req.body.email,
-		first: req.body.firstName,
-		last: req.body.lastName,
+		first: req.body.first,
+		last: req.body.last,
 		gender: req.body.gender,
 		address: req.body.address,
 		phone: req.body.phone,
@@ -37,13 +45,5 @@ router.post('/patient/edit', auth, function (req, res){
 		res.sendStatus(result ? 200 : 400)
 	})
 })
-
-var auth = function (req, res, next){
-	if (req.isAuthenticated() && req.user.userType === USERTYPE){
-		return next()
-	}else{
-		res.sendStatus(401)
-	}
-}
 
 module.exports = router

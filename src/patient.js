@@ -1,6 +1,6 @@
 const Promise = require('bluebird')
 const db = require('../config/db')
-const acc = require('../src/account')
+const acc = require('./account')
 
 var register = function (user){
   return acc.register(user).then(function (result){
@@ -23,17 +23,16 @@ var edit = function (user){
 }
 
 var deletePatient = function (id){
-  return acc.userExists(id).then(function (exists){
-    if(exists){
-      return patientExists(id).then(function (exists){
-        if(exists){
-          return Promise.all([
-            db.query('DELETE FROM PatientProfile WHERE userID=?;', [id]),
-            acc.deleteUser(id)
-          ]).then(function (results){
-            return results[0].changedRows && results[1]
-          })
-        }
+  return Promise.all([
+    acc.userExists(id),
+    patientExists(id)
+  ]).then(function (exists){
+    if(exists[0] && exists[1]){
+      return Promise.all([
+        db.query('DELETE FROM PatientProfile WHERE userID=?;', [id]),
+        acc.deleteUser(id)
+      ]).then(function (results){
+        return results[0].affectedRows && results[1]
       })
     }
   })
