@@ -3,7 +3,7 @@
   <div class="form-group" ng-class="{ 'has-error': doctorForm.email.$touched && doctorForm.email.$invalid }">
     <label for="email" class="col-sm-4 control-label">Email:</label>
     <div class="col-sm-4">
-      <input placeholder="example.google.com" type="email" name="email" class="form-control" id="email" ng-model="doctor.email" ng-maxlength="80" ng-readonly="true">
+      <input placeholder="example.google.com" type="email" name="email" class="form-control" id="email" ng-model="doctor.email" ng-maxlength="80" readonly="true">
         <div class="help-block" ng-messages="doctorForm.email.$error" ng-show="doctorForm.email.$touched">
           <div ng-messages-include="my-custom-messages"></div>
       </div>
@@ -64,7 +64,7 @@
   <div class="form-group" ng-class="{ 'has-error': doctorForm.verifyNum.$touched && doctorForm.verifyNum.$invalid }">
     <label for="verifyNum" class="col-sm-4 control-label">Doctor Verification Number:</label>
     <div class="col-sm-4">
-      <input placeholder="1234567890" type="verifyNum" name="verifyNum" class="form-control" id="verifyNum" ng-model="doctor.verifyNum" ng-maxlength="10" ng-readonly="true">
+      <input placeholder="1234567890" type="verifyNum" name="verifyNum" class="form-control" id="verifyNum" ng-model="doctor.verifyNum" ng-maxlength="10" readonly="true">
         <div class="help-block" ng-messages="doctorForm.verifyNum.$error" ng-show="doctorForm.verifyNum.$touched">
           <div ng-messages-include="my-custom-messages"></div>
       </div>
