@@ -29,7 +29,7 @@ CREATE TABLE `UserType` (
 	`typeName` varchar(80) NOT NULL UNIQUE
 );
 
-INSERT INTO `UserType` (`typeID`, `typeName`) VALUES (0, 'doctor'), (1, 'patient');
+INSERT INTO `UserType` (`typeID`, `typeName`) VALUES (0, 'doctor'), (1, 'patient'), (2, 'admin');
 
 CREATE TABLE `Vitals` (
 	`userID` int(15) NOT NULL,
@@ -72,9 +72,10 @@ CREATE TABLE `AllergyPatient` (
 );
 
 CREATE TABLE `Allergies` (
-	`allergyID` int(5) NOT NULL AUTO_INCREMENT,
-	`allergyName` varchar(255) NOT NULL UNIQUE,
-	PRIMARY KEY (`allergyID`)
+	`_id` int(5) NOT NULL AUTO_INCREMENT,
+	`name` varchar(255) NOT NULL UNIQUE,
+	`active` tinyint(1) NOT NULL DEFAULT 1,
+	PRIMARY KEY (`_id`)
 );
 
 CREATE TABLE `MedicationPatient` (
@@ -90,9 +91,10 @@ CREATE TABLE `MedicationPatient` (
 );
 
 CREATE TABLE `Medications` (
-	`medicationID` int(5) NOT NULL AUTO_INCREMENT,
-	`medicationName` varchar(255) NOT NULL UNIQUE,
-	PRIMARY KEY (`medicationID`)
+	`_id` int(5) NOT NULL AUTO_INCREMENT,
+	`name` varchar(255) NOT NULL UNIQUE,
+	`active` tinyint(1) NOT NULL DEFAULT 1,
+	PRIMARY KEY (`_id`)
 );
 
 CREATE TABLE `SpecialtyDoctor` (
@@ -101,9 +103,10 @@ CREATE TABLE `SpecialtyDoctor` (
 );
 
 CREATE TABLE `Specialties` (
-	`specialtyID` int(5) NOT NULL AUTO_INCREMENT,
-	`specialtyName` varchar(80) NOT NULL UNIQUE,
-	PRIMARY KEY (`specialtyID`)
+	`_id` int(5) NOT NULL AUTO_INCREMENT,
+	`name` varchar(80) NOT NULL UNIQUE,
+	`active` tinyint(1) NOT NULL DEFAULT 1,
+	PRIMARY KEY (`_id`)
 );
 
 CREATE TABLE `ExternalData` (
@@ -118,9 +121,10 @@ CREATE TABLE `ExternalData` (
 );
 
 CREATE TABLE `DataType` (
-	`dataID` int(5) NOT NULL AUTO_INCREMENT,
-	`typeName` varchar(80) NOT NULL UNIQUE,
-	PRIMARY KEY (`dataID`)
+	`_id` int(5) NOT NULL AUTO_INCREMENT,
+	`name` varchar(80) NOT NULL UNIQUE,
+	`active` tinyint(1) NOT NULL DEFAULT 1,
+	PRIMARY KEY (`_id`)
 );
 
 ALTER TABLE `Visits` ADD CONSTRAINT `Visits_fk0` FOREIGN KEY (`patientID`) REFERENCES `Users`(`userID`);
@@ -137,11 +141,11 @@ ALTER TABLE `PatientProfile` ADD CONSTRAINT `PatientProfile_fk0` FOREIGN KEY (`u
 
 ALTER TABLE `DoctorProfile` ADD CONSTRAINT `DoctorProfile_fk0` FOREIGN KEY (`userID`) REFERENCES `Users`(`userID`);
 
-ALTER TABLE `AllergyPatient` ADD CONSTRAINT `AllergyPatient_fk0` FOREIGN KEY (`allergyID`) REFERENCES `Allergies`(`allergyID`);
+ALTER TABLE `AllergyPatient` ADD CONSTRAINT `AllergyPatient_fk0` FOREIGN KEY (`allergyID`) REFERENCES `Allergies`(`_id`);
 
 ALTER TABLE `AllergyPatient` ADD CONSTRAINT `AllergyPatient_fk1` FOREIGN KEY (`userID`) REFERENCES `Users`(`userID`);
 
-ALTER TABLE `MedicationPatient` ADD CONSTRAINT `MedicationPatient_fk0` FOREIGN KEY (`medicationID`) REFERENCES `Medications`(`medicationID`);
+ALTER TABLE `MedicationPatient` ADD CONSTRAINT `MedicationPatient_fk0` FOREIGN KEY (`medicationID`) REFERENCES `Medications`(`_id`);
 
 ALTER TABLE `MedicationPatient` ADD CONSTRAINT `MedicationPatient_fk1` FOREIGN KEY (`userID`) REFERENCES `Users`(`userID`);
 
@@ -149,7 +153,7 @@ ALTER TABLE `MedicationPatient` ADD CONSTRAINT `MedicationPatient_fk2` FOREIGN K
 
 ALTER TABLE `MedicationPatient` ADD CONSTRAINT `MedicationPatient_fk3` FOREIGN KEY (`doctorID`) REFERENCES `Users`(`userID`);
 
-ALTER TABLE `SpecialtyDoctor` ADD CONSTRAINT `SpecialtyDoctor_fk0` FOREIGN KEY (`specialtyID`) REFERENCES `Specialties`(`specialtyID`);
+ALTER TABLE `SpecialtyDoctor` ADD CONSTRAINT `SpecialtyDoctor_fk0` FOREIGN KEY (`specialtyID`) REFERENCES `Specialties`(`_id`);
 
 ALTER TABLE `SpecialtyDoctor` ADD CONSTRAINT `SpecialtyDoctor_fk1` FOREIGN KEY (`doctorID`) REFERENCES `Users`(`userID`);
 
@@ -157,4 +161,4 @@ ALTER TABLE `ExternalData` ADD CONSTRAINT `ExternalData_fk0` FOREIGN KEY (`userI
 
 ALTER TABLE `ExternalData` ADD CONSTRAINT `ExternalData_fk1` FOREIGN KEY (`visitID`) REFERENCES `Visits`(`visitID`);
 
-ALTER TABLE `ExternalData` ADD CONSTRAINT `ExternalData_fk2` FOREIGN KEY (`dataTypeID`) REFERENCES `DataType`(`dataID`);
+ALTER TABLE `ExternalData` ADD CONSTRAINT `ExternalData_fk2` FOREIGN KEY (`dataTypeID`) REFERENCES `DataType`(`_id`);
