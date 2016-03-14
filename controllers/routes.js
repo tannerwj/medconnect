@@ -33,39 +33,12 @@ router.post('/login', function (req, res, next) {
 	})(req, res, next)
 })
 
-router.post('/doctor-register', function (req, res) {
-	var user = {
-		email	: req.body.email,
-		type 	: 0,
-		pass 	: req.body.pass,
-		first 	: req.body.first,
-		last 	: req.body.last
-	}
-	acc.register(user).then(function (val){
-		val ? res.send('1') : res.send('0')
-	})
-})
-
-router.post('/patient-register', function (req, res) {
-	var user = {
-		email	: req.body.email,
-		type 	: 1,
-		pass 	: req.body.pass,
-		first 	: req.body.first,
-		last 	: req.body.last
-	}
-	acc.register(user).then(function (val){
-		val ? res.send('1') : res.send('0')
-	})
-})
-
 router.get('/logout', function (req, res){
 	if(req.user){ req.logout() }
 	res.redirect('/')
 })
 
 router.get('*', function (req, res) {
-	//catch all other requests
 	res.sendFile('index.html', { root: path.join(__dirname, '../public/views') })
 })
 

@@ -14,6 +14,7 @@ const async = require('async-q')
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const app	= express()
+const acc = require('./src/account')
 
 const port = process.env.PORT || 80
 
@@ -64,15 +65,15 @@ passport.serializeUser(function (user, done) {
 	done(null, user.id)
 })
 passport.deserializeUser(function (id, done) {
-	db.query('SELECT * FROM Users WHERE userID =? LIMIT 1;', [id]).then( function (user){
-		done(null, user[0][0])
+	acc.findUserById(id).then(function (user){
+		done(null, user)
 	})
 })
 
-app.use('/patient/*', require('./controllers/patientRoutes'))
-app.use('/doctor/*', require('./controllers/doctorRoutes'))
-app.use('/admin/*', require('./controllers/adminRoutes'))
-app.use('/', require('./controllers/routes'))
+app.all('/patient/*', require('./controllers/patientRoutes'))
+app.all('/doctor/*', require('./controllers/doctorRoutes'))
+app.all('/admin/*', require('./controllers/adminRoutes'))
+app.all('/*', require('./controllers/routes'))
 
 http.createServer(app).listen(port, function (){
 	console.log('SERVER STARTED ' + port)
