@@ -1,7 +1,7 @@
 <h1>Doctor Register</h1>
 <form class="form-horizontal" name ="doctorForm" ng-controller="DRController as doctor" ng-submit="doctor.register()" novalidate>
-  <div class="form-group" ng-class="{ 'has-error': doctorForm.email.$touched && doctorForm.email.$invalid }">
-    <label for="email" class="col-sm-4 control-label">Email:</label>
+  <div class="form-group required" ng-class="{ 'has-error': doctorForm.email.$touched && doctorForm.email.$invalid }">
+    <label for="email" class="col-sm-4 control-label">Email</label>
     <div class="col-sm-4">
       <div class="input-group">
         <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
@@ -12,8 +12,8 @@
       </div>
     </div>
   </div>
-  <div class="form-group" ng-class="{ 'has-error': doctorForm.firstName.$touched && doctorForm.firstName.$invalid }">
-    <label for="firstName" class="col-sm-4 control-label">First Name:</label>
+  <div class="form-group required" ng-class="{ 'has-error': doctorForm.firstName.$touched && doctorForm.firstName.$invalid }">
+    <label for="firstName" class="col-sm-4 control-label">First Name</label>
     <div class="col-sm-4">
       <div class="input-group">
         <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
@@ -24,8 +24,8 @@
       </div>
     </div>
   </div>
-  <div class="form-group" ng-class="{ 'has-error': doctorForm.lastName.$touched && doctorForm.lastName.$invalid }">
-    <label for="lastName" class="col-sm-4 control-label">Last Name:</label>
+  <div class="form-group required" ng-class="{ 'has-error': doctorForm.lastName.$touched && doctorForm.lastName.$invalid }">
+    <label for="lastName" class="col-sm-4 control-label">Last Name</label>
     <div class="col-sm-4">
       <div class="input-group">
         <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
@@ -36,26 +36,8 @@
       </div>
     </div>
   </div>
-  <div class="form-group">
-    <label for="address" class="col-sm-4 control-label">Address:</label>
-    <div class="col-sm-4">
-      <div class="input-group">
-        <span class="input-group-addon"><i class="fa fa-home fa-fw"></i></span>
-        <input type="text" class="form-control" id="address" ng-model="doctor.address">
-      </div>
-    </div>
-  </div>
-  <div class="form-group">
-    <label for="phoneNumber" class="col-sm-4 control-label">Phone:</label>
-    <div class="col-sm-4">
-      <div class="input-group">
-        <span class="input-group-addon"><i class="fa fa-phone fa-fw"></i></span>
-        <input type="text" class="form-control" id="phoneNumber" ng-model="doctor.phoneNumber">
-      </div>
-    </div>
-  </div>
-  <div class="form-group" ng-class="{ 'has-error': doctorForm.password.$touched && doctorForm.password.$invalid }">
-    <label for="password" class="col-sm-4 control-label">Password:</label>
+  <div class="form-group required" ng-class="{ 'has-error': doctorForm.password.$touched && doctorForm.password.$invalid }">
+    <label for="password" class="col-sm-4 control-label">Password</label>
     <div class="col-sm-4">
       <div class="input-group">
         <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
@@ -66,8 +48,8 @@
       </div>
     </div>
   </div>
-  <div class="form-group" ng-class="{ 'has-error': doctorForm.passwordConfirm.$touched && doctorForm.passwordConfirm.$invalid }">
-    <label for="passwordConfirm" class="col-sm-4 control-label">Confirm Password:</label>
+  <div class="form-group required" ng-class="{ 'has-error': doctorForm.passwordConfirm.$touched && doctorForm.passwordConfirm.$invalid }">
+    <label for="passwordConfirm" class="col-sm-4 control-label">Confirm Password</label>
     <div class="col-sm-4">
       <div class="input-group">
         <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
@@ -78,8 +60,26 @@
     </div>
     </div>
   </div>
+  <div class="form-group">
+    <label for="address" class="col-sm-4 control-label">Address</label>
+    <div class="col-sm-4">
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-home fa-fw"></i></span>
+        <input type="text" class="form-control" id="address" ng-model="doctor.address">
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="phoneNumber" class="col-sm-4 control-label">Phone</label>
+    <div class="col-sm-4">
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-phone fa-fw"></i></span>
+        <input type="text" class="form-control" id="phoneNumber" ng-model="doctor.phoneNumber">
+      </div>
+    </div>
+  </div>
     <div class="form-group">
-    <label for="code" class="col-sm-4 control-label">Doctor Verification Number:</label>
+    <label for="code" class="col-sm-4 control-label">Doctor Verification Number</label>
     <div class="col-sm-4">
       <div class="input-group">
         <span class="input-group-addon"><i class="fa fa-code fa-fw"></i></span>

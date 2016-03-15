@@ -1,7 +1,7 @@
 <h1>Patient Register</h1>
 <form class="form-horizontal" name="patientForm" ng-controller="PRController as patient" ng-submit="patient.register()" novalidate>
-  <div class="form-group" ng-class="{ 'has-error': patientForm.email.$touched && patientForm.email.$invalid }">
-    <label for="email" class="col-sm-4 control-label">Email:</label>
+  <div class="form-group required" ng-class="{ 'has-error': patientForm.email.$touched && patientForm.email.$invalid }">
+    <label for="email" class="col-sm-4 control-label">Email</label>
     <div class="col-sm-4">
       <div class="input-group">
         <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
@@ -12,8 +12,8 @@
       </div>
     </div>
   </div>
-  <div class="form-group" ng-class="{ 'has-error': patientForm.firstName.$touched && patientForm.firstName.$invalid }">
-    <label for="firstName" class="col-sm-4 control-label">First Name:</label>
+  <div class="form-group required" ng-class="{ 'has-error': patientForm.firstName.$touched && patientForm.firstName.$invalid }">
+    <label for="firstName" class="col-sm-4 control-label">First Name</label>
     <div class="col-sm-4 ">
       <div class="input-group">
         <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
@@ -24,8 +24,8 @@
       </div>
     </div>
   </div>
-  <div class="form-group" ng-class="{ 'has-error': patientForm.lastName.$touched && patientForm.lastName.$invalid }">
-    <label for="lastName" class="col-sm-4 control-label">Last Name:</label>
+  <div class="form-group required" ng-class="{ 'has-error': patientForm.lastName.$touched && patientForm.lastName.$invalid }">
+    <label for="lastName" class="col-sm-4 control-label">Last Name</label>
     <div class="col-sm-4">
       <div class="input-group">
         <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
@@ -36,37 +36,8 @@
       </div>
     </div>
   </div>
-  <div class="form-group">
-    <label class="col-sm-4 control-label">Gender:</label>
-    <div class="col-sm-4">
-      <label class="radio-inline">
-        <input type="radio" name="gender" ng-model="patient.gender" value="m"> male
-      </label>
-      <label class="radio-inline">
-        <input type="radio" name="gender" ng-model="patient.gender" value="f"> female
-      </label>
-    </div>
-  </div>
-  <div class="form-group">
-    <label for="address" class="col-sm-4 control-label">Address:</label>
-    <div class="col-sm-4">
-      <div class="input-group">
-        <span class="input-group-addon"><i class="fa fa-home fa-fw"></i></span>
-        <input type="text" class="form-control" id="address" ng-model="patient.address">
-      </div>
-    </div>
-  </div>
-  <div class="form-group">
-    <label for="phoneNumber" class="col-sm-4 control-label">Phone:</label>
-    <div class="col-sm-4">
-      <div class="input-group">
-        <span class="input-group-addon"><i class="fa fa-phone fa-fw"></i></span>
-        <input type="text" class="form-control" id="phoneNumber" ng-model="patient.phoneNumber">
-      </div>
-    </div>
-  </div>
-  <div class="form-group" ng-class="{ 'has-error': patientForm.password.$touched && patientForm.password.$invalid }">
-    <label for="password" class="col-sm-4 control-label">Password:</label>
+  <div class="form-group required" ng-class="{ 'has-error': patientForm.password.$touched && patientForm.password.$invalid }">
+    <label for="password" class="col-sm-4 control-label">Password</label>
     <div class="col-sm-4">
       <div class="input-group">
         <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
@@ -77,8 +48,8 @@
       </div>
     </div>
   </div>
-  <div class="form-group" ng-class="{ 'has-error': patientForm.passwordConfirm.$touched && patientForm.passwordConfirm.$invalid }">
-    <label for="passwordConfirm" class="col-sm-4 control-label">Confirm Password:</label>
+  <div class="form-group required" ng-class="{ 'has-error': patientForm.passwordConfirm.$touched && patientForm.passwordConfirm.$invalid }">
+    <label for="passwordConfirm" class="col-sm-4 control-label">Confirm Password</label>
     <div class="col-sm-4">
       <div class="input-group">
         <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
@@ -87,6 +58,35 @@
       <div class="help-block" ng-messages="patientForm.passwordConfirm.$error" ng-show="patientForm.passwordConfirm.$touched">
         <div ng-messages-include="my-custom-messages"></div>
     </div>
+    </div>
+  </div>
+  <div class="form-group required">
+    <label class="col-sm-4 control-label">Gender</label>
+    <div class="col-sm-4">
+      <label class="radio-inline">
+        <input type="radio" name="gender" ng-model="patient.gender" value="m"> male
+      </label>
+      <label class="radio-inline">
+        <input type="radio" name="gender" ng-model="patient.gender" value="f"> female
+      </label>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="address" class="col-sm-4 control-label">Address</label>
+    <div class="col-sm-4">
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-home fa-fw"></i></span>
+        <input type="text" class="form-control" id="address" ng-model="patient.address">
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="phoneNumber" class="col-sm-4 control-label">Phone</label>
+    <div class="col-sm-4">
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-phone fa-fw"></i></span>
+        <input type="text" class="form-control" id="phoneNumber" ng-model="patient.phoneNumber">
+      </div>
     </div>
   </div>
   <div class="form-group">
