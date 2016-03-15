@@ -141,7 +141,6 @@ medconnect.controller('Login', ['$http', '$location', function($http, $location)
           'password' : vm.password
         }
       }).success(function(userType){
-        console.log('userType', userType)
         if(userType === '0'){ //doctor
             $location.url('/doctor')
         }else if(userType === '1'){//patient

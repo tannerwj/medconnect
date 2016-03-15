@@ -8,12 +8,21 @@ const pat = require('../src/patient')
 const USERTYPE = 1
 
 var auth = function (req, res, next){
-	if (req.isAuthenticated() && req.user.userType === USERTYPE){
+	if (req.isAuthenticated() && req.user.type === USERTYPE){
 		return next()
 	}else{
 		res.sendStatus(401)
 	}
 }
+
+router.get('/patient/info', auth, function (req, res){
+	pat.info(req.user.id).then(function(result){
+		if(result){
+			return res.json(result)
+		}
+		res.sendStatus(400)
+	})
+})
 
 router.post('/patient/register', function (req, res){
 	var user = {
@@ -34,7 +43,6 @@ router.post('/patient/register', function (req, res){
 router.post('/patient/edit', auth, function (req, res){
 	var user = {
 		id: req.user.id,
-		email : req.body.email,
 		first: req.body.firstName,
 		last: req.body.lastName,
 		blood: req.body.bloodType,

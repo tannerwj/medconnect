@@ -8,12 +8,21 @@ const doc = require('../src/doctor')
 const USERTYPE = 0
 
 var auth = function (req, res, next){
-	if (req.isAuthenticated() && req.user.userType === USERTYPE){
+	if (req.isAuthenticated() && req.user.type === USERTYPE){
 		return next()
 	}else{
 		res.sendStatus(401)
 	}
 }
+
+router.get('/doctor/info', auth, function (req, res){
+	doc.info(req.user.id).then(function(result){
+		if(result){
+			return res.json(result)
+		}
+		res.sendStatus(400)
+	})
+})
 
 router.post('/doctor/register', function (req, res){
 	var user = {
@@ -34,14 +43,14 @@ router.post('/doctor/register', function (req, res){
 router.post('/doctor/edit', auth, function (req, res){
 	var user = {
 		id: req.user.id,
-		email : req.body.email,
 		first: req.body.firstName,
 		last: req.body.lastName,
 		address: req.body.address,
 		phone: req.body.phone,
     exp: req.body.experience,
     volunteer: req.body.volunteerNotes,
-    other: req.body.otherNotes
+    other: req.body.otherNotes,
+		code: req.body.code
 	}
 	doc.edit(user).then(function (result){
 		res.sendStatus(result ? 200 : 400)
