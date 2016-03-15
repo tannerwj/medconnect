@@ -314,6 +314,49 @@ medconnect.controller('AdminManage', ['$http', '$scope', function($http, $scope)
   }
 }])
 
-medconnect.controller('CreateAdmin', ['$http', function($http){
+medconnect.controller('CreateAdmin', ['$http', '$scope', function($http, $scope){
+  $scope.success = false
+  $scope.failure = false
+  $scope.currentAdmins = []
 
+  $scope.init = function (){
+    type = 'user'
+    getData()
+  } 
+
+  var receiveInputs = function(){
+    if($scope.newAdmin.password === $scope.newAdmin.passwordConfirm){
+      return true
+    }
+    return false
+  }
+
+  $scope.add = function() {
+    if(receiveInputs()){
+      $http.post('/admin/createAdmin', {
+        data: $scope.newAdmin
+      }).success(function(data) {
+        $scope.success = $scope.newAdmin.firstName + ' ' + $scope.newAdmin.lastName + ' successfully added'
+        $scope.failure = false
+        $scope.newAdmin = {}
+        getData()
+      }).error(function() {
+        $scope.failure = $scope.newAdmin.firstName + ' ' + $scope.newAdmin.lastName + ' already exists'
+        $scope.success = false
+        $scope.newAdmin = {}
+      })
+    }else{
+      $scope.failure = 'Passwords must match'
+      $scope.success = false
+    }
+  }
+  
+  var getData = function (){
+    $http.post('/admin/viewAdmins', {
+      type: type
+    }).success(function (data){
+      $scope.currentAdmins = data.currentAdmins
+    })
+  }
+  
 }])

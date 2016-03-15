@@ -1,0 +1,70 @@
+<div class="admin" ng-init=init()>
+  <h1>Manage Admin Users</h1>
+  <form class="form-horizontal" name="adminForm" ng-submit="add()">
+      <div class="form-group">
+        <label for="firstName" class="col-sm-4 control-label">First Name:</label>
+        <div class="input-group">
+          <input placeholder="Bishal" type="text" name="firstName" class="form-control" id="firstName" ng-model="newAdmin.firstName" ng-maxlength="80" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="lastName" class="col-sm-4 control-label">Last Name:</label>
+        <div class="input-group">
+          <input placeholder="Tamang" type="text" name="lastName" class="form-control" id="lastName" ng-model="newAdmin.lastName" ng-maxlength="80" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="email" class="col-sm-4 control-label">Email:</label>
+        <div class="input-group">
+          <input placeholder="example@gmail.com" type="email" name="email" class="form-control" id="email" ng-model="newAdmin.email" ng-maxlength="80" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="password" class="col-sm-4 control-label">Password:</label>
+        <div class="input-group">
+          <input placeholder="********" type="password" name="password" class="form-control" id="password" ng-model="newAdmin.password" ng-maxlength="120" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="passwordConfirm" class="col-sm-4 control-label">Confirm Password:</label>
+        <div class="input-group">
+          <input type="password" class="form-control" name="passwordConfirm" id="passwordConfirm" ng-model="newAdmin.passwordConfirm" ng-maxlength="120" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-4 col-sm-2">
+          <button type="submit" class="btn btn-primary">Create Admin</button>
+      </div>
+    </div>
+  </form>
+  <div class="alert alert-success" role="alert" ng-show='success'>
+    <button type='button' class='close' aria-label='Close' ng-click='success = false'>
+      <span aria-hidden='true'>&times;</span>
+    </button>
+    {{success}}
+  </div>
+  <div class="alert alert-info" role="alert" ng-show='failure'>
+    <button type='button' class='close' aria-label='Close' ng-click='failure = false'>
+      <span aria-hidden='true'>&times;</span>
+    </button>
+    {{failure}}
+  </div>
+  <div class="login-or">
+    <hr class="hr-or">
+    <span class="span-or">Admins</span>
+  </div>
+  <div class="list-group adminList" ng-show='currentAdmins'>
+    <li class="list-group-item list" ng-repeat='d in currentAdmins'>
+      <div class='adminName'>{{d.firstName + ' ' + d.lastName}}</div>
+      <div class="btn-group" uib-dropdown>
+        <button type="button" class="btn btn-default dropdown-toggle" uib-dropdown-toggle>
+          Options <span class="caret"></span>
+        </button>
+        <ul class='dropdown-menu'>
+          <li ng-click='edit(d)'><a href="#"><i class="fa fa-pencil"></i> edit</a></li>
+          <li ng-click='remove(d)'><a href="#"><i class="fa fa-minus"></i> remove</a></li>
+        </ul>
+      </div>
+    </li>
+  </div>
+</div>

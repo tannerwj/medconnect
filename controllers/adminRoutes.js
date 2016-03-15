@@ -4,6 +4,7 @@ const router = express.Router()
 
 const db = require('../config/db')
 const admin = require('../src/admin')
+const account = require('../src/account')
 
 const USERTYPE = 2
 
@@ -47,6 +48,26 @@ router.post('/admin/activate', auth, function (req, res){
 
 router.post('/admin/delete', auth, function (req, res){
 	admin.delete(req.body.type, req.body.id).then(function (result){
+		res.sendStatus(result ? 200 : 400)
+	})
+})
+
+router.post('/admin/viewAdmins', auth, function (req, res){
+	admin.viewAdmins(req.body.type).then(function (result){
+		if(result){ return res.json(result) }
+		res.sendStatus(400)
+	})
+})
+
+router.post('/admin/createAdmin', auth, function (req, res){
+	var user = {
+		type: 2,
+		first: req.body.data.firstName,
+		last: req.body.data.lastName,
+		email: req.body.data.email,
+		pass: req.body.data.password
+	}
+	account.register(user).then(function (result){
 		res.sendStatus(result ? 200 : 400)
 	})
 })

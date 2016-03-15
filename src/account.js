@@ -10,7 +10,7 @@ var register = function (user){
         bcrypt.genSalt(BCRYPT_ROUNDS, function (salt){
           bcrypt.hash(user.pass, salt, null, function (err, hash) {
             if(err) return reject(err)
-            return resolve(db.query('INSERT INTO Users (userType, email, lastName, firstName, password) VALUES (?,?,?,?,?);', [user.type, user.email, user.first, user.last, hash]).then( function (result){
+            return resolve(db.query('INSERT INTO Users (userType, email, firstName, lastName, password) VALUES (?,?,?,?,?);', [user.type, user.email, user.first, user.last, hash]).then( function (result){
               return { id: result[0].insertId }
             }))
           })
