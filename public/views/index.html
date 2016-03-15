@@ -13,6 +13,16 @@
 		<link href="/css/styles.css" rel="stylesheet">
 	</head>
 	<body>
+		<nav class="navbar navbar-default btn-sm" role="navigation">
+		  <a class="navbar-brand" ng-href="/">Medconnect</a>
+		    <ul class="nav navbar-nav navbar-left">
+		        <li>
+							<button type="button" class="btn btn-default" ng-click="goBack();">
+								<i class="fa fa-chevron-left"></i> Back
+						</button>
+					</li>
+		    </ul>
+		</nav>
 		<div class="container">
 			<div class="row">
 	  		<div ng-view></div>

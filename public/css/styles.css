@@ -2,6 +2,20 @@ body {
   font-size: 12px;
   /*padding-top:15px;*/
 }
+
+.navbar-brand
+{
+    position: absolute;
+    width: 100%;
+    left: 0;
+    text-align: center;
+    margin: auto;
+    padding : 10px 15px;
+}
+
+
+
+/*login*/
 .main {
   max-width: 320px;
   margin: 0 auto;
@@ -35,7 +49,7 @@ h1 {
   text-align: center;
   line-height: 300%;
 }
-
+/*form*/
 .form-horizontal .form-group {
   margin-right:0;
   margin-left:0;

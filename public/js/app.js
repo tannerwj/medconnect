@@ -1,5 +1,12 @@
 var medconnect = angular.module('medconnect', ['mcPatient', 'mcDoctor', 'mcAdmin','ngRoute', 'ngMessages', 'ui.bootstrap']);
 
+medconnect.run(['$window', '$rootScope',
+function ($window ,  $rootScope) {
+  $rootScope.goBack = function(){
+    $window.history.back();
+  }
+}]);
+
 medconnect.config(['$routeProvider', '$locationProvider',
   function($routeProvider, $locationProvider) {
 
