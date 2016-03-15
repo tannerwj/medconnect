@@ -1,8 +1,5 @@
 const Promise = require('bluebird')
 const db = require('../config/db')
-const bcrypt = require('bcrypt-nodejs')
-
-const BCRYPT_ROUNDS = 10
 
 exports.add = function (type, data){
   var table = getTableName(type)
@@ -27,14 +24,6 @@ exports.view = function (type){
       actives: result[0][0],
       inactives: result[1][0]
     }
-  })
-}
-
-exports.createAdmin = function (type, data){
-  return db.query('INSERT INTO Users (firstName, lastName, email, password) VALUES (?,?,?,?);', [data.firstName, data.lastName, data.email, data.password]).then(function (result){
-    return result[0].affectedRows === 1
-  }).catch(function (err){
-    return false
   })
 }
 
