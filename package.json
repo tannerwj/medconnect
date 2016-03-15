@@ -24,7 +24,8 @@
     "mysql-promise": "*",
     "passport": "*",
     "passport-local": "*",
-    "q": "*"
+    "q": "*",
+    "serve-favicon": "^2.3.0"
   },
   "license": "MIT",
   "devDependencies": {
