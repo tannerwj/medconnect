@@ -60,14 +60,13 @@ medconnect.controller('PatientProfile', ['$http', function($http){
   vm.register = function(){
       $http({
         method:'POST',
-        url:'/doctor/edit',
+        url:'/patient/edit',
         data: {
-          'email' : vm.email,
           'firstName' : vm.firstName,
           'lastName' : vm.lastName,
           'bloodType' : vm.bloodType,
           'address' : vm.address,
-          'phone' : vm.phoneNumber,
+          'phone' : vm.phoneNumber
         }
 
       }).success(function(data){

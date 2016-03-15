@@ -6,7 +6,7 @@
     <div class="col-sm-4">
       <div class="input-group">
         <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
-        <input placeholder="example@gmail.com" type="email" name="email" class="form-control" id="email" ng-model="patient.email" ng-maxlength="80" ng-readonly="!patient.editMode">
+        <input placeholder="example@gmail.com" type="email" name="email" class="form-control" id="email" ng-model="patient.email" ng-maxlength="80" readonly>
       </div>
         <div class="help-block" ng-messages="patientForm.email.$error" ng-show="patientForm.email.$touched">
           <div ng-messages-include="my-custom-messages"></div>

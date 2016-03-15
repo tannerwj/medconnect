@@ -14,7 +14,7 @@ router.get('/', function (req, res) {
 })
 
 router.get('/loggedin', function (req, res) {
-	res.send(req.isAuthenticated() ? req.user.userType+'' : false)
+	res.send(req.isAuthenticated() ? req.user.type+'' : false)
 })
 
 router.post('/login', function (req, res, next) {
@@ -34,11 +34,13 @@ router.post('/login', function (req, res, next) {
 })
 
 router.get('/logout', function (req, res){
+	console.log(req.user.first + ' ' + req.user.last + ' logged out')
 	if(req.user){ req.logout() }
 	res.redirect('/')
 })
 
 router.get('*', function (req, res) {
+	console.log('catch all', req.originalUrl)
 	res.sendFile('index.html', { root: path.join(__dirname, '../public/views') })
 })
 
