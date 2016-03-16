@@ -42,22 +42,30 @@ medconnect.controller('PRController', ['$http', '$location', function($http, $lo
 
 }}]);
 
-medconnect.controller('PatientProfile', ['$http', function($http){
+medconnect.controller('PatientProfile', ['$http', '$location', function($http, $location){
 
   var vm = this;
   vm.error = false;
   vm.editMode = false;
   vm.message = "";
 
-  vm.edit = function(){
-    if(!vm.editMode){
-      vm.editMode = true;
-    }else{
-      vm.editMode = false;
-    }
+	$http.get('/patient/info').success(function(info){
+		console.log(info);
+		vm.email = info.email;
+		vm.firstName = info.firstName;
+		vm.lastName = info.lastName;
+		vm.bloodType = info.bloodType;
+		vm.address = info.address;
+		vm.phoneNumber = info.phone;
+	}).catch(function(error){
+		console.log("Error is : " + error);
+	});
+
+	vm.edit = function(){
+    vm.editMode = !vm.editMode;
   }
 
-  vm.register = function(){
+  vm.save = function(){
       $http({
         method:'POST',
         url:'/patient/edit',
@@ -71,13 +79,12 @@ medconnect.controller('PatientProfile', ['$http', function($http){
 
       }).success(function(data){
         console.log(data);
-        //$location.url('/patient');
+        $location.url('/patient');
       }).error(function(err){
         vm.error = true;
         vm.message = "Server error";
         console.log('Server error: ' + err);
       })
-      //$location.url('/');
     }
 }])
 
