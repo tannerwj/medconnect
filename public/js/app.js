@@ -351,6 +351,16 @@ medconnect.controller('CreateAdmin', ['$http', '$scope', function($http, $scope)
     }
   }
   
+  $scope.delete = function (d){
+    $http.post('/admin/deleteAdmin', {
+      id: d.userID
+    }).success(function (){
+      $scope.success = d.firstName + ' ' + d.lastName + ' successfully deleted'
+      $scope.failure = false
+      getData()
+    })
+  }
+
   var getData = function (){
     $http.post('/admin/viewAdmins', {
       type: type

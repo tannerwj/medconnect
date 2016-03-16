@@ -53,7 +53,7 @@ router.post('/admin/delete', auth, function (req, res){
 })
 
 router.post('/admin/viewAdmins', auth, function (req, res){
-	admin.viewAdmins(req.body.type).then(function (result){
+	admin.viewAdmins(req.body.type, req.user.id).then(function (result){
 		if(result){ return res.json(result) }
 		res.sendStatus(400)
 	})
@@ -68,6 +68,12 @@ router.post('/admin/createAdmin', auth, function (req, res){
 		pass: req.body.data.password
 	}
 	account.register(user).then(function (result){
+		res.sendStatus(result ? 200 : 400)
+	})
+})
+
+router.post('/admin/deleteAdmin', auth, function (req, res){
+	account.deleteUser(req.body.id).then(function (result){
 		res.sendStatus(result ? 200 : 400)
 	})
 })
