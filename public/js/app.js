@@ -81,6 +81,12 @@ medconnect.config(['$routeProvider', '$locationProvider',
 					isPatient: isPatient
 				}
       })
+      .when('/patient/search', {
+        templateUrl: '/views/patient/search.html',
+        resolve:{
+          isPatient: isPatient
+        }
+      })
       .when('/patient/records', {
         templateUrl: '/views/patient/recordsmenu.html',
 				resolve:{
