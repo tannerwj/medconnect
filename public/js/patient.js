@@ -42,8 +42,8 @@ medconnect.controller('PRController', ['$http', '$location', function($http, $lo
 
 }}]);
 
-medconnect.controller('PatientProfile', ['$http', function($http){
-	 
+medconnect.controller('PatientProfile', ['$http', '$location', function($http, $location){
+
   var vm = this;
   vm.error = false;
   vm.editMode = false;
@@ -60,12 +60,12 @@ medconnect.controller('PatientProfile', ['$http', function($http){
 	}).catch(function(error){
 		console.log("Error is : " + error);
 	});
-	
+
 	vm.edit = function(){
     vm.editMode = !vm.editMode;
-  } 
-	 
-  vm.register = function(){
+  }
+
+  vm.save = function(){
       $http({
         method:'POST',
         url:'/patient/edit',
@@ -79,13 +79,12 @@ medconnect.controller('PatientProfile', ['$http', function($http){
 
       }).success(function(data){
         console.log(data);
-        //$location.url('/patient');
+        $location.url('/patient');
       }).error(function(err){
         vm.error = true;
         vm.message = "Server error";
         console.log('Server error: ' + err);
       })
-      //$location.url('/');
     }
 }])
 

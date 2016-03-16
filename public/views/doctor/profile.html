@@ -1,4 +1,4 @@
-<form class="form-horizontal" name="doctorForm" ng-controller="DoctorProfile as doctor" ng-submit="doctor.register()" novalidate>
+<form class="form-horizontal" name="doctorForm" ng-controller="DoctorProfile as doctor" ng-submit="doctor.save()" novalidate>
 	<h1 ng-show="!doctor.editMode">Doctor Profile</h1>
 	<h1 ng-show="doctor.editMode">Doctor Profile Edit</h1>
 	<div class="form-group" ng-class="{ 'has-error': doctorForm.email.$touched && doctorForm.email.$invalid }">
@@ -102,6 +102,13 @@
 	</div>
 </form>
 
+<script type="text/ng-template" id="my-custom-messages">
+	<p ng-message="maxlength">There has to be less characters.</p>
+	<p ng-message="required">This field is required.</p>
+	<p ng-message="email">This needs to be a valid email</p>
+</script>
+
+<!--This is for passwords-->
 <!-- <div class="form-group" ng-class="{ 'has-error': doctorForm.password.$touched && doctorForm.password.$invalid }">
   <label for="password" class="col-sm-4 control-label">Current Password:</label>
   <div class="col-sm-4">
@@ -138,9 +145,3 @@
   </div>
   </div>
 </div> -->
-
-<script type="text/ng-template" id="my-custom-messages">
-	<p ng-message="maxlength">There has to be less characters.</p>
-	<p ng-message="required">This field is required.</p>
-	<p ng-message="email">This needs to be a valid email</p>
-</script>

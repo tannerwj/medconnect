@@ -1,4 +1,4 @@
-<form class="form-horizontal" name="patientForm" ng-controller="PatientProfile as patient" ng-submit="patient.register()" novalidate>
+<form class="form-horizontal" name="patientForm" ng-controller="PatientProfile as patient" ng-submit="patient.save()" novalidate>
   <h1 ng-show = "!patient.editMode">Patient Profile</h1>
   <h1 ng-show = "patient.editMode">Patient Profile Edit</h1>
   <div class="form-group" ng-class="{ 'has-error': patientForm.email.$touched && patientForm.email.$invalid }">

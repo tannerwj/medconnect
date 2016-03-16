@@ -121,11 +121,11 @@ medconnect.config(['$routeProvider', '$locationProvider',
   }]);
 
 medconnect.controller('nav', ['$http', '$location', '$scope', '$window', function($http, $location, $scope, $window){
-	
+
 		$scope.goBack = function(){
 			$window.history.back();
 		}
-	
+
 		$scope.goHome = function(){
 		 $http.get('/loggedin').success(function (userType){
         if (userType === '0'){
@@ -137,7 +137,7 @@ medconnect.controller('nav', ['$http', '$location', '$scope', '$window', functio
 				}else{
 					$location.url('/');
 				}
-      })		
+      })
 	}
 }]);
 

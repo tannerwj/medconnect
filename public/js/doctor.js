@@ -43,7 +43,7 @@
 
   }]);
 
-	medconnect.controller('DoctorProfile', ['$http', function ($http) {
+	medconnect.controller('DoctorProfile', ['$http','$location', function ($http, $location) {
 
 		var vm = this;
 		vm.error = false;
@@ -69,7 +69,7 @@
 			vm.editMode = !vm.editMode;
 		}
 
-		vm.register = function () {
+		vm.save = function () {
 			$http({
 					method: 'POST',
 					url: '/doctor/edit',
@@ -85,7 +85,7 @@
 					}
 				}).success(function (data) {
 					console.log(data);
-					// $location.url('/doctor');
+					$location.url('/doctor');
 				}).error(function (err) {
 					vm.error = true;
 					vm.message = "Server error";
@@ -94,7 +94,7 @@
 				//$location.url('/');
 		}
   }]);
-	
+
 	medconnect.controller('VerifyDoctor', ['$http', function ($http) {
 
   }])
