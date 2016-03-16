@@ -1,5 +1,27 @@
 <div class="admin" ng-init=init()>
   <h1>Manage Admins</h1>
+  <div class="login-or">
+    <hr class="hr-or">
+    <span class="span-or">Admins</span>
+  </div>
+  <div class="list-group adminList" ng-show='currentAdmins'>
+    <li class="list-group-item list" ng-repeat='d in currentAdmins'>
+      <div class='adminName'>{{d.firstName + ' ' + d.lastName}}</div>
+      <div class="btn-group" uib-dropdown>
+        <button type="button" class="btn btn-default dropdown-toggle" uib-dropdown-toggle>
+          Options <span class="caret"></span>
+        </button>
+        <ul class='dropdown-menu'>
+          <li ng-click='edit(d)'><a href="#"><i class="fa fa-pencil"></i> edit</a></li>
+          <li ng-click='delete(d)'><a href="#"><i class="fa fa-minus"></i> remove</a></li>
+        </ul>
+      </div>
+    </li>
+  </div>
+  <div class="login-or">
+    <hr class="hr-or">
+    <span class="span-or">Create new</span>
+  </div>
   <form class="form-horizontal" name="adminForm" ng-submit="add()">
       <div class="form-group">
         <label for="firstName" class="col-sm-4 control-label">First Name:</label>
@@ -38,7 +60,7 @@
       </div>
       <div class="form-group">
         <div class="col-sm-offset-4 col-sm-2">
-          <button type="submit" class="btn btn-primary">Create Admin</button>
+          <button type="submit" class="btn btn-primary">Create</button>
       </div>
     </div>
   </form>
@@ -53,23 +75,5 @@
       <span aria-hidden='true'>&times;</span>
     </button>
     {{failure}}
-  </div>
-  <div class="login-or">
-    <hr class="hr-or">
-    <span class="span-or">Admins</span>
-  </div>
-  <div class="list-group adminList" ng-show='currentAdmins'>
-    <li class="list-group-item list" ng-repeat='d in currentAdmins'>
-      <div class='adminName'>{{d.firstName + ' ' + d.lastName}}</div>
-      <div class="btn-group" uib-dropdown>
-        <button type="button" class="btn btn-default dropdown-toggle" uib-dropdown-toggle>
-          Options <span class="caret"></span>
-        </button>
-        <ul class='dropdown-menu'>
-          <li ng-click='edit(d)'><a href="#"><i class="fa fa-pencil"></i> edit</a></li>
-          <li ng-click='delete(d)'><a href="#"><i class="fa fa-minus"></i> remove</a></li>
-        </ul>
-      </div>
-    </li>
   </div>
 </div>

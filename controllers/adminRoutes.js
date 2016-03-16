@@ -53,7 +53,7 @@ router.post('/admin/delete', auth, function (req, res){
 })
 
 router.post('/admin/viewAdmins', auth, function (req, res){
-	admin.viewAdmins(req.body.type, req.user.id).then(function (result){
+	admin.viewAdmins(req.user.id).then(function (result){
 		if(result){ return res.json(result) }
 		res.sendStatus(400)
 	})
