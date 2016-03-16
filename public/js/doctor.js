@@ -93,6 +93,7 @@
 		}
 
 		vm.save = function () {
+			console.log(vm.ids);
 			$http({
 					method: 'POST',
 					url: '/doctor/edit',
