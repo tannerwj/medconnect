@@ -9,10 +9,10 @@ const account = require('../src/account')
 const USERTYPE = 2
 
 var auth = function (req, res, next){
-	if (req.isAuthenticated() && req.user.userType === USERTYPE){
+	if (req.isAuthenticated() && req.user.type === USERTYPE){
 		return next()
 	}
-	res.sendStatus(401)	
+	res.sendStatus(401)
 }
 
 router.post('/admin/add', auth, function (req, res){

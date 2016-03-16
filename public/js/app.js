@@ -1,4 +1,11 @@
-var medconnect = angular.module('medconnect', ['ngRoute', 'ngMessages', 'ui.bootstrap']);
+var medconnect = angular.module('medconnect', ['mcPatient', 'mcDoctor', 'mcAdmin','ngRoute', 'ngMessages', 'ui.bootstrap']);
+
+medconnect.run(['$window', '$rootScope',
+function ($window ,  $rootScope) {
+  $rootScope.goBack = function(){
+    $window.history.back();
+  }
+}]);
 
 medconnect.config(['$routeProvider', '$locationProvider',
   function($routeProvider, $locationProvider) {
@@ -134,7 +141,6 @@ medconnect.controller('Login', ['$http', '$location', function($http, $location)
           'password' : vm.password
         }
       }).success(function(userType){
-        console.log('userType', userType)
         if(userType === '0'){ //doctor
             $location.url('/doctor')
         }else if(userType === '1'){//patient

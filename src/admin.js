@@ -42,7 +42,7 @@ exports.edit = function (type, name, id){
   if(!table){ return false }
 
   return db.query('UPDATE '+table+' SET name =? WHERE _id =?;', [name, id]).then(function (result){
-    return result[0].changedRows === 1
+    return result[0].affectedRows === 1
   })
 }
 
@@ -51,7 +51,7 @@ exports.deactivate = function (type, id){
   if(!table){ return false }
 
   return db.query('UPDATE '+table+' SET active = 0 WHERE _id =?;', [id]).then(function (result){
-    return result[0].changedRows === 1
+    return result[0].affectedRows === 1
   })
 }
 
@@ -60,7 +60,7 @@ exports.activate = function (type, id){
   if(!table){ return false }
 
   return db.query('UPDATE '+table+' SET active = 1 WHERE _id =?;', [id]).then(function (result){
-    return result[0].changedRows === 1
+    return result[0].affectedRows === 1
   })
 }
 
