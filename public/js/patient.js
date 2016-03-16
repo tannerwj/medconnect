@@ -125,5 +125,37 @@ medconnect.controller('PatientSearch', ['$http', '$location', function($http, $l
 
 }]);
 
+medconnect.controller('ModalDemoCtrl', function ($scope, $uibModal, $log) {
+
+	$scope.item = "HECK YEA";
+
+  $scope.open = function (size) {
+
+    var modalInstance = $uibModal.open({
+      animation: true,
+      templateUrl: 'myModalContent.html',
+      controller: 'ModalInstanceCtrl',
+      size: size,
+      resolve: {
+				item : function(){
+					return $scope.item;
+				}
+      }
+    });
+  };
+});
+
+medconnect.controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, item) {
+
+  $scope.item = item;
+
+  $scope.ok = function () {
+    $uibModalInstance.close();
+  };
+
+  $scope.cancel = function () {
+    $uibModalInstance.dismiss('cancel');
+  };
+});
 
 }());
