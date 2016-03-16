@@ -49,14 +49,22 @@ medconnect.controller('PatientProfile', ['$http', function($http){
   vm.editMode = false;
   vm.message = "";
 
-  vm.edit = function(){
-    if(!vm.editMode){
-      vm.editMode = true;
-    }else{
-      vm.editMode = false;
-    }
-  }
-
+	$http.get('/patient/info').success(function(info){
+		console.log(info);
+		vm.email = info.email;
+		vm.firstName = info.firstName;
+		vm.lastName = info.lastName;
+		vm.bloodType = info.bloodType;
+		vm.address = info.address;
+		vm.phoneNumber = info.phone;
+	}).catch(function(error){
+		console.log("Error is : " + error);
+	});
+	
+	vm.edit = function(){
+    vm.editMode = !vm.editMode;
+  } 
+	 
   vm.register = function(){
       $http({
         method:'POST',
