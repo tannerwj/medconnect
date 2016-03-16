@@ -27,6 +27,16 @@ exports.view = function (type){
   })
 }
 
+exports.viewAdmins = function (userId){
+  return Promise.all([
+    db.query('SELECT * FROM Users where userType = 2 and userID != ?;', [userId])
+  ]).then(function (result){
+    return {
+      currentAdmins: result[0][0],
+    }
+  })
+}
+
 exports.edit = function (type, name, id){
   var table = getTableName(type)
   if(!table){ return false }
