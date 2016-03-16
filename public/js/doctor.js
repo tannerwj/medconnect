@@ -22,15 +22,14 @@
           method:'POST',
           url:'/doctor/edit',
           data: {
-            'email' : vm.email,
             'firstName' : vm.firstName,
             'lastName' : vm.lastName,
             'address' : vm.address,
             'phone' : vm.phoneNumber,
             'experience' : vm.experience,
             'volunteerNotes' : vm.volunteerNotes,
-            'otherNotes' : vm.otherNotes
-            //'code' : vm.code
+            'otherNotes' : vm.otherNotes,
+            'code' : vm.code
           }
         }).success(function(data){
           console.log(data);

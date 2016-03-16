@@ -13,6 +13,7 @@ const Q = require('q')
 const async = require('async-q')
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
+const favicon = require('serve-favicon')
 const app	= express()
 const acc = require('./src/account')
 
@@ -37,7 +38,7 @@ app.use(session({
 }))
 app.use(passport.initialize())
 app.use(passport.session())
-app.use(express.static(__dirname + '/public'))
+app.use(favicon(__dirname + '/public/img/favicon.ico'))
 
 passport.use(new LocalStrategy({
 	usernameField: 'email',
@@ -66,13 +67,15 @@ passport.serializeUser(function (user, done) {
 })
 passport.deserializeUser(function (id, done) {
 	acc.findUserById(id).then(function (user){
-		done(null, user)
+		done(null, { id: user.userID, type: user.userType, email: user.email, first: user.firstName, last: user.lastName })
 	})
 })
 
 app.all('/patient/*', require('./controllers/patientRoutes'))
 app.all('/doctor/*', require('./controllers/doctorRoutes'))
 app.all('/admin/*', require('./controllers/adminRoutes'))
+app.all('/data/*', require('./controllers/dataRoutes'))
+app.use(express.static(__dirname + '/public'))
 app.all('/*', require('./controllers/routes'))
 
 http.createServer(app).listen(port, function (){
