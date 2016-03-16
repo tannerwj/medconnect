@@ -92,7 +92,7 @@
 			</div>
 		</div>
 	</div>
-<div class="form-group">
+<div class="form-group" ng-show="doctor.editMode">
 	<label for="specialties" class="col-sm-4 control-label"> </label>
 	<div class="col-sm-4">
 			<select class = "form-control" ng-model="doctor.selectedItem" ng-options="item.name for item in doctor.items">
@@ -100,7 +100,7 @@
 			</select>
 	</div>
 </div>
-<div class="form-group">
+<div class="form-group" ng-show="doctor.editMode">
 	<label for="specialties" class="col-sm-4 control-label"> </label>
 	<div class="col-sm-4">
 		<input class = "btn btn-success btn-sm" ng-click="doctor.add()" value="add"></button>
