@@ -1,12 +1,5 @@
 var medconnect = angular.module('medconnect', ['mcPatient', 'mcDoctor', 'mcAdmin','ngRoute', 'ngMessages', 'ui.bootstrap']);
 
-medconnect.run(['$window', '$rootScope',
-function ($window ,  $rootScope) {
-  $rootScope.goBack = function(){
-    $window.history.back();
-  }
-}]);
-
 medconnect.config(['$routeProvider', '$locationProvider',
   function($routeProvider, $locationProvider) {
 
@@ -127,6 +120,27 @@ medconnect.config(['$routeProvider', '$locationProvider',
 
   }]);
 
+medconnect.controller('nav', ['$http', '$location', '$scope', '$window', function($http, $location, $scope, $window){
+	
+		$scope.goBack = function(){
+			$window.history.back();
+		}
+	
+		$scope.goHome = function(){
+		 $http.get('/loggedin').success(function (userType){
+        if (userType === '0'){
+          $location.url('/doctor');
+        }else if(userType === '1'){
+          $location.url('/patient');
+        }else if(userType === '2'){
+					$location.url('/admin');
+				}else{
+					$location.url('/');
+				}
+      })		
+	}
+}]);
+
 medconnect.controller('Login', ['$http', '$location', function($http, $location){
 
   var vm = this;
@@ -157,5 +171,5 @@ medconnect.controller('Login', ['$http', '$location', function($http, $location)
         console.log('Server error: ' + err);
       })
   }
-
-}}]);
+}
+}]);

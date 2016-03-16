@@ -43,7 +43,7 @@ medconnect.controller('PRController', ['$http', '$location', function($http, $lo
 }}]);
 
 medconnect.controller('PatientProfile', ['$http', function($http){
-
+	 
   var vm = this;
   vm.error = false;
   vm.editMode = false;
