@@ -1,5 +1,5 @@
 <h1>Patient Register</h1>
-<form class="form-horizontal" name="patientForm" ng-controller="PRController as patient" ng-submit="patient.register()" novalidate>
+<form class="form-horizontal" name="patientForm" ng-controller="PatientRegister as patient" ng-submit="patient.register()" novalidate>
   <div class="form-group required" ng-class="{ 'has-error': patientForm.email.$touched && patientForm.email.$invalid }">
     <label for="email" class="col-sm-4 control-label">Email</label>
     <div class="col-sm-4">

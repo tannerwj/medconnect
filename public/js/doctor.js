@@ -2,7 +2,7 @@
 
 	var medconnect = angular.module("mcDoctor", []);
 
-	medconnect.controller('DRController', ['$http', '$location', '$uibModal', '$scope', function ($http, $location, $uibModal, $scope) {
+	medconnect.controller('DoctorRegister', ['$http', '$location', '$uibModal', '$scope', function ($http, $location, $uibModal, $scope) {
 
 		var vm = this;
 
@@ -63,27 +63,30 @@
 
   }]);
 
-	medconnect.controller('DoctorProfile', ['$http','$location', function ($http, $location) {
+	medconnect.controller('DoctorProfile', ['$http','$location', '$uibModal', '$scope', function ($http, $location, $uibModal, $scope) {
 
 		var vm = this;
+		vm.editMode = false;
+		vm.ids = [];
+		vm.datas = [];
+		vm.items = []; //grabs specialties from admin
+		vm.error = false;
+		vm.message = "";
+
 		$http.get('/doctor/info').success(function (info) {
 			vm.email = info.email;
 			vm.firstName = info.firstName;
 			vm.lastName = info.lastName;
 			vm.address = info.address;
 			vm.phoneNumber = info.phone;
+			vm.code = info.code;
 			vm.experience = info.exp;
 			vm.volunteerNotes = info.vol;
 			vm.otherNotes = info.notes;
-			vm.code = info.code;
+			vm.specialties = info.specialties //info.specialties = array?
 		}).catch(function (error) {
 			console.log("Error is : " + error);
 		});
-		vm.error = false;
-		vm.editMode = false;
-		vm.message = "";
-		vm.ids = [];
-		vm.datas = [];
 
 		vm.edit = function () {
 			$http({
@@ -100,15 +103,6 @@
 		}
 
 		// http://www.newhealthguide.org/Types-Of-Doctors.html
-		// sample data
-		// vm.items = [
-		// 	{id:1, name:'General Physician'},
-		// 	{id:2, name:'Internal medical Doctor'},
-		// 	{id:3, name:'Emergency Doctor'},
-		// 	{id:4, name:'Hospitalist'},
-		// 	{id:5, name:'Palliative care Doctor'},
-		// 	{id:6, name:'General pediatrician'}
-		// ];
 
 		vm.add = function(){
 			if(vm.ids.indexOf(vm.selectedItem._id) >= 0){
@@ -116,6 +110,7 @@
 				vm.message = "No duplicate speciality";
 				return false;
 			}else{
+				//cards
 				vm.ids.push(vm.selectedItem._id);
 				vm.datas.push(vm.selectedItem.name);
 				vm.specialties = vm.datas.join(", ");
@@ -123,6 +118,26 @@
 				return true;
 			}
 		}
+
+		$scope.open = function (error, size) {
+
+	    if(error){
+	      $scope.item = "Missing/Incorrect fields, please try again.";
+	    }else{
+	      $scope.item = "Fantastic, you have successfully Edited your profile!";
+	    }
+	    var modalInstance = $uibModal.open({
+	      animation: true,
+	      templateUrl: '../views/modal.html',
+	      controller: 'ModalInstanceCtrl',
+	      size: size,
+	      resolve: {
+	        item : function(){
+	          return $scope.item;
+	        }
+	      }
+	    });
+	  };
 
 		vm.save = function () {
 			console.log(vm.ids);
@@ -140,15 +155,15 @@
 						'specialties' : vm.ids,
 						'code': vm.code
 					}
-				}).success(function (data) {
-					console.log(data);
-					// $location.url('/doctor');
-				}).error(function (err) {
-					vm.error = true;
-					vm.message = "Server error";
-					console.log('Server error: ' + err);
-				})
+				}).success(function(data){
+	        $scope.open(false);
+	        console.log(data);
+	      }).error(function(err){
+	        $scope.open(true);
+	        console.log('Server error: ' + err);
+	      })
 		}
+
   }]);
 
 	medconnect.controller('VerifyDoctor', ['$http', function ($http) {
