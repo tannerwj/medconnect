@@ -1,4 +1,4 @@
-var medconnect = angular.module('medconnect', ['mcPatient', 'mcDoctor', 'mcAdmin','ngRoute', 'ngMessages', 'ui.bootstrap']);
+var medconnect = angular.module('medconnect', ['mcPatient', 'mcDoctor', 'mcAdmin','mcModal', 'ngRoute', 'ngMessages', 'ui.bootstrap']);
 
 medconnect.config(['$routeProvider', '$locationProvider',
   function($routeProvider, $locationProvider) {

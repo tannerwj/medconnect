@@ -2,10 +2,9 @@
 
 	var medconnect = angular.module("mcDoctor", []);
 
-	medconnect.controller('DRController', ['$http', '$location', function ($http, $location) {
+	medconnect.controller('DRController', ['$http', '$location', '$uibModal', '$scope', function ($http, $location, $uibModal, $scope) {
 
 		var vm = this;
-		vm.error = true;
 
 		var receiveInputs = function () {
 			if (vm.email && vm.firstName && vm.lastName && vm.address && vm.phoneNumber && vm.password && vm.passwordConfirm && vm.code) {
@@ -15,6 +14,26 @@
 			}
 			return false;
 		}
+
+		$scope.open = function (error, size) {
+
+			if(error){
+				$scope.item = "Missing/Incorrect fields, please try again.";
+			}else{
+				$scope.item = "Congratulations, you have successfully registered!";
+			}
+			var modalInstance = $uibModal.open({
+				animation: true,
+				templateUrl: '../views/modal.html',
+				controller: 'ModalInstanceCtrl',
+				size: size,
+				resolve: {
+					item : function(){
+						return $scope.item;
+					}
+				}
+			});
+		};
 
 		vm.register = function () {
 			if (receiveInputs()) {
@@ -31,13 +50,14 @@
 						'code': vm.code
 					}
 				}).success(function (data) {
+					$scope.open(false);
 					console.log(data);
 				}).error(function (err) {
+					$scope.open(true);
 					console.log('Server error: ' + err);
 				})
-				$location.url('/')
 			} else {
-				vm.error = false;
+				$scope.open(true);
 			}
 		}
 

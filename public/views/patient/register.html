@@ -71,7 +71,7 @@
       </label>
     </div>
   </div>
-  <div class="form-group">
+  <div class="form-group required">
     <label for="address" class="col-sm-4 control-label">Address</label>
     <div class="col-sm-4">
       <div class="input-group">
@@ -80,8 +80,8 @@
       </div>
     </div>
   </div>
-  <div class="form-group">
-    <label for="phoneNumber" class="col-sm-4 control-label">Phone</label>
+  <div class="form-group required">
+    <label for="phoneNumber" class="col-sm-4 control-label">Phone Number</label>
     <div class="col-sm-4">
       <div class="input-group">
         <span class="input-group-addon"><i class="fa fa-phone fa-fw"></i></span>
@@ -92,9 +92,6 @@
   <div class="form-group">
     <div class="col-sm-offset-4 col-sm-2">
       <button type="submit" class="btn btn-primary">Register</button>
-    </div>
-    <div ng-if="!patient.error" class="col-sm-2">
-      <button class="btn btn-danger">Missing Field/s!</button>
     </div>
   </div>
 </form>
