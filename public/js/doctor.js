@@ -46,35 +46,7 @@
 	medconnect.controller('DoctorProfile', ['$http','$location', function ($http, $location) {
 
 		var vm = this;
-		vm.error = false;
-		vm.editMode = false;
-		vm.message = "";
-		vm.ids = []; // list of ids to pass on
-		vm.datas = [];
-		// http://www.newhealthguide.org/Types-Of-Doctors.html
-		vm.items = [
-			{id:1, name:'General Physician'},
-			{id:2, name:'Internal medical Doctor'},
-			{id:3, name:'Emergency Doctor'},
-			{id:4, name:'Hospitalist'},
-			{id:5, name:'Palliative care Doctor'},
-			{id:6, name:'General pediatrician'}
-		];
-
-		vm.add = function(){
-			if(vm.ids.indexOf(vm.selectedItem.id) >= 0){
-				vm.error = true;
-				vm.message = "No duplicate speciality";
-				return false;
-			}
-			vm.ids.push(vm.selectedItem.id);
-			vm.datas.push(vm.selectedItem.name);
-			vm.specialties = vm.datas.join(", ");
-			vm.error = false;
-		}
-
 		$http.get('/doctor/info').success(function (info) {
-			console.log(info);
 			vm.email = info.email;
 			vm.firstName = info.firstName;
 			vm.lastName = info.lastName;
@@ -87,19 +59,49 @@
 		}).catch(function (error) {
 			console.log("Error is : " + error);
 		});
+		vm.error = false;
+		vm.editMode = false;
+		vm.message = "";
+		vm.ids = [];
+		vm.datas = [];
 
-		$http({
-				method: 'POST',
-				url: '/data/getStatic',
-				data: {
-					'type': 'specialties'
-				}
-			}).success(function(data){
-				console.log(data)
-				//vm.specialties = data;
-			})
 		vm.edit = function () {
+			$http({
+					method: 'POST',
+					url: '/data/getStatic',
+					data: {
+						'type': 'specialties'
+					}
+				}).success(function(items){
+					vm.items = items;
+				});
+
 			vm.editMode = !vm.editMode;
+		}
+
+		// http://www.newhealthguide.org/Types-Of-Doctors.html
+		// sample data
+		// vm.items = [
+		// 	{id:1, name:'General Physician'},
+		// 	{id:2, name:'Internal medical Doctor'},
+		// 	{id:3, name:'Emergency Doctor'},
+		// 	{id:4, name:'Hospitalist'},
+		// 	{id:5, name:'Palliative care Doctor'},
+		// 	{id:6, name:'General pediatrician'}
+		// ];
+
+		vm.add = function(){
+			if(vm.ids.indexOf(vm.selectedItem._id) >= 0){
+				vm.error = true;
+				vm.message = "No duplicate speciality";
+				return false;
+			}else{
+				vm.ids.push(vm.selectedItem._id);
+				vm.datas.push(vm.selectedItem.name);
+				vm.specialties = vm.datas.join(", ");
+				vm.error = false;
+				return true;
+			}
 		}
 
 		vm.save = function () {
@@ -120,13 +122,12 @@
 					}
 				}).success(function (data) {
 					console.log(data);
-					$location.url('/doctor');
+					// $location.url('/doctor');
 				}).error(function (err) {
 					vm.error = true;
 					vm.message = "Server error";
 					console.log('Server error: ' + err);
 				})
-				//$location.url('/');
 		}
   }]);
 
