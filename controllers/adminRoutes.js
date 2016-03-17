@@ -80,9 +80,15 @@ router.post('/admin/deleteAdmin', auth, function (req, res){
 
 router.post('/admin/getAdmin', auth, function (req, res){
 	admin.getAdmin(req.user.id).then(function (result){
-		if(result){ return res.json(result) }
+		if(result){ 
+			return res.json(result) }
 		res.sendStatus(400)
 	})
 })
 
+router.post('/admin/changePassword', auth, function (req, res){
+	account.changePassword(req.body.newPass, req.body.oldPass, req.body.currentPass, req.user.id).then(function (result){
+		res.sendStatus(result ? 200 : 400)
+	})
+})
 module.exports = router

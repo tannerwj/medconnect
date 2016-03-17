@@ -385,15 +385,35 @@ medconnect.controller('CreateAdmin', ['$http', '$scope', function($http, $scope)
 medconnect.controller('ChangePassword', ['$http', '$scope', function($http, $scope){
   $scope.success = false
   $scope.failure = false
-  
+  $scope.currentAdmin = {}
+
   $scope.init = function (){
     getData()
   } 
 
+  $scope.changePassword = function(){
+    console.log('attempting to change password')
+    if($scope.admin.password === $scope.admin.passwordConfirm){
+      $http.post('/admin/changePassword', {
+        newPass: $scope.admin.password,
+        oldPass: $scope.admin.currentPassword,    
+        currentPass: $scope.currentAdmin.password
+      }).success(function (data){
+        $scope.success = 'Password changed successfully'
+        $scope.failure = false
+      }).error(function(){
+        $scope.success = false
+        $scope.failure = 'Current password is incorrect'
+      })
+    }else{
+      $scope.success = false
+      $scope.failure = 'Passwords must match'
+    }
+  }
+
   var getData = function (){
     $http.post('/admin/getAdmin', {}).success(function (data){
       $scope.currentAdmin = data.currentAdmin
-      console.log(data.currentAdmin.firstName)
     })
   }
 
