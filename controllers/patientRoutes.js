@@ -54,4 +54,13 @@ router.post('/patient/edit', auth, function (req, res){
 	})
 })
 
+router.get('/patient/getDoctors', auth, function (req, res){
+	pat.getDoctors().then(function(result){
+		if(result){
+			return res.json(result)
+		}
+	})
+})
+
+
 module.exports = router

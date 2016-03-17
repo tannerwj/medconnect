@@ -74,6 +74,14 @@
 		vm.message = "";
 
 		$http.get('/doctor/info').success(function (info) {
+			var specs = info.specialties;
+			var tmp = [];
+			for(var o in specs) {
+				var spec = specs[o];
+				vm.ids.push(spec._id);
+				vm.datas.push(spec.name);
+			  tmp.push(spec.name);
+			}
 			vm.email = info.email;
 			vm.firstName = info.firstName;
 			vm.lastName = info.lastName;
@@ -83,7 +91,7 @@
 			vm.experience = info.exp;
 			vm.volunteerNotes = info.vol;
 			vm.otherNotes = info.notes;
-			vm.specialties = info.specialties //info.specialties = array?
+			vm.specialties = tmp
 		}).catch(function (error) {
 			console.log("Error is : " + error);
 		});

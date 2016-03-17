@@ -50,6 +50,7 @@ router.post('/doctor/edit', auth, function (req, res){
     exp: req.body.experience,
     volunteer: req.body.volunteerNotes,
     other: req.body.otherNotes,
+    specialties: req.body.specialties,
 		code: req.body.code
 	}
 	doc.edit(user).then(function (result){

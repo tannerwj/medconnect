@@ -130,28 +130,13 @@ medconnect.controller('PatientSearch', ['$http', '$location', function($http, $l
   var vm = this;
   vm.doctors = [];
   vm.message = "";
-  vm.sortField = 'lastName'; // initialize sorting by lastName
+  vm.sortField = 'name'; // initialize sorting by lastName
   vm.reverse = true;
 
-  vm.doctors = [{
-    firstName : 'Phillip',
-    lastName : 'Shim',
-    specialty : "nothing",
-    experience: '5yrs'
-  },
-  {
-    firstName : 'Tanner',
-    lastName : 'Johnson',
-    specialty : "Cardiovascular",
-    experience: '8yrs'
-  },
-  {
-    firstName : 'Rodrigo',
-    lastName : 'Concha',
-    specialty : "Urinary",
-    experience: '12yrs'
-  }
-];
+  $http.get('/patient/getDoctors').success(function (doctors){
+    vm.doctors = doctors
+  })
+
   // $http.get('').success(function(list)){
   //   vm.doctors = list;
   // }.catch(function(error)){
