@@ -56,6 +56,15 @@
 		</div>
 	</div>
 	<div class="form-group">
+		<label for="code" class="col-sm-4 control-label">Doctor Verification Number:</label>
+		<div class="col-sm-4">
+			<div class="input-group">
+				<span class="input-group-addon"><i class="fa fa-code fa-fw"></i></span>
+				<input type="text" class="form-control" id="code" ng-model="doctor.code" ng-readonly="!doctor.editMode">
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
 		<label for="experience" class="col-sm-4 control-label">Experience : </label>
 		<div class="col-sm-4">
 			<div class="input-group">
@@ -78,24 +87,23 @@
 		<div class="col-sm-4">
 			<div class="input-group">
 				<span class="input-group-addon"><i class="fa fa-pencil fa-fw"></i></span>
-				<textarea class="form-control" id="notes" rows="3" ng-readonly="!doctor.editMode" ng-model="doctor.otherNotes"></textarea>
+				<textarea class="form-control" id="notes" rows="2" ng-readonly="!doctor.editMode" ng-model="doctor.otherNotes"></textarea>
 			</div>
 		</div>
 	</div>
 	<div class="form-group">
-		<label for="select" class="col-sm-4 control-label">Specialties</label>
+		<label for="specialties" class="col-sm-4 control-label">Specialties</label>
 		<div class="col-sm-4">
 			<div class="input-group">
 				<span class="input-group-addon"><i class="fa fa-stethoscope fa-fw"></i></span>
-				<input type="text" class="form-control" id="select" readonly ng-model="doctor.specialties">
-				{{doctor.data}}
+				<input type="text" class="form-control" id="specialties" readonly ng-model="doctor.specialties">
 			</div>
 		</div>
 	</div>
 <div class="form-group" ng-show="doctor.editMode">
-	<label for="specialties" class="col-sm-4 control-label"> </label>
+	<label for="select" class="col-sm-4 control-label"> </label>
 	<div class="col-sm-4">
-			<select class = "form-control" ng-model="doctor.selectedItem" ng-options="item.name for item in doctor.items">
+			<select class = "form-control" id = "select" ng-model="doctor.selectedItem" ng-options="item.name for item in doctor.items">
 				<option style="display:none" value="">Select a speciality</option>
 			</select>
 	</div>
@@ -107,18 +115,9 @@
 	</div>
 </div>
 	<div class="form-group">
-		<label for="code" class="col-sm-4 control-label">Doctor Verification Number:</label>
-		<div class="col-sm-4">
-			<div class="input-group">
-				<span class="input-group-addon"><i class="fa fa-code fa-fw"></i></span>
-				<input type="text" class="form-control" id="code" ng-model="doctor.code" ng-readonly="!doctor.editMode">
-			</div>
-		</div>
-	</div>
-	<div class="form-group">
 		<div class="col-sm-offset-4 col-sm-2">
 			<input class="btn btn-default" type="button" value="Edit" ng-click="doctor.edit()" ng-show="!doctor.editMode">
-			<button type="submit" class="btn btn-default" ng-show="doctor.editMode">Submit</button>
+			<button type="submit" class="btn btn-default" ng-show="doctor.editMode">Save</button>
 		</div>
 		<div ng-show="doctor.error" class="col-sm-2">
 			<input type="button" class="btn btn-danger" value= "{{doctor.message}}">

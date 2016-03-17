@@ -1,4 +1,4 @@
-var medconnect = angular.module('medconnect', ['mcPatient', 'mcDoctor', 'mcAdmin','ngRoute', 'ngMessages', 'ui.bootstrap']);
+var medconnect = angular.module('medconnect', ['mcPatient', 'mcDoctor', 'mcAdmin','mcModal', 'ngRoute', 'ngMessages', 'ui.bootstrap']);
 
 medconnect.config(['$routeProvider', '$locationProvider',
   function($routeProvider, $locationProvider) {
@@ -47,15 +47,11 @@ medconnect.config(['$routeProvider', '$locationProvider',
     $routeProvider
       .when('/', {
         templateUrl: '/views/login.html',
-        controller: 'Login'
-      })
-      .when('/register-patient', {
-        templateUrl: '/views/patient/register.html',
-        controller: 'PRController'
+        controller:'nav'
       })
       .when('/register-doctor', {
         templateUrl: '/views/doctor/register.html',
-        controller: 'DRController'
+        controller:'nav'
       })
       .when('/doctor', {
         templateUrl: '/views/doctor/index.html',
@@ -68,6 +64,9 @@ medconnect.config(['$routeProvider', '$locationProvider',
 				resolve:{
 					isDoctor: isDoctor
 				}
+      })
+      .when('/register-patient', {
+        templateUrl: '/views/patient/register.html'
       })
       .when('/patient', {
         templateUrl: '/views/patient/index.html',
@@ -134,6 +133,23 @@ medconnect.config(['$routeProvider', '$locationProvider',
 
 medconnect.controller('nav', ['$http', '$location', '$scope', '$window', function($http, $location, $scope, $window){
 
+    // if($window.location.href[$window.location.href.length-1] === "/"){
+    //   $scope.home = true;
+    //   console.log('home');
+    // }else{
+    //   console.log('not home')
+    //   $scope.home = false;
+    // }
+
+    // $location.path();
+    // console.log($location.path())
+    // if($location.path() === "/"){
+    //   $scope.home = true;
+    // }else{
+    //   $scope.home = false;
+    // }
+    // console.log($scope.home)
+
 		$scope.goBack = function(){
 			$window.history.back();
 		}
@@ -167,11 +183,11 @@ medconnect.controller('Login', ['$http', '$location', function($http, $location)
           'password' : vm.password
         }
       }).success(function(userType){
-        if(userType === '0'){ //doctor
+        if(userType === '0'){
             $location.url('/doctor')
-        }else if(userType === '1'){//patient
+        }else if(userType === '1'){
             $location.url('/patient')
-        }else if(userType === '2'){//admin
+        }else if(userType === '2'){
             $location.url('/admin')
         }else if(userType === 'unverified'){
             console.log('user is unverified')

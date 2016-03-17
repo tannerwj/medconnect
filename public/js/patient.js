@@ -2,10 +2,9 @@
 
 var medconnect = angular.module("mcPatient", []);
 
-medconnect.controller('PRController', ['$http', '$location', function($http, $location){
+medconnect.controller('PatientRegister', ['$http', '$location', '$uibModal', '$scope', function($http, $location, $uibModal, $scope){
 
   var vm = this;
-  vm.error = true;
 
   var receiveInputs = function(){
     if(vm.email && vm.firstName && vm.lastName && vm.gender && vm.address && vm.phoneNumber && vm.password && vm.passwordConfirm){
@@ -15,6 +14,26 @@ medconnect.controller('PRController', ['$http', '$location', function($http, $lo
     }
     return false;
   }
+
+  $scope.open = function (error, size) {
+
+    if(error){
+      $scope.item = "Missing/Incorrect fields, please try again.";
+    }else{
+      $scope.item = "Congratulations, you have successfully registered!";
+    }
+    var modalInstance = $uibModal.open({
+      animation: true,
+      templateUrl: '../views/modal.html',
+      controller: 'ModalInstanceCtrl',
+      size: size,
+      resolve: {
+        item : function(){
+          return $scope.item;
+        }
+      }
+    });
+  };
 
   vm.register = function(){
     if(receiveInputs()){
@@ -31,23 +50,22 @@ medconnect.controller('PRController', ['$http', '$location', function($http, $lo
           'password': vm.password
         }
       }).success(function(data){
+        $scope.open(false);
         console.log(data);
       }).error(function(err){
+        $scope.open(true);
         console.log('Server error: ' + err);
       })
-      $location.url('/')
   }else{
-    vm.error = false;
+    $scope.open(true);
   }
 
 }}]);
 
-medconnect.controller('PatientProfile', ['$http', '$location', function($http, $location){
+medconnect.controller('PatientProfile', ['$http', '$location', '$uibModal', '$scope', function($http, $location, $uibModal, $scope){
 
   var vm = this;
-  vm.error = false;
   vm.editMode = false;
-  vm.message = "";
 
 	$http.get('/patient/info').success(function(info){
 		console.log(info);
@@ -64,6 +82,26 @@ medconnect.controller('PatientProfile', ['$http', '$location', function($http, $
 	vm.edit = function(){
     vm.editMode = !vm.editMode;
   }
+//registered
+  $scope.open = function (error, size) {
+
+    if(error){
+      $scope.item = "Missing/Incorrect fields, please try again.";
+    }else{
+      $scope.item = "Awesome, you have successfully Edited your profile!";
+    }
+    var modalInstance = $uibModal.open({
+      animation: true,
+      templateUrl: '../views/modal.html',
+      controller: 'ModalInstanceCtrl',
+      size: size,
+      resolve: {
+        item : function(){
+          return $scope.item;
+        }
+      }
+    });
+  };
 
   vm.save = function(){
       $http({
@@ -76,16 +114,15 @@ medconnect.controller('PatientProfile', ['$http', '$location', function($http, $
           'address' : vm.address,
           'phone' : vm.phoneNumber
         }
-
       }).success(function(data){
+        $scope.open(false);
         console.log(data);
-        $location.url('/patient');
       }).error(function(err){
-        vm.error = true;
-        vm.message = "Server error";
+        $scope.open(true);
         console.log('Server error: ' + err);
       })
-    }
+  }
+
 }])
 
 medconnect.controller('PatientSearch', ['$http', '$location', function($http, $location){
@@ -124,6 +161,5 @@ medconnect.controller('PatientSearch', ['$http', '$location', function($http, $l
 
 
 }]);
-
 
 }());
