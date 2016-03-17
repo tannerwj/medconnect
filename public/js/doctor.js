@@ -88,6 +88,16 @@
 			console.log("Error is : " + error);
 		});
 
+		$http({
+				method: 'POST',
+				url: '/data/getStatic',
+				data: {
+					'type': 'specialties'
+				}
+			}).success(function(data){
+				console.log(data)
+				//vm.specialties = data;
+			})
 		vm.edit = function () {
 			vm.editMode = !vm.editMode;
 		}
