@@ -23,6 +23,7 @@ describe('Test doctor backend', function(){
     exp: 'lots',
     volunteer: 'not much',
     code: '1234567',
+    specialties: [],
     other: 'none'
   }
 	before(function () {
