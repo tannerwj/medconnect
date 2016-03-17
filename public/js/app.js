@@ -119,10 +119,15 @@ medconnect.config(['$routeProvider', '$locationProvider',
 				resolve:{ isAdmin: isAdmin },
         controller: 'AdminManage'
       })
-      .when('/admin/create', {
+      .when('/admin/manageAdmins', {
         templateUrl: '/views/admin/create.html',
 				resolve:{ isAdmin: isAdmin },
         controller: 'CreateAdmin'
+      })
+      .when('/admin/changePassword', {
+        templateUrl: '/views/admin/changePassword.html',
+        resolve:{ isAdmin: isAdmin },
+        controller: 'ChangePassword'
       })
 
   }]);
@@ -375,4 +380,21 @@ medconnect.controller('CreateAdmin', ['$http', '$scope', function($http, $scope)
     })
   }
   
+}])
+
+medconnect.controller('ChangePassword', ['$http', '$scope', function($http, $scope){
+  $scope.success = false
+  $scope.failure = false
+  
+  $scope.init = function (){
+    getData()
+  } 
+
+  var getData = function (){
+    $http.post('/admin/getAdmin', {}).success(function (data){
+      $scope.currentAdmin = data.currentAdmin
+      console.log(data.currentAdmin.firstName)
+    })
+  }
+
 }])

@@ -78,4 +78,11 @@ router.post('/admin/deleteAdmin', auth, function (req, res){
 	})
 })
 
+router.post('/admin/getAdmin', auth, function (req, res){
+	admin.getAdmin(req.user.id).then(function (result){
+		if(result){ return res.json(result) }
+		res.sendStatus(400)
+	})
+})
+
 module.exports = router
