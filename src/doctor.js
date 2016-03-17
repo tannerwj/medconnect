@@ -16,7 +16,12 @@ var register = function (user){
 var edit = function (user){
   return Promise.all([
     db.query('UPDATE Users SET lastName =?, firstName =? WHERE userID =?;', [user.last, user.first, user.id]),
-    db.query('UPDATE DoctorProfile SET address =?, phone =?, verificationCode =?, experience =?, volunteerNotes =?, otherNotes =? WHERE userID =?;', [user.address, user.phone, user.code, user.exp, user.volunteer, user.other, user.id])
+    db.query('UPDATE DoctorProfile SET address =?, phone =?, verificationCode =?, experience =?, volunteerNotes =?, otherNotes =? WHERE userID =?;', [user.address, user.phone, user.code, user.exp, user.volunteer, user.other, user.id]),
+    db.query('DELETE FROM SpecialtyDoctor WHERE doctorID =?;', [user.id]).then(function (){
+      return Promise.map(user.specialties, function (id){
+        return db.query('INSERT INTO SpecialtyDoctor VALUES (?,?);',[id, user.id])
+      })
+    })
   ]).then(function (results){
     return results[0][0].affectedRows === 1 && results[1][0].affectedRows === 1
   })
@@ -71,7 +76,7 @@ var info = function (id){
   return Promise.all([
     db.query('SELECT email, firstName, lastName FROM Users WHERE userID =? LIMIT 1;', [id]),
     db.query('SELECT address, phone, verified, verificationCode, experience, volunteerNotes, otherNotes FROM DoctorProfile WHERE userID =? LIMIT 1;', [id]),
-    db.query('SELECT name FROM Specialties, SpecialtyDoctor WHERE Specialties._id = SpecialtyDoctor.specialtyID AND SpecialtyDoctor.doctorID = ?;', [id])
+    db.query('SELECT specialtyID AS _id, name FROM Specialties, SpecialtyDoctor WHERE Specialties._id = SpecialtyDoctor.specialtyID AND SpecialtyDoctor.doctorID = ?;', [id])
 ]).then(function (results){
     var tmp1 = results[0][0][0]
     var tmp2 = results[1][0][0]

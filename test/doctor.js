@@ -22,6 +22,7 @@ describe('Test doctor backend', function(){
     phone: '1234566789',
     exp: 'lots',
     volunteer: 'not much',
+    code: '1234567',
     other: 'none'
   }
 	before(function () {
