@@ -98,6 +98,12 @@ medconnect.config(['$routeProvider', '$locationProvider',
 					isPatient: isPatient
 				}
       })
+      .when('/patient/records/prescription', {
+        templateUrl: '/views/patient/prescription.html',
+				resolve:{
+					isPatient: isPatient
+				}
+      })
 
     $routeProvider
       .when('/admin', {
