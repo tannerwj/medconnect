@@ -65,9 +65,53 @@ var info = function (id){
   })
 }
 
+var getDoctors = function (){
+  return db.query('SELECT userID, address, experience FROM DoctorProfile;').then(function (doctors){
+    return Promise.map(doctors[0], function (doctor){
+      return Promise.all([
+        db.query('SELECT firstName, lastName FROM Users WHERE userID =?;', doctor.userID),
+        db.query('SELECT name FROM Specialties, SpecialtyDoctor WHERE Specialties._id = SpecialtyDoctor.specialtyID AND SpecialtyDoctor.doctorID =?;', [doctor.userID])
+      ]).then(function (results){
+        var tmp1 = results[0][0][0]
+        var specs = results[1][0]
+        var tmp = []
+        for(var o in specs) {
+  				var spec = specs[o]
+  				tmp.push(spec.name)
+  			}
+
+        return {
+          userID: doctor.userID,
+          name: tmp1.firstName + ' ' + tmp1.lastName,
+          address: doctor.address,
+          exp: doctor.experience,
+          specialties: tmp.join(', ')
+        }
+      })
+    })
+  })
+}
+
+var getDoctor = function (id){
+  return db.query('SELECT phone, verified, volunteerNotes, otherNotes FROM DoctorProfile WHERE userID =? LIMIT 1;', [id]).then(function (results){
+    if(!results[0]){ return false }
+
+    var profile = results[0][0]
+
+    return {
+      phone: profile.phone,
+      ver: profile.verified,
+      vol: profile.volunteerNotes,
+      notes: profile.otherNotes
+    }
+  })
+}
+
 module.exports = {
   register: register,
   edit: edit,
   deletePatient: deletePatient,
-  info: info
+  info: info,
+  getDoctors: getDoctors,
+  getDoctor: getDoctor
 }

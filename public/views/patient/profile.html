@@ -1,4 +1,4 @@
-<form class="form-horizontal" name="patientForm" ng-controller="PatientProfile as patient" ng-submit="patient.register()" novalidate>
+<form class="form-horizontal" name="patientForm" ng-controller="PatientProfile as patient" ng-submit="patient.save()" novalidate>
   <h1 ng-show = "!patient.editMode">Patient Profile</h1>
   <h1 ng-show = "patient.editMode">Patient Profile Edit</h1>
   <div class="form-group" ng-class="{ 'has-error': patientForm.email.$touched && patientForm.email.$invalid }">
@@ -68,9 +68,6 @@
     <div class="col-sm-offset-4 col-sm-2">
       <input class="btn btn-default" type="button" value="Edit" ng-click="patient.edit()" ng-show = "!patient.editMode">
       <button type="submit" class="btn btn-default" ng-show = "patient.editMode">Submit</button></div>
-    <div ng-if="patient.error" class="col-sm-2">
-      <button class="btn btn-danger">{{patient.message}}</button>
-    </div>
   </div>
 </form>
 

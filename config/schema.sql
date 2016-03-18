@@ -26,7 +26,8 @@ CREATE TABLE `Users` (
 
 CREATE TABLE `UserType` (
 	`typeID` tinyint(1) NOT NULL UNIQUE,
-	`typeName` varchar(80) NOT NULL UNIQUE
+	`typeName` varchar(80) NOT NULL UNIQUE,
+	 UNIQUE KEY `unique_usertypes` (`typeID`,`typeName`)
 );
 
 INSERT INTO `UserType` (`typeID`, `typeName`) VALUES (0, 'doctor'), (1, 'patient'), (2, 'admin');
@@ -68,7 +69,8 @@ CREATE TABLE `DoctorProfile` (
 
 CREATE TABLE `AllergyPatient` (
 	`allergyID` int(5) NOT NULL,
-	`userID` int(15) NOT NULL
+	`userID` int(15) NOT NULL,
+	 UNIQUE KEY `unique_allergies` (`allergyID`,`userID`)
 );
 
 CREATE TABLE `Allergies` (
@@ -87,7 +89,8 @@ CREATE TABLE `MedicationPatient` (
 	`stopDate` DATETIME NOT NULL,
 	`notes` varchar(255) NOT NULL,
 	`doctorID` int(15) NOT NULL,
-	`doctorName` varchar(80) NOT NULL
+	`doctorName` varchar(80) NOT NULL,
+	 UNIQUE KEY `unique_medications` (`medicationID`,`userID`)
 );
 
 CREATE TABLE `Medications` (
@@ -99,7 +102,8 @@ CREATE TABLE `Medications` (
 
 CREATE TABLE `SpecialtyDoctor` (
 	`specialtyID` int(5) NOT NULL,
-	`doctorID` int(15) NOT NULL
+	`doctorID` int(15) NOT NULL,
+	 UNIQUE KEY `unique_specialties` (`specialtyID`,`doctorID`)
 );
 
 CREATE TABLE `Specialties` (
