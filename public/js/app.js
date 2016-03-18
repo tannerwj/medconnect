@@ -1,11 +1,4 @@
-var medconnect = angular.module('medconnect', ['mcPatient', 'mcDoctor', 'mcAdmin','ngRoute', 'ngMessages', 'ui.bootstrap']);
-
-medconnect.run(['$window', '$rootScope',
-function ($window ,  $rootScope) {
-  $rootScope.goBack = function(){
-    $window.history.back();
-  }
-}]);
+var medconnect = angular.module('medconnect', ['mcPatient', 'mcDoctor', 'mcAdmin','mcModal', 'ngRoute', 'ngMessages', 'ui.bootstrap']);
 
 medconnect.config(['$routeProvider', '$locationProvider',
   function($routeProvider, $locationProvider) {
@@ -54,15 +47,11 @@ medconnect.config(['$routeProvider', '$locationProvider',
     $routeProvider
       .when('/', {
         templateUrl: '/views/login.html',
-        controller: 'Login'
-      })
-      .when('/register-patient', {
-        templateUrl: '/views/patient/register.html',
-        controller: 'PRController'
+        controller:'nav'
       })
       .when('/register-doctor', {
         templateUrl: '/views/doctor/register.html',
-        controller: 'DRController'
+        controller:'nav'
       })
       .when('/doctor', {
         templateUrl: '/views/doctor/index.html',
@@ -76,6 +65,9 @@ medconnect.config(['$routeProvider', '$locationProvider',
 					isDoctor: isDoctor
 				}
       })
+      .when('/register-patient', {
+        templateUrl: '/views/patient/register.html'
+      })
       .when('/patient', {
         templateUrl: '/views/patient/index.html',
 				resolve:{
@@ -84,6 +76,18 @@ medconnect.config(['$routeProvider', '$locationProvider',
       })
       .when('/patient/edit', {
         templateUrl: '/views/patient/profile.html',
+				resolve:{
+					isPatient: isPatient
+				}
+      })
+      .when('/patient/search', {
+        templateUrl: '/views/patient/search.html',
+        resolve:{
+          isPatient: isPatient
+        }
+      })
+      .when('/patient/records', {
+        templateUrl: '/views/patient/recordsmenu.html',
 				resolve:{
 					isPatient: isPatient
 				}
@@ -132,6 +136,44 @@ medconnect.config(['$routeProvider', '$locationProvider',
 
   }]);
 
+medconnect.controller('nav', ['$http', '$location', '$scope', '$window', function($http, $location, $scope, $window){
+
+    // if($window.location.href[$window.location.href.length-1] === "/"){
+    //   $scope.home = true;
+    //   console.log('home');
+    // }else{
+    //   console.log('not home')
+    //   $scope.home = false;
+    // }
+
+    // $location.path();
+    // console.log($location.path())
+    // if($location.path() === "/"){
+    //   $scope.home = true;
+    // }else{
+    //   $scope.home = false;
+    // }
+    // console.log($scope.home)
+
+		$scope.goBack = function(){
+			$window.history.back();
+		}
+
+		$scope.goHome = function(){
+		 $http.get('/loggedin').success(function (userType){
+        if (userType === '0'){
+          $location.url('/doctor');
+        }else if(userType === '1'){
+          $location.url('/patient');
+        }else if(userType === '2'){
+					$location.url('/admin');
+				}else{
+					$location.url('/');
+				}
+      })
+	}
+}]);
+
 medconnect.controller('Login', ['$http', '$location', function($http, $location){
 
   var vm = this;
@@ -146,11 +188,11 @@ medconnect.controller('Login', ['$http', '$location', function($http, $location)
           'password' : vm.password
         }
       }).success(function(userType){
-        if(userType === '0'){ //doctor
+        if(userType === '0'){
             $location.url('/doctor')
-        }else if(userType === '1'){//patient
+        }else if(userType === '1'){
             $location.url('/patient')
-        }else if(userType === '2'){//admin
+        }else if(userType === '2'){
             $location.url('/admin')
         }else if(userType === 'unverified'){
             console.log('user is unverified')
@@ -423,3 +465,4 @@ medconnect.controller('ChangePassword', ['$http', '$scope', function($http, $sco
   }
 
 }])
+
