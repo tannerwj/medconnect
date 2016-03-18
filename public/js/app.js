@@ -401,13 +401,18 @@ medconnect.controller('ChangePassword', ['$http', '$scope', function($http, $sco
       }).success(function (data){
         $scope.success = 'Password changed successfully'
         $scope.failure = false
-      }).error(function(){
+        $scope.admin.currentPassword = ''
+        $scope.admin.password = ''
+        $scope.admin.passwordConfirm = ''
+      }).error(function(err){
         $scope.success = false
         $scope.failure = 'Current password is incorrect'
       })
     }else{
       $scope.success = false
       $scope.failure = 'Passwords must match'
+      $scope.admin.password = ''  
+      $scope.admin.passwordConfirm = ''
     }
   }
 

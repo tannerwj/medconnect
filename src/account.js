@@ -23,22 +23,19 @@ var register = function (user){
 
 var changePassword = function(newPass, oldPass, currentPass, userId){
   return new Promise(function(resolve, reject){
-    bcrypt.genSalt(BCRYPT_ROUNDS, function (salt){
-      bcrypt.hash(oldPass, salt, null, function (err, hash) {
-        if(err) return reject(err)
-        bcrypt.compare(hash, currentPass, function (err, res) {
-          if(res){
-            bcrypt.genSalt(BCRYPT_ROUNDS, function (salt){
-              bcrypt.hash(newPass, salt, null, function (err, hash2) {
-                if(err) return reject(err)
-                  return resolve(db.query('UPDATE Users set password = ? where userID = ?', [hash2, userId]).then( function (result){
-                  return result[0][0] !== undefined
-                }))
-              })
-            })
-          }
+    bcrypt.compare(oldPass, currentPass, function (err, res) {
+      if(res){
+        bcrypt.genSalt(BCRYPT_ROUNDS, function (salt){
+          bcrypt.hash(newPass, salt, null, function (err, hash) {
+            if(err) return reject(err)
+            return resolve(db.query('UPDATE Users set password = ? where userID = ?;', [hash, userId]).then( function (result){
+              return result[0].affectedRows === 1
+            }))
+          })
         })
-      })
+      }else{
+        return resolve(false)
+      }
     })
   })
 }
@@ -83,5 +80,5 @@ module.exports = {
   findUserById: findUserById,
   findUserByEmail: findUserByEmail,
   userExists: userExists,
-  changePasswrd: changePassword
+  changePassword: changePassword
 }
