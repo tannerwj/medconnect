@@ -1,0 +1,19 @@
+<form class="form-horizontal" name="Feedback" ng-controller="Feedback as fb" ng-submit="feedback.save()" novalidate>
+	<h1 ng-show="!doctor.editMode">Give Feedback</h1>
+	<h1 ng-show="doctor.editMode">Add Feedback</h1>
+<div class="form-group">
+		<label for="Feedback" class="col-sm-4 control-label">Feedback: </label>
+		<div class="col-sm-4">
+			<div class="input-group">
+				<span class="input-group-addon"><i class="fa fa-medkit fa-fw"></i></span>
+				<textarea class="form-control" id="feedback" rows="3" ng-readonly="!feedback.editMode" ng-model="patient.feedback"></textarea>
+			</div>
+		</div>
+</div>
+<div class="form-group">
+		<div class="col-sm-offset-4 col-sm-2">
+			<input class="btn btn-default" type="button" value="Add Feedback" ng-click="feedback.edit()" ng-show="!feedback.editMode">
+			<button type="submit" class="btn btn-default" ng-show="feedback.editMode">Save</button>
+		</div>
+  </div>
+ </form>
