@@ -39,6 +39,11 @@ exports.viewAdmins = function (userId){
 
 exports.viewDoctors = function (userId){
   return Promise.all([
+    /*
+      Unverified doctors: verified = 0
+      Denied doctors: verified = -1
+      Verified doctors: verified = 1
+    */
     db.query('SELECT * FROM DoctorProfile dp join Users u on u.userID = dp.userID where verified = -1;'),
     db.query('SELECT * FROM DoctorProfile dp join Users u on u.userID = dp.userID where verified = 0;'),
     db.query('SELECT * FROM DoctorProfile dp join Users u on u.userID = dp.userID where verified = 1;')
