@@ -1,0 +1,79 @@
+<form class="form-horizontal" name="prescriptionForm" ng-controller="addprescription as ap" ng-submit="ap.save()" novalidate>
+	<h1 ng-show="!ap.editMode">Prescriptions</h1>
+	<h1 ng-show="ap.editMode">Add Prescription</h1>
+	<div class="form-group" ng-class="{ 'has-error': apForm.prescription.$touched && apForm.prescription.$invalid }">
+		<label for="email" class="col-sm-4 control-label">Prescription Name:</label>
+		<div class="col-sm-4">
+			<div class="input-group">
+				<span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
+				<input type="name" name="prescriptionName" class="form-control" id="email" ng-model="ap.prescription" ng-maxlength="80" ng-readonly="!ap.editMode">
+			</div>
+			<div class="help-block" ng-messages="apForm.prescription.$error" ng-show="apForm.prescription name.$touched">
+				<div ng-messages-include="my-custom-messages"></div>
+			</div>
+		</div>
+	</div>
+	<div class="form-group" ng-class="{ 'has-error': apForm.dosage.$touched && apForm.dosage.$invalid }">
+		<label for="firstName" class="col-sm-4 control-label">Dosage:</label>
+		<div class="col-sm-4">
+			<div class="input-group">
+				<span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+				<input type="text" name="dosage" class="form-control" id="dosage" ng-model="ap.dosage" ng-maxlength="80" ng-readonly="!ap.editMode">
+			</div>
+			<div class="help-block" ng-messages="apForm.dosage.$error" ng-show="apForm.dosage.$touched">
+				<div ng-messages-include="my-custom-messages"></div>
+			</div>
+		</div>
+	</div>
+	<div class="form-group" ng-class="{ 'has-error': apForm.HMAW.$touched && apForm.HMAW.$invalid }">
+		<label for="HMAW" class="col-sm-4 control-label">How Much and When:</label>
+		<div class="col-sm-4">
+			<div class="input-group">
+				<span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+				<input type="text" name="HMAW" class="form-control" id="HMAW" ng-model="ap.HMAW" ng-maxlength="80" ng-readonly="!ap.editMode">
+			</div>
+			<div class="help-block" ng-messages="apForm.HMAW.$error" ng-show="apForm.HMAW.$touched">
+				<div ng-messages-include="my-custom-messages"></div>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="startDate" class="col-sm-4 control-label">Start Date:</label>
+		<div class="col-sm-4">
+			<div class="input-group">
+				<span class="input-group-addon"><i class="fa fa-home fa-fw"></i></span>
+				<input type="text" class="form-control" id="startDate" ng-model="ap.startDate" ng-readonly="!ap.editMode">
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="stopDate" class="col-sm-4 control-label">Stop Date:</label>
+		<div class="col-sm-4">
+			<div class="input-group">
+				<span class="input-group-addon"><i class="fa fa-phone fa-fw"></i></span>
+				<input type="text" class="form-control" id="stopDate" ng-model="ap.stopDate" ng-readonly="!ap.editMode">
+			</div>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label for="Prescription" class="col-sm-4 control-label">Prescription Notes: </label>
+		<div class="col-sm-4">
+			<div class="input-group">
+				<span class="input-group-addon"><i class="fa fa-medkit fa-fw"></i></span>
+				<textarea class="form-control" id="prescription" rows="3" ng-readonly="!ap.editMode" ng-model="ap.PrescriptionNotes"></textarea>
+			</div>
+		</div>
+	</div>
+
+<div class="form-group" ng-show="ap.editMode">
+	<label for="specialties" class="col-sm-4 control-label"> </label>
+	<div class="col-sm-4">
+		<input class = "btn btn-success btn-sm" ng-click="ap.add()" value="added">
+	</div>
+</div>
+	<div class="form-group">
+		<div class="col-sm-offset-4 col-sm-2">
+			<input class="btn btn-default" type="button" value="Add Prescription" ng-click="ap.edit()" ng-show="!ap.editMode">
+			<button type="submit" class="btn btn-default" ng-show="ap.editMode">Save</button>
+		</div>
