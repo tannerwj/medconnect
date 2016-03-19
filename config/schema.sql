@@ -61,7 +61,7 @@ CREATE TABLE `DoctorProfile` (
 	`phone` varchar(12) NOT NULL,
 	`verified` tinyint(1) NOT NULL,
 	`verificationCode` varchar(255) NOT NULL,
-	`experience` varchar(10) NOT NULL,
+	`experience` varchar(10) NOT NULL,v
 	`volunteerNotes` varchar(255) NOT NULL,
 	`otherNotes` varchar(255) NOT NULL,
 	PRIMARY KEY (`userID`)

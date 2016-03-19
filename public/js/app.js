@@ -299,7 +299,44 @@ medconnect.controller('DRController', ['$http', '$location', function($http, $lo
 
 }}]);
 
-medconnect.controller('VerifyDoctor', ['$http', function($http){
+medconnect.controller('VerifyDoctor', ['$http', '$scope', function($http, $scope){
+  $scope.success = false
+  $scope.failure = false
+  $scope.verified = []
+  $scope.unverified = []
+  $scope.denied = []
+
+  $scope.init = function(){
+    getData()
+  }
+
+  $scope.verify = function(user){
+    $http.post('/admin/verifyDoctor', {
+      user: user
+    }).success(function (data){
+        getData()
+        $scope.success = 'Successfully verified ' + user.firstName + ' ' + user.lastName
+        $scope.failure = false
+    })
+  }
+
+  $scope.deny = function(user){
+    $http.post('/admin/denyDoctor', {
+      user: user
+    }).success(function (data){
+        getData()
+        $scope.success = user.firstName + ' ' + user.lastName + ' has been denied'
+        $scope.failure = false
+    })
+  }
+
+  var getData = function (){
+    $http.post('/admin/viewDoctors', {}).success(function (data){
+      $scope.verified = data.verified
+      $scope.unverified = data.unverified
+      $scope.denied = data.denied
+    })
+  }
 
 }])
 
