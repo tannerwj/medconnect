@@ -70,6 +70,7 @@
 		vm.ids = [];
 		vm.datas = [];
 		vm.items = []; //grabs specialties from admin
+		$scope.alerts = [];
 		vm.error = false;
 		vm.message = "";
 
@@ -78,6 +79,8 @@
 			var tmp = [];
 			for(var o in specs) {
 				var spec = specs[o];
+				spec.msg = spec.name;
+				$scope.alerts.push(spec)
 				vm.ids.push(spec._id);
 				vm.datas.push(spec.name);
 			  tmp.push(spec.name);
@@ -92,6 +95,7 @@
 			vm.volunteerNotes = info.vol;
 			vm.otherNotes = info.notes;
 			vm.specialties = tmp
+			console.log(vm.ids, vm.datas)
 		}).catch(function (error) {
 			console.log("Error is : " + error);
 		});
@@ -118,34 +122,14 @@
 				vm.message = "No duplicate speciality";
 				return false;
 			}else{
-				//cards
 				vm.ids.push(vm.selectedItem._id);
 				vm.datas.push(vm.selectedItem.name);
 				vm.specialties = vm.datas.join(", ");
+				$scope.alerts.push({msg:vm.selectedItem.name});
 				vm.error = false;
 				return true;
 			}
 		}
-
-		$scope.open = function (error, size) {
-
-	    if(error){
-	      $scope.item = "Missing/Incorrect fields, please try again.";
-	    }else{
-	      $scope.item = "Fantastic, you have successfully Edited your profile!";
-	    }
-	    var modalInstance = $uibModal.open({
-	      animation: true,
-	      templateUrl: '../views/modal.html',
-	      controller: 'ModalInstanceCtrl',
-	      size: size,
-	      resolve: {
-	        item : function(){
-	          return $scope.item;
-	        }
-	      }
-	    });
-	  };
 
 		vm.save = function () {
 			console.log(vm.ids);
@@ -171,8 +155,53 @@
 	        console.log('Server error: ' + err);
 	      })
 		}
+		// Modal open
+		$scope.open = function (error, size) {
+
+	    if(error){
+	      $scope.item = "Missing/Incorrect fields, please try again.";
+	    }else{
+	      $scope.item = "Fantastic, you have successfully Edited your profile!";
+	    }
+	    var modalInstance = $uibModal.open({
+	      animation: true,
+	      templateUrl: '../views/modal.html',
+	      controller: 'ModalInstanceCtrl',
+	      size: size,
+	      resolve: {
+	        item : function(){
+	          return $scope.item;
+	        }
+	      }
+	    });
+	  };
+		// Alert close
+		$scope.closeAlert = function(index) {
+			if(!vm.editMode){
+
+			}else{
+				vm.ids.splice(index, 1);
+				vm.datas.splice(index, 1);
+				$scope.alerts.splice(index, 1);
+			}
+		};
 
   }]);
+
+
+	// medconnect.controller('AlertDemoCtrl', function ($scope) {
+	//   $scope.alerts = [
+	//     { type: 'success', msg: 'Well done! You successfully read this important alert message.' }
+	//   ];
+	//
+	//   $scope.addAlert = function() {
+	//     $scope.alerts.push({msg: 'Another alert!'});
+	//   };
+	//
+	//   $scope.closeAlert = function(index) {
+	//     $scope.alerts.splice(index, 1);
+	//   };
+	// });
 
 	medconnect.controller('VerifyDoctor', ['$http', function ($http) {
 
