@@ -1,5 +1,17 @@
 <div class="admin" ng-init=init()>
   <h1>Manage Admins</h1>
+  <div class="alert alert-success" role="alert" ng-show='success'>
+    <button type='button' class='close' aria-label='Close' ng-click='success = false'>
+      <span aria-hidden='true'>&times;</span>
+    </button>
+    {{success}}
+  </div>
+  <div class="alert alert-info" role="alert" ng-show='failure'>
+    <button type='button' class='close' aria-label='Close' ng-click='failure = false'>
+      <span aria-hidden='true'>&times;</span>
+    </button>
+    {{failure}}
+  </div>
   <div class="login-or">
     <hr class="hr-or">
     <span class="span-or">Admins</span>
@@ -64,16 +76,4 @@
       </div>
     </div>
   </form>
-  <div class="alert alert-success" role="alert" ng-show='success'>
-    <button type='button' class='close' aria-label='Close' ng-click='success = false'>
-      <span aria-hidden='true'>&times;</span>
-    </button>
-    {{success}}
-  </div>
-  <div class="alert alert-info" role="alert" ng-show='failure'>
-    <button type='button' class='close' aria-label='Close' ng-click='failure = false'>
-      <span aria-hidden='true'>&times;</span>
-    </button>
-    {{failure}}
-  </div>
 </div>

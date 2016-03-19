@@ -32,7 +32,17 @@ exports.viewAdmins = function (userId){
     db.query('SELECT * FROM Users where userType = 2 and userID != ?;', [userId])
   ]).then(function (result){
     return {
-      currentAdmins: result[0][0],
+      currentAdmins: result[0][0]
+    }
+  })
+}
+
+exports.getAdmin = function (userId){
+  return Promise.all([
+    db.query('SELECT * FROM Users where userID = ?;', [userId])
+  ]).then(function (result){
+    return {
+      currentAdmin: result[0][0][0]
     }
   })
 }
