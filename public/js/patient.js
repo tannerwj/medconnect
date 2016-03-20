@@ -137,20 +137,22 @@ medconnect.controller('PatientSearch', ['$http', '$location', function($http, $l
     vm.reverse = !vm.reverse;
   }
 
+  vm.changeView = function(){
+    vm.searchDoctors = !vm.searchDoctors;
+  }
+
   $http.get('/patient/getDoctors').success(function (doctors){
     vm.doctors = doctors
   })
 
   vm.viewDoctor = function(doctor){
-    vm.searchDoctors = false;
+    vm.changeView();
+    vm.name = doctor.name;
+    vm.location = doctor.address;
+    vm.specialties = doctor.specialties;
+    vm.experience = doctor.exp;
+
     console.log(doctor.userID)
-
-    // loc: profile.address,
-    // phone: profile.phone,
-    // ver: profile.verified,
-    // vol: profile.volunteerNotes,
-    // notes: profile.otherNotes,
-
     $http({
       method:'POST',
       url:'/doctor/specific-doctor',
@@ -158,18 +160,14 @@ medconnect.controller('PatientSearch', ['$http', '$location', function($http, $l
         'id' : doctor.userID
       }
     }).success(function(data){
-      console.log(data);
+      vm.notes = data.notes;
+      vm.volunteerNotes = data.vol;
+      vm.verified = data.ver;
     }).error(function(err){
       console.log('Server error: ' + err);
     })
 
   }
-  // $http.get('').success(function(list)){
-  //   vm.doctors = list;
-  // }.catch(function(error)){
-  //   vm.message = "coudln't retrieve doctors";
-  // }
-
 
 
 }]);
