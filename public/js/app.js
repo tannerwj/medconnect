@@ -424,7 +424,7 @@ medconnect.controller('CreateAdmin', ['$http', '$scope', function($http, $scope)
   $scope.init = function (){
     type = 'user'
     getData()
-  } 
+  }
 
   var receiveInputs = function(){
     if($scope.newAdmin.password === $scope.newAdmin.passwordConfirm){
@@ -452,7 +452,7 @@ medconnect.controller('CreateAdmin', ['$http', '$scope', function($http, $scope)
       $scope.success = false
     }
   }
-  
+
   $scope.delete = function (d){
     $http.post('/admin/deleteAdmin', {
       id: d.userID
@@ -470,7 +470,7 @@ medconnect.controller('CreateAdmin', ['$http', '$scope', function($http, $scope)
       $scope.currentAdmins = data.currentAdmins
     })
   }
-  
+
 }])
 
 medconnect.controller('ChangePassword', ['$http', '$scope', function($http, $scope){
@@ -480,14 +480,14 @@ medconnect.controller('ChangePassword', ['$http', '$scope', function($http, $sco
 
   $scope.init = function (){
     getData()
-  } 
+  }
 
   $scope.changePassword = function(){
     console.log('attempting to change password')
     if($scope.admin.password === $scope.admin.passwordConfirm){
       $http.post('/admin/changePassword', {
         newPass: $scope.admin.password,
-        oldPass: $scope.admin.currentPassword,    
+        oldPass: $scope.admin.currentPassword,
         currentPass: $scope.currentAdmin.password
       }).success(function (data){
         $scope.success = 'Password changed successfully'
@@ -502,7 +502,7 @@ medconnect.controller('ChangePassword', ['$http', '$scope', function($http, $sco
     }else{
       $scope.success = false
       $scope.failure = 'Passwords must match'
-      $scope.admin.password = ''  
+      $scope.admin.password = ''
       $scope.admin.passwordConfirm = ''
     }
   }
@@ -514,4 +514,3 @@ medconnect.controller('ChangePassword', ['$http', '$scope', function($http, $sco
   }
 
 }])
-

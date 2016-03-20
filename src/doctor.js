@@ -52,7 +52,7 @@ var doctorExists = function (id){
 var getDoctorDetails = function (id){
   return Promise.all([
     db.query('SELECT address, verified, experience, volunteerNotes, otherNotes FROM DoctorProfile WHERE userID = ? LIMIT 1;', [id]),
-    db.query('SELECT specialtyName FROM Specialties, SpecialtyDoctor WHERE Specialties.specialtyID = SpecialtyDoctor.specialtyID AND SpecialtyDoctor.doctorID = ?;', [id])
+    db.query('SELECT name FROM Specialties, SpecialtyDoctor WHERE Specialties._id = SpecialtyDoctor.specialtyID AND SpecialtyDoctor.doctorID = ?;', [id])
   ]).then(function (results){
     if(!results[0][0]){ return false }
 
