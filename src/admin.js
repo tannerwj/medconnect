@@ -37,6 +37,37 @@ exports.viewAdmins = function (userId){
   })
 }
 
+exports.viewDoctors = function (userId){
+  return Promise.all([
+    /*
+      Unverified doctors: verified = 0
+      Denied doctors: verified = -1
+      Verified doctors: verified = 1
+    */
+    db.query('SELECT * FROM DoctorProfile dp join Users u on u.userID = dp.userID where verified = -1;'),
+    db.query('SELECT * FROM DoctorProfile dp join Users u on u.userID = dp.userID where verified = 0;'),
+    db.query('SELECT * FROM DoctorProfile dp join Users u on u.userID = dp.userID where verified = 1;')
+  ]).then(function (result){
+    return {
+      denied: result[0][0],
+      unverified: result[1][0],
+      verified: result[2][0]
+    }
+  })
+}
+
+exports.verifyDoctor = function (user){
+  return db.query('UPDATE DoctorProfile SET verified = 1 WHERE userID =?;', [user.userID]).then(function (result){
+    return result[0].affectedRows === 1
+  })
+}
+
+exports.denyDoctor = function (user){
+  return db.query('UPDATE DoctorProfile SET verified = -1 WHERE userID =?;', [user.userID]).then(function (result){
+    return result[0].affectedRows === 1
+  })
+}
+
 exports.getAdmin = function (userId){
   return Promise.all([
     db.query('SELECT * FROM Users where userID = ?;', [userId])

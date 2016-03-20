@@ -1,0 +1,76 @@
+<div class="admin" ng-init=init()>
+  <h1>Verify Doctors</h1>
+  <div class="alert alert-success" role="alert" ng-show='success'>
+		<button type='button' class='close' aria-label='Close' ng-click='success = false'>
+			<span aria-hidden='true'>&times;</span>
+		</button>
+    {{success}}
+  </div>
+  <div class="alert alert-info" role="alert" ng-show='failure'>
+		<button type='button' class='close' aria-label='Close' ng-click='failure = false'>
+			<span aria-hidden='true'>&times;</span>
+		</button>
+    {{failure}}
+  </div>
+	<div class="login-or">
+		<hr class="hr-or">
+		<span class="span-or">Unverified</span>
+	</div>
+  <div class="list-group adminList" ng-show='unverified'>
+    <li class="list-group-item list" ng-repeat='u in unverified'>
+      <div class='adminName'>
+        <h4>{{u.lastName + ', ' + u.firstName}}</h4>
+        Code: {{u.verificationCode}}
+      </div>
+      <div class="btn-group" uib-dropdown>
+        <button type="button" class="btn btn-default dropdown-toggle" uib-dropdown-toggle>
+          Options <span class="caret"></span>
+        </button>
+        <ul class='dropdown-menu'>
+          <li ng-click='verify(u)'><a href="#"><i class="fa fa-plus"></i> Verify</a></li>
+          <li ng-click='deny(u)'><a href="#"><i class="fa fa-minus"></i> Deny</a></li>
+        </ul>
+      </div>
+    </li>
+  </div>
+  <div class="login-or">
+    <hr class="hr-or">
+    <span class="span-or">Denied</span>
+  </div>
+  <div class="list-group adminList" ng-show='denied'>
+    <li class="list-group-item list" ng-repeat='d in denied'>
+      <div class='adminName'>
+        <h4>{{d.lastName + ', ' + d.firstName}}</h4>
+        Code: {{d.verificationCode}}
+      </div>
+      <div class="btn-group" uib-dropdown>
+        <button type="button" class="btn btn-default dropdown-toggle" uib-dropdown-toggle>
+          Options <span class="caret"></span>
+        </button>
+        <ul class='dropdown-menu'>
+          <li ng-click='verify(d)'><a href="#"><i class="fa fa-plus"></i> Verify</a></li>
+        </ul>
+      </div>
+    </li>
+  </div>
+	<div class="login-or">
+		<hr class="hr-or">
+		<span class="span-or">Verified</span>
+	</div>
+  <div class="list-group adminList" ng-show='verified'>
+    <li class="list-group-item list" ng-repeat='v in verified'>
+      <div class='adminName'>
+        <h4>{{v.lastName + ', ' + v.firstName}}</h4>
+        Code: {{v.verificationCode}}
+      </div>
+      <div class="btn-group" uib-dropdown>
+        <button type="button" class="btn btn-default dropdown-toggle" uib-dropdown-toggle>
+          Options <span class="caret"></span>
+        </button>
+        <ul class='dropdown-menu'>
+          <li ng-click='deny(v)'><a href="#"><i class="fa fa-minus"></i> Deny</a></li>
+        </ul>
+      </div>
+    </li>
+  </div>
+</div>

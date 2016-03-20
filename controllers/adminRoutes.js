@@ -59,6 +59,25 @@ router.post('/admin/viewAdmins', auth, function (req, res){
 	})
 })
 
+router.post('/admin/viewDoctors', auth, function (req, res){
+	admin.viewDoctors().then(function (result){
+		if(result){ return res.json(result) }
+		res.sendStatus(400)
+	})
+})
+
+router.post('/admin/verifyDoctor', auth, function (req, res){
+	admin.verifyDoctor(req.body.user).then(function (result){
+		res.sendStatus(result ? 200 : 400)
+	})
+})
+
+router.post('/admin/denyDoctor', auth, function (req, res){
+	admin.denyDoctor(req.body.user).then(function (result){
+		res.sendStatus(result ? 200 : 400)
+	})
+})
+
 router.post('/admin/createAdmin', auth, function (req, res){
 	var user = {
 		type: 2,
