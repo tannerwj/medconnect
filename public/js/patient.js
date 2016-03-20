@@ -82,7 +82,6 @@ medconnect.controller('PatientProfile', ['$http', '$location', '$uibModal', '$sc
 	vm.edit = function(){
     vm.editMode = !vm.editMode;
   }
-//registered
   $scope.open = function (error, size) {
 
     if(error){
@@ -132,11 +131,39 @@ medconnect.controller('PatientSearch', ['$http', '$location', function($http, $l
   vm.message = "";
   vm.sortField = 'name'; // initialize sorting by lastName
   vm.reverse = true;
+  vm.searchDoctors = true;
+
+  vm.changeOrder = function(){
+    vm.reverse = !vm.reverse;
+  }
 
   $http.get('/patient/getDoctors').success(function (doctors){
     vm.doctors = doctors
   })
 
+  vm.viewDoctor = function(doctor){
+    vm.searchDoctors = false;
+    console.log(doctor.userID)
+
+    // loc: profile.address,
+    // phone: profile.phone,
+    // ver: profile.verified,
+    // vol: profile.volunteerNotes,
+    // notes: profile.otherNotes,
+
+    $http({
+      method:'POST',
+      url:'/doctor/specific-doctor',
+      data: {
+        'id' : doctor.userID
+      }
+    }).success(function(data){
+      console.log(data);
+    }).error(function(err){
+      console.log('Server error: ' + err);
+    })
+
+  }
   // $http.get('').success(function(list)){
   //   vm.doctors = list;
   // }.catch(function(error)){
