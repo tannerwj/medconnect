@@ -1,13 +1,16 @@
 <div class="admin" ng-init=init('specialty')>
   <h1>Manage Specialties</h1>
-  <form class="form-inline adminManage" ng-submit="add()">
-    <div class="form-group">
-      <div class="input-group">
-        <input type="text" class="form-control" ng-model="name" placeholder="Specialty" required>
+    <form class="form-inline adminManage" ng-submit="add()">
+      <div class="form-group">
+        <label class="sr-only" for="name">Specialty Name</label>
+        <div class="input-group">
+          <input type="text" class="form-control" id="name" ng-model="name" placeholder="Specialty" required>
+          <span class="input-group-btn">
+            <button class="btn btn-primary" type="submit">Add Specialty</button>
+          </span>
+        </div>
       </div>
-    </div>
-    <button type="submit" class="btn btn-primary">Add Specialty</button>
-  </form>
+    </form>
   <div class="alert alert-success" role="alert" ng-show='success'>
 		<button type='button' class='close' aria-label='Close' ng-click='success = false'>
 			<span aria-hidden='true'>&times;</span>
@@ -26,15 +29,30 @@
 	</div>
   <div class="list-group adminList" ng-show='actives'>
     <li class="list-group-item list" ng-repeat='d in actives'>
-      <div class='adminName'>{{d.name}}</div>
-      <div class="btn-group" uib-dropdown>
-        <button type="button" class="btn btn-default dropdown-toggle" uib-dropdown-toggle>
-          Options <span class="caret"></span>
-        </button>
-        <ul class='dropdown-menu'>
-          <li ng-click='edit(d)'><a href="#"><i class="fa fa-pencil"></i> edit</a></li>
-          <li ng-click='deactivate(d)'><a href="#"><i class="fa fa-minus"></i> deactivate</a></li>
-        </ul>
+      <div class='wrapper' ng-hide="d.isEdit">
+        <div class='adminName'>{{d.name}}</div>
+        <div class="btn-group" uib-dropdown>
+          <button type="button" class="btn btn-default dropdown-toggle" uib-dropdown-toggle>
+            Options <span class="caret"></span>
+          </button>
+          <ul class='dropdown-menu'>
+            <li ng-click='edit(d)'><a href="#"><i class="fa fa-pencil"></i> edit</a></li>
+            <li ng-click='deactivate(d)'><a href="#"><i class="fa fa-minus"></i> deactivate</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="editForm" ng-show="d.isEdit">
+        <form class="form-inline adminManage" ng-submit="saveChanges(d)">
+          <div class="form-group">
+            <label class="sr-only" for="name">Specialty Name</label>
+            <div class="input-group">
+              <input type="text" class="form-control" id="name" ng-model="d.name" placeholder="{{d.name}}" required>
+              <span class="input-group-btn">
+                <button class="btn btn-success" type="submit" ng-disabled="ng">Save changes</button>
+              </span>
+            </div>
+          </div>
+        </form>
       </div>
     </li>
   </div>
