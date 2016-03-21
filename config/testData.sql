@@ -8,8 +8,8 @@ create procedure wipe_data()
 		delete from DoctorProfile;
 		delete from PatientProfile;
 		delete from SpecialtyDoctor;
-		delete from DataType;
 		delete from ExternalData;
+		delete from DataType;
 		delete from AllergyPatient;
 		delete from MedicationPatient;
 		delete from Vitals;
@@ -74,11 +74,11 @@ create procedure create_data()
 			(998, 'M', 'O', '013 Patient St.', '111-222-3333');
 
 		insert into DoctorProfile(userID, address, phone, verified, verificationCode, experience, volunteerNotes, otherNotes)
-		values(990, '123 Test St., Provo, UT 84601', '111-222-3333', -1, '12345qwert', '8 years', 'Awesome', 'other notes'),
-			(991, '123 Test St., Provo, UT 84601', '111-222-3333', 0, '12345qwert', '8 years', 'Awesome', 'other notes'),
-			(992, '123 Test St., Provo, UT 84601', '111-222-3333', 0, '12345qwert', '8 years', 'Awesome', 'other notes'),
-			(993, '123 Test St., Provo, UT 84601', '111-222-3333', 1, '12345qwert', '8 years', 'Awesome', 'other notes'),
-			(994, '123 Test St., Provo, UT 84601', '111-222-3333', 1, '12345qwert', '8 years', 'Awesome', 'other notes');
+		values(990, '123 Test St., Provo, UT 84601', '111-222-3333', -1, 'asdfhqwrasfhiw239823ry', '8 years', 'Awesome', 'other notes'),
+			(991, '123 Test St., Provo, UT 84601', '111-222-3333', 0, '1348eqf134fof8gewqfq3o8', '8 years', 'Awesome', 'other notes'),
+			(992, '123 Test St., Provo, UT 84601', '111-222-3333', 0, '2q38r919fefq3pfh34fqfff', '8 years', 'Awesome', 'other notes'),
+			(993, '123 Test St., Provo, UT 84601', '111-222-3333', 1, 'q394fqdiqanwefiuhqw239f', '8 years', 'Awesome', 'other notes'),
+			(994, '123 Test St., Provo, UT 84601', '111-222-3333', 1, '134r9fqf3h4f9843fhf8qoq', '8 years', 'Awesome', 'other notes');
 
 		insert into AllergyPatient(allergyID, userID)
 		values(10, 995),
