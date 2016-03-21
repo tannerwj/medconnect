@@ -58,7 +58,7 @@ router.post('/doctor/edit', auth, function (req, res){
 	})
 })
 
-router.post('/doctor/specific-doctor', auth, function (req, res){
+router.post('/doctor/specific-doctor', function (req, res){
   var docId = req.body.id
   doc.getDoctorDetails(docId).then(function (doctor){
     if(doctor){
