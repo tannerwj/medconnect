@@ -5,11 +5,14 @@ drop procedure IF EXISTS refresh_data;
 delimiter //
 create procedure wipe_data()
 	BEGIN
-		truncate table DoctorProfile;
-		truncate table SpecialtyDoctor;
+		delete from DoctorProfile;
+		delete from PatientProfile;
+		delete from SpecialtyDoctor;
 		delete from DataType;
+		delete from ExternalData;
 		delete from AllergyPatient;
 		delete from MedicationPatient;
+		delete from Vitals;
 		delete from Visits;
 		delete from Specialties;
 		delete from Allergies;
@@ -63,7 +66,13 @@ create procedure create_data()
 			(1000, 2, 'admin2@admin.com', 'Test10', 'Admin', '$2a$10$refQBWY1ZfHHUPWixvQ.Zur1pD.0s1FhHTzkxPj9z0C/80RW64rqG'),
 			(1001, 2, 'admin3@admin.com', 'Test11', 'Admin', '$2a$10$refQBWY1ZfHHUPWixvQ.Zur1pD.0s1FhHTzkxPj9z0C/80RW64rqG'),
 			(1002, 2, 'admin4@admin.com', 'Test12', 'Admin', '$2a$10$refQBWY1ZfHHUPWixvQ.Zur1pD.0s1FhHTzkxPj9z0C/80RW64rqG');
-			
+		
+		insert into PatientProfile(userID, gender, bloodType, address, phone)
+		values(995, 'M', 'A+', '123 Patient St.', '111-222-3333'),
+			(996, 'F', 'O-', '456 Patient St.', '111-222-3333'),
+			(997, 'F', 'AB', '789 Patient St.', '111-222-3333'),
+			(998, 'M', 'O', '013 Patient St.', '111-222-3333');
+
 		insert into DoctorProfile(userID, address, phone, verified, verificationCode, experience, volunteerNotes, otherNotes)
 		values(990, '123 Test St., Provo, UT 84601', '111-222-3333', -1, '12345qwert', '8 years', 'Awesome', 'other notes'),
 			(991, '123 Test St., Provo, UT 84601', '111-222-3333', 0, '12345qwert', '8 years', 'Awesome', 'other notes'),
@@ -96,6 +105,26 @@ create procedure create_data()
 			(915, 1, 998, 993, '456 Visit St.', '2016-01-26 13:00:00', 'Coughing', 'Smoking', 'coughing, bad breath', 'no comments'),
 			(916, 1, 998, 992, '789 Visit St.', '2016-02-28 11:15:00', 'Coughing (follow up)', 'Still smoking', 'coughing, bad breath', 'no comments');
 
+		insert into Vitals(userID, visitID, vitalsDate, height, weight, BMI, temperature, pulse, respiratoryRate, bloodPressure, bloodOxygenSat)
+		values(995, 899, '2015-02-01 12:00:00', '5\'10\"', '164', '23', '98.7', '110', '18', '120/80', '98%'),
+			(995, 900, '2015-08-04 13:15:00', '5\'10\"', '164', '23', '98.7', '115', '17', '120/80', '98%'),
+			(995, 901, '2015-10-21 09:00:00', '5\'10\"', '164', '23', '98.7', '112', '18', '120/80', '98%'),
+			(996, 902, '2015-04-13 14:20:00', '5\'08\"', '172', '26', '98.7', '110', '13', '128/80', '96%'),
+			(996, 903, '2015-12-01 08:00:00', '5\'08\"', '172', '26', '98.7', '113', '16', '125/80', '97%'),
+			(996, 904, '2016-01-05 13:45:00', '5\'08\"', '172', '26', '98.7', '118', '17', '124/80', '98%'),
+			(996, 905, '2016-03-20 15:15:00', '5\'08\"', '172', '26', '98.7', '110', '15', '123/80', '94%'),
+			(997, 906, '2015-01-31 11:00:00', '5\'04\"', '132', '22', '98.7', '111', '14', '122/80', '98%'),
+			(997, 907, '2015-02-15 11:15:00', '5\'04\"', '132', '22', '98.7', '120', '15', '121/80', '98%'),
+			(997, 908, '2015-06-01 09:30:00', '5\'04\"', '132', '22', '98.7', '130', '16', '123/80', '98%'),
+			(997, 909, '2015-10-30 11:15:00', '5\'04\"', '132', '22', '98.7', '123', '13', '121/80', '97%'),
+			(997, 910, '2016-01-07 12:15:00', '5\'05\"', '132', '22', '98.7', '124', '14', '120/80', '98%'),
+			(997, 911, '2015-03-03 16:45:00', '5\'05\"', '132', '22', '98.7', '130', '14', '122/80', '96%'),
+			(997, 912, '2015-03-21 09:15:00', '5\'05\"', '132', '22', '98.7', '110', '15', '123/80', '98%'),
+			(998, 913, '2015-02-13 08:45:00', '5\'03\"', '190', '30', '98.7', '90', '23', '130/80', '79%'),
+			(998, 914, '2015-08-19 09:45:00', '5\'03\"', '190', '30', '98.7', '98', '22', '129/80', '78%'),
+			(998, 915, '2016-01-26 13:00:00', '5\'03\"', '190', '30', '98.7', '130', '24', '128/80', '76%'),
+			(998, 916, '2016-02-28 11:15:00', '5\'03\"', '190', '30', '98.7', '122', '23', '131/80', '78%');
+
 		insert into SpecialtyDoctor(specialtyID, doctorID)
 		values(991, 991),
 			(991, 992),
@@ -110,6 +139,12 @@ create procedure create_data()
 		values(900, 995, 899, '20 mL', '2015-02-01 00:00:00', '2015-02-28 00:00:00', 'once daily', 990, 'Doctor Test0'),
 			(903, 997, 906, '20 mG', '2015-01-31 00:00:00', '2015-02-13 00:00:00', 'twice daily', 993, 'Doctor Test3'),
 			(904, 998, 916, '13 mL', '2016-02-28 00:00:00', '2016-04-28 00:00:00', 'once daily with food', 992, 'Doctor Test2');
+
+		insert into ExternalData(dataID, userID, visitID, dataTypeID, filePath, dataName, uploadDate)
+		values(1, 991, 905, 10, '/path/to/file', 'Visit Record', '2016-03-20 15:15:00'),
+			(2, 992, 903, 11, '/path/to/file', 'Full workup', '2015-12-01 08:00:00'),
+			(3, 991, 911, 13, '/path/to/file', 'Visit Document', '2015-03-03 16:45:00'),
+			(4, 993, 915, 10, '/path/to/file', 'Vitals doc', '2016-01-26 13:00:00');
 
 		END//
 
