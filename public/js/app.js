@@ -351,6 +351,9 @@ medconnect.controller('AdminManage', ['$http', '$scope', function($http, $scope)
   $scope.init = function (t){
     type = t
     getData()
+    for (var item in actives){
+      item.isEdit = false
+    }
   }
 
   $scope.add = function (){
@@ -381,7 +384,19 @@ medconnect.controller('AdminManage', ['$http', '$scope', function($http, $scope)
   }
 
   $scope.edit = function (d){
-    alert(d.name)
+    d.isEdit = true
+  }
+
+  $scope.saveChanges = function(d){
+    $http.post('/admin/edit', {
+      type: type,
+      name: d.name,
+      id: d._id
+    }).success(function (){
+      $scope.success = d.name + ' successfully updated'
+      $scope.failure = false
+      d.isEdit = false  
+    })
   }
 
   $scope.activate = function (d){

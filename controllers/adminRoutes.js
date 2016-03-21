@@ -29,7 +29,7 @@ router.post('/admin/view', auth, function (req, res){
 })
 
 router.post('/admin/edit', auth, function (req, res){
-	admin.edit(req.body.type, req.body.id).then(function (result){
+	admin.edit(req.body.type, req.body.name, req.body.id).then(function (result){
 		res.sendStatus(result ? 200 : 400)
 	})
 })
