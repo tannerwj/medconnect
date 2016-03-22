@@ -76,7 +76,7 @@ var info = function (id){
   return Promise.all([
     db.query('SELECT email, firstName, lastName FROM Users WHERE userID =? LIMIT 1;', [id]),
     db.query('SELECT address, phone, verified, verificationCode, experience, volunteerNotes, otherNotes FROM DoctorProfile WHERE userID =? LIMIT 1;', [id]),
-    db.query('SELECT specialtyID AS _id, name FROM Specialties, SpecialtyDoctor WHERE Specialties._id = SpecialtyDoctor.specialtyID AND SpecialtyDoctor.doctorID = ?;', [id])
+    db.query('SELECT specialtyID AS _id, name FROM Specialties, SpecialtyDoctor WddHERE Specialties._id = SpecialtyDoctor.specialtyID AND SpecialtyDoctor.doctorID = ?;', [id])
 ]).then(function (results){
     var tmp1 = results[0][0][0]
     var tmp2 = results[1][0][0]
