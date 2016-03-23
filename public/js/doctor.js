@@ -68,22 +68,22 @@
 		var vm = this;
 		vm.editMode = false;
 		vm.ids = [];
-		vm.datas = [];
-		vm.items = []; //grabs specialties from admin
+		vm.items = []; // list of specialties to choose
 		$scope.alerts = [];
 		vm.error = false;
 		vm.message = "";
 
 		$http.get('/doctor/info').success(function (info) {
 			var specs = info.specialties;
-			var tmp = [];
+			if(specs.length <= 0){
+				vm.empty = true;
+				console.log(true)
+			}
 			for(var o in specs) {
 				var spec = specs[o];
 				spec.msg = spec.name;
 				$scope.alerts.push(spec)
 				vm.ids.push(spec._id);
-				vm.datas.push(spec.name);
-			  tmp.push(spec.name);
 			}
 			vm.email = info.email;
 			vm.firstName = info.firstName;
@@ -94,8 +94,6 @@
 			vm.experience = info.exp;
 			vm.volunteerNotes = info.vol;
 			vm.otherNotes = info.notes;
-			vm.specialties = tmp
-			console.log(vm.ids, vm.datas)
 		}).catch(function (error) {
 			console.log("Error is : " + error);
 		});
@@ -122,9 +120,8 @@
 				vm.message = "No duplicate speciality";
 				return false;
 			}else{
+				vm.empty = false;
 				vm.ids.push(vm.selectedItem._id);
-				vm.datas.push(vm.selectedItem.name);
-				vm.specialties = vm.datas.join(", ");
 				$scope.alerts.push({msg:vm.selectedItem.name});
 				vm.error = false;
 				return true;
@@ -132,7 +129,6 @@
 		}
 
 		vm.save = function () {
-			console.log(vm.ids);
 			$http({
 					method: 'POST',
 					url: '/doctor/edit',
@@ -181,27 +177,11 @@
 
 			}else{
 				vm.ids.splice(index, 1);
-				vm.datas.splice(index, 1);
 				$scope.alerts.splice(index, 1);
 			}
 		};
 
   }]);
-
-
-	// medconnect.controller('AlertDemoCtrl', function ($scope) {
-	//   $scope.alerts = [
-	//     { type: 'success', msg: 'Well done! You successfully read this important alert message.' }
-	//   ];
-	//
-	//   $scope.addAlert = function() {
-	//     $scope.alerts.push({msg: 'Another alert!'});
-	//   };
-	//
-	//   $scope.closeAlert = function(index) {
-	//     $scope.alerts.splice(index, 1);
-	//   };
-	// });
 
 	medconnect.controller('VerifyDoctor', ['$http', function ($http) {
 
