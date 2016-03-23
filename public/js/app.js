@@ -453,12 +453,12 @@ medconnect.controller('CreateAdmin', ['$http', '$scope', function($http, $scope)
       $http.post('/admin/createAdmin', {
         data: $scope.newAdmin
       }).success(function(data) {
-        $scope.success = $scope.newAdmin.firstName + ' ' + $scope.newAdmin.lastName + ' successfully added'
+        $scope.success = $scope.newAdmin.email + ' successfully added'
         $scope.failure = false
         $scope.newAdmin = {}
         getData()
       }).error(function() {
-        $scope.failure = $scope.newAdmin.firstName + ' ' + $scope.newAdmin.lastName + ' already exists'
+        $scope.failure = $scope.newAdmin.email + ' already exists'
         $scope.success = false
         $scope.newAdmin = {}
       })
@@ -472,7 +472,7 @@ medconnect.controller('CreateAdmin', ['$http', '$scope', function($http, $scope)
     $http.post('/admin/deleteAdmin', {
       id: d.userID
     }).success(function (){
-      $scope.success = d.firstName + ' ' + d.lastName + ' successfully deleted'
+      $scope.success = d.email + ' successfully deleted'
       $scope.failure = false
       getData()
     })
