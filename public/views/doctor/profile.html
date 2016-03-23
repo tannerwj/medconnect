@@ -78,7 +78,7 @@
 		<div class="col-sm-4">
 			<div class="input-group">
 				<span class="input-group-addon"><i class="fa fa-medkit fa-fw"></i></span>
-				<textarea class="form-control" id="volunteer" rows="3" ng-readonly="!doctor.editMode" ng-model="doctor.volunteerNotes"></textarea>
+				<textarea class="form-control" id="volunteer" rows="2" ng-readonly="!doctor.editMode" ng-model="doctor.volunteerNotes"></textarea>
 			</div>
 		</div>
 	</div>
@@ -94,7 +94,6 @@
 	<div class="form-group">
 		<label for="notes" class="col-sm-4 control-label">Specialties</label>
 		<div class="col-sm-4">
-			<div class="input-group">
 				<div>
 					<script type="text/ng-template" id="alert.html">
 						<div class="alert" role="alert">
@@ -102,8 +101,8 @@
 						</div>
 					</script>
 					<uib-alert ng-repeat="alert in alerts" type="success" close="closeAlert($index)">{{alert.msg}}</uib-alert>
+					<uib-alert ng-show="doctor.empty" type="warning" close="closeAlert($index)">Please select one or more specialties</uib-alert>
 				</div>
-			</div>
 		</div>
 	</div>
 <div class="form-group" ng-show="doctor.editMode">

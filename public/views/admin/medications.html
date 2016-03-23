@@ -1,5 +1,9 @@
 <div class="admin" ng-init=init('medication')>
   <h1>Manage Medications</h1>
+  <div class="login-or">
+    <hr class="hr-or">
+    <span class="span-or">Create new</span>
+  </div>
   <form class="form-inline adminManage" ng-submit="add()">
     <div class="form-group">
       <label class="sr-only" for="name">Specialty Name</label>
@@ -23,12 +27,24 @@
 		</button>
     {{failure}}
   </div>
+  <div class="login-or">
+    <hr class="hr-or">
+    <span class="span-or">Filter</span>
+  </div>
+  <form class="form-horizontal">
+    <div class="form-group">
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-search fa-fw"></i></span>
+        <input type="text" id="search" class="form-control" ng-model="query">
+      </div>
+    </div>
+  </form>
 	<div class="login-or">
 		<hr class="hr-or">
 		<span class="span-or">Active</span>
 	</div>
   <div class="list-group adminList" ng-show='actives'>
-    <li class="list-group-item list" ng-repeat='d in actives'>
+    <li class="list-group-item list" ng-repeat='d in actives | filter: query'>
       <div class='wrapper' ng-hide="d.isEdit">
         <div class='adminName'>{{d.name}}</div>
         <div class="btn-group" uib-dropdown>
@@ -61,7 +77,7 @@
 		<span class="span-or">Inactive</span>
 	</div>
   <div class="list-group adminList" ng-show='inactives'>
-    <li class="list-group-item list" ng-repeat='d in inactives'>
+    <li class="list-group-item list" ng-repeat='d in inactives | filter: query'>
       <div class='adminName'>{{d.name}}</div>
       <div class="btn-group" uib-dropdown>
         <button type="button" class="btn btn-default dropdown-toggle" uib-dropdown-toggle>
