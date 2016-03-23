@@ -4,6 +4,7 @@ const router = express.Router()
 
 const db = require('../config/db')
 const doc = require('../src/doctor')
+const acc = require('../src/account')
 
 const USERTYPE = 0
 
@@ -67,6 +68,12 @@ router.post('/doctor/specific-doctor', function (req, res){
       res.sendStatus(400)
     }
   })
+})
+
+router.post('/doctor/changePassword', auth, function (req, res){
+	acc.changePassword(req.body.newPass, req.body.oldPass, req.body.currentPass, req.user.id).then(function (result){
+		res.sendStatus(result ? 200 : 400)
+	})
 })
 
 module.exports = router

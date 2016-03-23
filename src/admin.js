@@ -17,7 +17,7 @@ exports.view = function (type){
   if(!table){ return false }
 
   return Promise.all([
-    db.query('SELECT * FROM '+table+' WHERE active = 1;'),
+    db.query('SELECT * FROM '+table+' WHERE active = 1 order by name;'),
     db.query('SELECT * FROM '+table+' WHERE active = 0;')
   ]).then(function (result){
     return {
@@ -29,7 +29,7 @@ exports.view = function (type){
 
 exports.viewAdmins = function (userId){
   return Promise.all([
-    db.query('SELECT * FROM Users where userType = 2 and userID != ?;', [userId])
+    db.query('SELECT * FROM Users where userType = 2 and userID != ? order by lastName, firstName;', [userId])
   ]).then(function (result){
     return {
       currentAdmins: result[0][0]
@@ -44,9 +44,9 @@ exports.viewDoctors = function (userId){
       Denied doctors: verified = -1
       Verified doctors: verified = 1
     */
-    db.query('SELECT * FROM DoctorProfile dp join Users u on u.userID = dp.userID where verified = -1;'),
-    db.query('SELECT * FROM DoctorProfile dp join Users u on u.userID = dp.userID where verified = 0;'),
-    db.query('SELECT * FROM DoctorProfile dp join Users u on u.userID = dp.userID where verified = 1;')
+    db.query('SELECT * FROM DoctorProfile dp join Users u on u.userID = dp.userID where verified = -1 order by u.lastName, u.firstName;'),
+    db.query('SELECT * FROM DoctorProfile dp join Users u on u.userID = dp.userID where verified = 0 order by u.lastName, u.firstName;'),
+    db.query('SELECT * FROM DoctorProfile dp join Users u on u.userID = dp.userID where verified = 1 order by u.lastName, u.firstName;')
   ]).then(function (result){
     return {
       denied: result[0][0],
@@ -70,7 +70,7 @@ exports.denyDoctor = function (user){
 
 exports.getAdmin = function (userId){
   return Promise.all([
-    db.query('SELECT * FROM Users where userID = ?;', [userId])
+    db.query('SELECT * FROM Users where userID = ? order by lastName, firstName;', [userId])
   ]).then(function (result){
     return {
       currentAdmin: result[0][0][0]
