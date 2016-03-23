@@ -75,10 +75,10 @@ create procedure create_data()
 
 		insert into DoctorProfile(userID, address, phone, verified, verificationCode, experience, volunteerNotes, otherNotes)
 		values(990, '123 Test St., Provo, UT 84601', '111-222-3333', -1, 'asdfhqwrasfhiw239823ry', '8 years', 'Awesome', 'other notes'),
-			(991, '123 Test St., Provo, UT 84601', '111-222-3333', 0, '1348eqf134fof8gewqfq3o8', '8 years', 'Awesome', 'other notes'),
-			(992, '123 Test St., Provo, UT 84601', '111-222-3333', 0, '2q38r919fefq3pfh34fqfff', '8 years', 'Awesome', 'other notes'),
-			(993, '123 Test St., Provo, UT 84601', '111-222-3333', 1, 'q394fqdiqanwefiuhqw239f', '8 years', 'Awesome', 'other notes'),
-			(994, '123 Test St., Provo, UT 84601', '111-222-3333', 1, '134r9fqf3h4f9843fhf8qoq', '8 years', 'Awesome', 'other notes');
+			(991, '123 Test St., Provo, UT 84601', '111-222-3333', 0, '1348eqf134fof8gewqfq3o8', '7 years', 'Awesome', 'other notes'),
+			(992, '123 Test St., Provo, UT 84601', '111-222-3333', 0, '2q38r919fefq3pfh34fqfff', '2 years', 'Awesome', 'other notes'),
+			(993, '123 Test St., Provo, UT 84601', '111-222-3333', 1, 'q394fqdiqanwefiuhqw239f', '3 years', 'Awesome', 'other notes'),
+			(994, '123 Test St., Provo, UT 84601', '111-222-3333', 1, '134r9fqf3h4f9843fhf8qoq', '80 years', 'Awesome', 'other notes');
 
 		insert into AllergyPatient(allergyID, userID)
 		values(10, 995),

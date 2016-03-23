@@ -4,7 +4,7 @@ const router = express.Router()
 
 const db = require('../config/db')
 const admin = require('../src/admin')
-const account = require('../src/account')
+const acc = require('../src/account')
 
 const USERTYPE = 2
 
@@ -86,13 +86,13 @@ router.post('/admin/createAdmin', auth, function (req, res){
 		email: req.body.data.email,
 		pass: req.body.data.password
 	}
-	account.register(user).then(function (result){
+	acc.register(user).then(function (result){
 		res.sendStatus(result ? 200 : 400)
 	})
 })
 
 router.post('/admin/deleteAdmin', auth, function (req, res){
-	account.deleteUser(req.body.id).then(function (result){
+	acc.deleteUser(req.body.id).then(function (result){
 		res.sendStatus(result ? 200 : 400)
 	})
 })
@@ -106,7 +106,7 @@ router.post('/admin/getAdmin', auth, function (req, res){
 })
 
 router.post('/admin/changePassword', auth, function (req, res){
-	account.changePassword(req.body.newPass, req.body.oldPass, req.body.currentPass, req.user.id).then(function (result){
+	acc.changePassword(req.body.newPass, req.body.oldPass, req.body.currentPass, req.user.id).then(function (result){
 		res.sendStatus(result ? 200 : 400)
 	})
 })
