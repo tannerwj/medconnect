@@ -1,6 +1,6 @@
 (function(){
 
-  var medconnect = angular.module("mcDoctor", []);
+  var medconnect = angular.module("mcService", []);
 
   medconnect.service('doctorInfo', function($http){
 
