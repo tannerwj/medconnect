@@ -52,6 +52,9 @@ h1 {
   text-align: center;
   line-height: 300%;
 }
+.login .alert-danger{
+    margin-top:10px
+}
 /*form*/
 .form-horizontal .form-group {
   margin-right:0;
