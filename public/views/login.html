@@ -1,5 +1,5 @@
 <h1>Medconnect</h1>
-<div class="main" ng-controller='Login as login'>
+<div class="main login" ng-controller='Login as login'>
 	<form role="form" ng-submit="login.postForm()">
 		<div class="form-group">
 			<label for="username">Email</label>
@@ -19,6 +19,12 @@
 			Log In
 		</button>
 	</form>
+	<div class="alert alert-danger" role="alert" ng-show='login.failure'>
+		<button type='button' class='close' aria-label='Close' ng-click='login.failure = false'>
+			<span aria-hidden='true'>&times;</span>
+		</button>
+		{{login.failure}}
+	</div>
 	<div class="login-or">
 		<hr class="hr-or">
 		<span class="span-or">Register</span>

@@ -154,47 +154,37 @@ medconnect.config(['$routeProvider', '$locationProvider',
 
   }]);
 
-medconnect.controller('nav', ['$http', '$location', '$scope', '$window', function($http, $location, $scope, $window){
+medconnect.controller('nav', ['$http', '$location', '$scope', '$rootScope', '$window', function($http, $location, $scope, $rootScope, $window){
 
-    // if($window.location.href[$window.location.href.length-1] === "/"){
-    //   $scope.home = true;
-    //   console.log('home');
-    // }else{
-    //   console.log('not home')
-    //   $scope.home = false;
-    // }
+  $rootScope.$on("$routeChangeStart", function(){
+    var p = $location.path()
+    $scope.home = p === '/' || p === '/admin' || p === '/patient' || p === '/doctor'
+  })
 
-    // $location.path();
-    // console.log($location.path())
-    // if($location.path() === "/"){
-    //   $scope.home = true;
-    // }else{
-    //   $scope.home = false;
-    // }
-    // console.log($scope.home)
+  $scope.goBack = function(){
+    $window.history.back();
+  }
 
-		$scope.goBack = function(){
-			$window.history.back();
-		}
-
-		$scope.goHome = function(){
-		 $http.get('/loggedin').success(function (userType){
-        if (userType === '0'){
-          $location.url('/doctor');
-        }else if(userType === '1'){
-          $location.url('/patient');
-        }else if(userType === '2'){
-					$location.url('/admin');
-				}else{
-					$location.url('/');
-				}
-      })
-	}
+  $scope.goHome = function(){
+    $http.get('/loggedin').success(function (userType){
+      if (userType === '0'){
+      $location.url('/doctor');
+      }else if(userType === '1'){
+      $location.url('/patient');
+      }else if(userType === '2'){
+        $location.url('/admin');
+      }else{
+        $location.url('/');
+      }
+    })
+  }
 }]);
 
 medconnect.controller('Login', ['$http', '$location', function($http, $location){
 
   var vm = this;
+
+  vm.failure = false
 
   vm.postForm = function(){
     if(vm.email && vm.password){
@@ -207,15 +197,15 @@ medconnect.controller('Login', ['$http', '$location', function($http, $location)
         }
       }).success(function(userType){
         if(userType === '0'){
-            $location.url('/doctor')
+          $location.url('/doctor')
         }else if(userType === '1'){
-            $location.url('/patient')
+          $location.url('/patient')
         }else if(userType === '2'){
-            $location.url('/admin')
+          $location.url('/admin')
         }else if(userType === 'unverified'){
-            console.log('user is unverified')
+          vm.failure = 'Unverified'
         }else if(userType === 'invalid'){
-            console.log('invalid credentials')
+          vm.failure = 'Incorrect credentials'
         }
       }).error(function(err){
         console.log('Server error: ' + err);
