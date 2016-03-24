@@ -215,7 +215,6 @@ medconnect.controller('Login', ['$http', '$location', function($http, $location)
         console.log('Server error: ' + err);
       })
   }
-
 }}]);
 
 medconnect.controller('PRController', ['$http', '$location', function($http, $location){
@@ -255,7 +254,6 @@ medconnect.controller('PRController', ['$http', '$location', function($http, $lo
   }else{
     vm.error = false;
   }
-
 }}]);
 
 
@@ -296,7 +294,6 @@ medconnect.controller('DRController', ['$http', '$location', function($http, $lo
   }else{
     vm.error = false;
   }
-
 }}]);
 
 medconnect.controller('VerifyDoctor', ['$http', '$scope', function($http, $scope){
@@ -310,24 +307,49 @@ medconnect.controller('VerifyDoctor', ['$http', '$scope', function($http, $scope
     getData()
   }
 
-  $scope.verify = function(user){
+  $scope.verify = function(user, arr){
     $http.post('/admin/verifyDoctor', {
       user: user
-    }).success(function (data){
-        getData()
-        $scope.success = 'Successfully verified ' + user.firstName + ' ' + user.lastName
-        $scope.failure = false
     })
+    $scope.success = 'Successfully verified ' + user.firstName + ' ' + user.lastName
+    $scope.failure = false
+    $scope.verified.push(user)
+    for(var i=0; i<arr.length; i++){
+      if(arr[i].email === user.email){
+        arr.splice(i,1)
+        return
+      }
+    }
   }
 
-  $scope.deny = function(user){
+  $scope.deny = function(user, arr){
     $http.post('/admin/denyDoctor', {
       user: user
-    }).success(function (data){
-        getData()
-        $scope.success = user.firstName + ' ' + user.lastName + ' has been denied'
-        $scope.failure = false
     })
+    $scope.success = user.firstName + ' ' + user.lastName + ' has been denied'
+    $scope.failure = false
+    $scope.denied.push(user)
+    for(var i=0; i<arr.length; i++){
+      if(arr[i].email === user.email){
+        arr.splice(i,1)
+        return
+      }
+    }
+  }
+
+  $scope.unverify = function(user, arr){
+    $http.post('/admin/unverifyDoctor', {
+      user: user
+    })
+    $scope.success = user.firstName + ' ' + user.lastName + ' has been unverified'
+    $scope.failure = false
+    $scope.unverified.push(user)
+    for(var i=0; i<arr.length; i++){
+        if(arr[i].email === user.email){
+          arr.splice(i,1)
+          return
+        }
+      }
   }
 
   var getData = function (){
@@ -485,7 +507,6 @@ medconnect.controller('CreateAdmin', ['$http', '$scope', function($http, $scope)
       $scope.currentAdmins = data.currentAdmins
     })
   }
-
 }])
 
 medconnect.controller('ChangePassword', ['$http', '$scope', function($http, $scope){
@@ -527,5 +548,4 @@ medconnect.controller('ChangePassword', ['$http', '$scope', function($http, $sco
       $scope.currentAdmin = data.currentAdmin
     })
   }
-
 }])

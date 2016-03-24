@@ -78,6 +78,12 @@ router.post('/admin/denyDoctor', auth, function (req, res){
 	})
 })
 
+router.post('/admin/unverifyDoctor', auth, function (req, res){
+	admin.unverifyDoctor(req.body.user).then(function (result){
+		res.sendStatus(result ? 200 : 400)
+	})
+})
+
 router.post('/admin/createAdmin', auth, function (req, res){
 	var user = {
 		type: 2,

@@ -68,6 +68,13 @@ exports.denyDoctor = function (user){
   })
 }
 
+exports.unverifyDoctor = function (user){
+  return db.query('UPDATE DoctorProfile SET verified = 0 WHERE userID =?;', [user.userID]).then(function (result){
+    return result[0].affectedRows === 1
+  })
+}
+
+
 exports.getAdmin = function (userId){
   return Promise.all([
     db.query('SELECT * FROM Users where userID = ? order by lastName, firstName;', [userId])

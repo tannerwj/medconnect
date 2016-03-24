@@ -47,14 +47,9 @@
     <li class="list-group-item list" ng-repeat='d in actives | filter: query'>
       <div class='wrapper' ng-hide="d.isEdit">
         <div class='adminName'>{{d.name}}</div>
-        <div class="btn-group" uib-dropdown>
-          <button type="button" class="btn btn-default dropdown-toggle" uib-dropdown-toggle>
-            Options <span class="caret"></span>
-          </button>
-          <ul class='dropdown-menu'>
-            <li ng-click='edit(d)'><a href="#"><i class="fa fa-pencil"></i> edit</a></li>
-            <li ng-click='deactivate(d)'><a href="#"><i class="fa fa-minus"></i> deactivate</a></li>
-          </ul>
+        <div class="btn-group" role="group">
+          <button type="button" ng-click="edit(d)" class="btn btn-success">edit</button>
+          <button type="button" ng-click="deactivate(d)" class="btn btn-danger">deactivate</button>
         </div>
       </div>
       <div class="editForm" ng-show="d.isEdit">
@@ -79,14 +74,9 @@
   <div class="list-group adminList" ng-show='inactives'>
     <li class="list-group-item list" ng-repeat='d in inactives | filter: query'>
       <div class='adminName'>{{d.name}}</div>
-      <div class="btn-group" uib-dropdown>
-        <button type="button" class="btn btn-default dropdown-toggle" uib-dropdown-toggle>
-          Options <span class="caret"></span>
-        </button>
-        <ul class='dropdown-menu'>
-          <li ng-click='activate(d)'><a href="#"><i class="fa fa-plus"></i> activate</a></li>
-          <li ng-click='delete(d)'><a href="#"><i class="fa fa-trash"></i> delete</a></li>
-        </ul>
+      <div class="btn-group" role="group">
+        <button type="button" ng-click="edit(d)" class="btn btn-success">edit</button>
+        <button type="button" ng-click="activate(d)" class="btn btn-primary">activate</button>
       </div>
     </li>
   </div>
