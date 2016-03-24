@@ -90,7 +90,9 @@ exports.edit = function (type, name, id){
   if(!table){ return false }
 
   return db.query('UPDATE '+table+' SET name =? WHERE _id =?;', [name, id]).then(function (result){
-    return result[0].affectedRows === 1
+    return result[0].changedRows === 1
+  }).catch(function(err){
+    return false
   })
 }
 

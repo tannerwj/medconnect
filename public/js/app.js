@@ -374,28 +374,32 @@ medconnect.controller('AdminManage', ['$http', '$scope', function($http, $scope)
   $scope.actives = []
   $scope.inactives = []
 
+
   var type
 
   $scope.init = function (t){
     type = t
     getData()
-    for (var item in actives){
-      item.isEdit = false
-    }
   }
 
   $scope.add = function (){
     $http.post('/admin/add', {
 			type: type,
 			data: $scope.name
-		}).success(function (data){
+		}).success(function(){
       $scope.success = $scope.name + ' successfully added'
       $scope.failure = false
+      $scope.actives.push({name:$scope.name})
       $scope.name = ''
-      getData()
-		}).error(function (){
+    }).error(function (){
       $scope.failure = $scope.name + ' already exists'
       $scope.success = false
+      for(var i=0;i<actives.length;i++){
+        if(actives[i].name === $scope.name){
+          actives.splice(i, 1)
+          break
+        }
+      }
       $scope.name = ''
 		})
   }
@@ -404,15 +408,21 @@ medconnect.controller('AdminManage', ['$http', '$scope', function($http, $scope)
     $http.post('/admin/deactivate', {
       type: type,
       id: d._id
-    }).success(function (){
-      $scope.success = d.name + ' successfully deactivated'
-      $scope.failure = false
-      getData()
-		})
+    })
+    $scope.success = d.name + ' successfully deactivated'
+    $scope.failure = false
+    $scope.inactives.push({name:d.name})
+    for(var i=0;i<$scope.actives.length;i++){
+      if($scope.actives[i].name === d.name){
+        $scope.actives.splice(i, 1)
+        break
+      }
+    }
   }
 
   $scope.edit = function (d){
     d.isEdit = true
+    d.originalName = d.name
   }
 
   $scope.saveChanges = function(d){
@@ -420,9 +430,14 @@ medconnect.controller('AdminManage', ['$http', '$scope', function($http, $scope)
       type: type,
       name: d.name,
       id: d._id
-    }).success(function (){
-      $scope.success = d.name + ' successfully updated'
+    }).success(function(){
+      $scope.success = d.name + ' successfully added'
       $scope.failure = false
+      d.isEdit = false
+    }).error(function (){
+      $scope.failure = d.name + ' already exists'
+      $scope.success = false
+      d.name = d.originalName
       d.isEdit = false
     })
   }
@@ -431,22 +446,32 @@ medconnect.controller('AdminManage', ['$http', '$scope', function($http, $scope)
     $http.post('/admin/activate', {
       type: type,
       id: d._id
-    }).success(function (){
-      $scope.success = d.name + ' successfully activated'
-      $scope.failure = false
-      getData()
-		})
+    })
+    $scope.success = d.name + ' successfully activated'
+    $scope.failure = false
+    $scope.actives.push({name:d.name})
+    for(var i=0;i<$scope.inactives.length;i++){
+      if($scope.inactives[i].name === d.name){
+        $scope.inactives.splice(i, 1)
+        break
+      }
+    }
   }
 
   $scope.delete = function (d){
     $http.post('/admin/delete', {
       type: type,
       id: d._id
-    }).success(function (){
-      $scope.success = d.name + ' successfully deleted'
-      $scope.failure = false
-      getData()
-		})
+    })
+    $scope.success = d.name + ' successfully deleted'
+    $scope.failure = false
+    for(var i=0;i<$scope.inactives.length;i++){
+      if($scope.inactives[i].name === d.name){
+        $scope.inactives.splice(i, 1)
+        break
+      }
+    }
+      
   }
 
   var getData = function (){
@@ -469,22 +494,15 @@ medconnect.controller('CreateAdmin', ['$http', '$scope', function($http, $scope)
     getData()
   }
 
-  var receiveInputs = function(){
-    if($scope.newAdmin.password === $scope.newAdmin.passwordConfirm){
-      return true
-    }
-    return false
-  }
-
   $scope.add = function() {
-    if(receiveInputs()){
+    if($scope.newAdmin.password === $scope.newAdmin.passwordConfirm){
       $http.post('/admin/createAdmin', {
         data: $scope.newAdmin
       }).success(function(data) {
         $scope.success = $scope.newAdmin.email + ' successfully added'
         $scope.failure = false
+        $scope.currentAdmins.push($scope.newAdmin)
         $scope.newAdmin = {}
-        getData()
       }).error(function() {
         $scope.failure = $scope.newAdmin.email + ' already exists'
         $scope.success = false
@@ -499,11 +517,15 @@ medconnect.controller('CreateAdmin', ['$http', '$scope', function($http, $scope)
   $scope.delete = function (d){
     $http.post('/admin/deleteAdmin', {
       id: d.userID
-    }).success(function (){
-      $scope.success = d.email + ' successfully deleted'
-      $scope.failure = false
-      getData()
     })
+    $scope.success = d.email + ' successfully deleted'
+    $scope.failure = false
+    for(var i=0;i<$scope.currentAdmins.length;i++){
+      if($scope.currentAdmins[i].email === d.email){
+        $scope.currentAdmins.splice(i,1)
+        return
+      }
+    }
   }
 
   var getData = function (){

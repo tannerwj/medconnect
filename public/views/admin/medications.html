@@ -44,16 +44,16 @@
 		<span class="span-or">Active</span>
 	</div>
   <div class="list-group adminList" ng-show='actives'>
-    <li class="list-group-item list" ng-repeat='d in actives | filter: query'>
+    <li class="list-group-item list" ng-repeat='d in actives | filter: query | orderBy:"lastName":false'>
       <div class='wrapper' ng-hide="d.isEdit">
         <div class='adminName'>{{d.name}}</div>
         <div class="btn-group" role="group">
-          <button type="button" ng-click="edit(d)" class="btn btn-success">edit</button>
-          <button type="button" ng-click="deactivate(d)" class="btn btn-danger">deactivate</button>
+          <button type="button" ng-click="edit(d)" class="btn btn-info">edit</button>
+          <button type="button" ng-click="deactivate(d)" class="btn btn-primary">deactivate</button>
         </div>
       </div>
       <div class="editForm" ng-show="d.isEdit">
-        <form class="form-inline adminManage" ng-submit="saveChanges(d)">
+        <form class="form-inline" ng-submit="saveChanges(d)">
           <div class="form-group">
             <label class="sr-only" for="name">Medication Name</label>
             <div class="input-group">
@@ -72,11 +72,11 @@
 		<span class="span-or">Inactive</span>
 	</div>
   <div class="list-group adminList" ng-show='inactives'>
-    <li class="list-group-item list" ng-repeat='d in inactives | filter: query'>
+    <li class="list-group-item list" ng-repeat='d in inactives | filter: query | orderBy:"lastName":false'>
       <div class='adminName'>{{d.name}}</div>
       <div class="btn-group" role="group">
-        <button type="button" ng-click="edit(d)" class="btn btn-success">edit</button>
-        <button type="button" ng-click="activate(d)" class="btn btn-primary">activate</button>
+        <button type="button" ng-click="delete(d)" class="btn btn-danger">delete</button>
+        <button type="button" ng-click="activate(d)" class="btn btn-success">activate</button>
       </div>
     </li>
   </div>
