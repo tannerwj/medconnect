@@ -67,6 +67,13 @@ medconnect.config(['$routeProvider', '$locationProvider',
       .when('/register-patient', {
         templateUrl: '/views/patient/register.html'
       })
+      .when('/doctor/changePassword', {
+        templateUrl: '/views/doctor/changePassword.html',
+        resolve:{
+          isDoctor: isDoctor
+        },
+        controller: 'ChangePassword'
+      })
       .when('/patient', {
         templateUrl: '/views/patient/index.html',
 				resolve:{
@@ -96,6 +103,13 @@ medconnect.config(['$routeProvider', '$locationProvider',
 				resolve:{
 					isPatient: isPatient
 				}
+      })
+      .when('/patient/changePassword', {
+        templateUrl: '/views/patient/changePassword.html',
+				resolve:{
+					isPatient: isPatient
+				},
+        controller: 'ChangePassword'
       })
       .when('/patient/records/feedback', {
         templateUrl: '/views/patient/feedback.html',
@@ -209,85 +223,6 @@ medconnect.controller('Login', ['$http', '$location', function($http, $location)
       }).error(function(err){
         console.log('Server error: ' + err);
       })
-  }
-}}]);
-
-medconnect.controller('PRController', ['$http', '$location', function($http, $location){
-
-  var vm = this;
-  vm.error = true;
-
-  var receiveInputs = function(){
-    if(vm.email && vm.firstName && vm.lastName && vm.gender && vm.address && vm.phoneNumber && vm.password && vm.passwordConfirm){
-      if(vm.password === vm.passwordConfirm){
-        return true;
-      }
-    }
-    return false;
-  }
-
-  vm.register = function(){
-    if(receiveInputs()){
-      $http({
-        method:'POST',
-        url:'/patient/register',
-        data: {
-          'email' : vm.email,
-          'first' : vm.firstName,
-          'last' : vm.lastName,
-          'gender' : vm.gender,
-          'address' : vm.address,
-          'phone' : vm.phoneNumber,
-          'password': vm.password
-        }
-      }).success(function(data){
-        console.log(data);
-      }).error(function(err){
-        console.log('Server error: ' + err);
-      })
-      $location.url('/')
-  }else{
-    vm.error = false;
-  }
-}}]);
-
-
-medconnect.controller('DRController', ['$http', '$location', function($http, $location){
-
-  var vm = this;
-  vm.error = true;
-
-  var receiveInputs = function(){
-    if(vm.email && vm.firstName && vm.lastName && vm.address && vm.phoneNumber && vm.password && vm.passwordConfirm && vm.code){
-      if(vm.password === vm.passwordConfirm){
-        return true;
-      }
-    }
-    return false;
-  }
-
-  vm.register = function(){
-    if(receiveInputs()){
-      $http({
-        method:'POST',
-        url:'/doctor/register',
-        data: {
-          'email' : vm.email,
-          'first' : vm.firstName,
-          'last' : vm.lastName,
-          'address' : vm.address,
-          'phone' : vm.phoneNumber,
-          'password': vm.password,
-          'code' : vm.code
-        }
-      }).success(function(data){
-        console.log(data);
-      }).error(function(err){
-        console.log('Server error: ' + err);
-      })
-      $location.url('/')
-  }else{
-    vm.error = false;
   }
 }}]);
 
@@ -540,39 +475,107 @@ medconnect.controller('ChangePassword', ['$http', '$scope', function($http, $sco
   $scope.success = false
   $scope.failure = false
   $scope.currentAdmin = {}
+  $scope.currentDoctor = {}
+  $scope.currentPatient = {}
+  $scope.type = "";
 
-  $scope.init = function (){
-    getData()
+  $scope.init = function (type){
+    $scope.type = type;
+    getData(type)
   }
 
   $scope.changePassword = function(){
     console.log('attempting to change password')
-    if($scope.admin.password === $scope.admin.passwordConfirm){
-      $http.post('/admin/changePassword', {
-        newPass: $scope.admin.password,
-        oldPass: $scope.admin.currentPassword,
-        currentPass: $scope.currentAdmin.password
-      }).success(function (data){
-        $scope.success = 'Password changed successfully'
-        $scope.failure = false
-        $scope.admin.currentPassword = ''
+    if($scope.type == "admin"){
+      if($scope.admin.password === $scope.admin.passwordConfirm){
+        $http.post('/admin/changePassword', {
+          newPass: $scope.admin.password,
+          oldPass: $scope.admin.currentPassword,
+          currentPass: $scope.currentAdmin.password
+        }).success(function (data){
+          $scope.success = 'Password changed successfully'
+          $scope.failure = false
+          $scope.admin.currentPassword = ''
+          $scope.admin.password = ''
+          $scope.admin.passwordConfirm = ''
+        }).error(function(err){
+          $scope.success = false
+          $scope.failure = 'Current password is incorrect'
+        })
+      }else{
+        $scope.success = false
+        $scope.failure = 'Passwords must match'
         $scope.admin.password = ''
         $scope.admin.passwordConfirm = ''
-      }).error(function(err){
+      }
+    }
+    else if($scope.type == "doctor"){
+      if($scope.doctor.password === $scope.doctor.passwordConfirm){
+        $http.post('/doctor/changePassword', {
+          newPass: $scope.doctor.password,
+          oldPass: $scope.doctor.currentPassword,
+          currentPass: $scope.doctor.password
+        }).success(function (data){
+          $scope.success = 'Password changed successfully'
+          $scope.failure = false
+          $scope.doctor.currentPassword = ''
+          $scope.doctor.password = ''
+          $scope.doctor.passwordConfirm = ''
+        }).error(function(err){
+          $scope.success = false
+          $scope.failure = 'Current password is incorrect'
+        })
+      }else{
         $scope.success = false
-        $scope.failure = 'Current password is incorrect'
-      })
-    }else{
-      $scope.success = false
-      $scope.failure = 'Passwords must match'
-      $scope.admin.password = ''
-      $scope.admin.passwordConfirm = ''
+        $scope.failure = 'Passwords must match'
+        $scope.doctor.password = ''
+        $scope.doctor.passwordConfirm = ''
+      }
+    }
+    else if($scope.type == "patient"){
+      if($scope.patient.password === $scope.patient.passwordConfirm){
+        $http.post('/patient/changePassword', {
+          newPass: $scope.patient.password,
+          oldPass: $scope.patient.currentPassword,
+          currentPass: $scope.patient.password
+        }).success(function (data){
+          $scope.success = 'Password changed successfully'
+          $scope.failure = false
+          $scope.patient.currentPassword = ''
+          $scope.patient.password = ''
+          $scope.patient.passwordConfirm = ''
+        }).error(function(err){
+          $scope.success = false
+          $scope.failure = 'Current password is incorrect'
+        })
+      }else{
+        $scope.success = false
+        $scope.failure = 'Passwords must match'
+        $scope.patient.password = ''
+        $scope.patient.passwordConfirm = ''
+      }
     }
   }
 
-  var getData = function (){
-    $http.post('/admin/getAdmin', {}).success(function (data){
-      $scope.currentAdmin = data.currentAdmin
-    })
+  var getData = function (type){
+
+    if(type === "admin"){
+      $http.post('/admin/getAdmin', {}).success(function (data){
+        $scope.currentAdmin = data.currentAdmin
+      })
+    }
+    else if(type === "doctor"){
+      $http.post('/doctor/getDoctor', {}).success(function (data){
+        $scope.currentDoctor = data.currentDoctor
+      })
+    }
+    else if(type === "patient"){
+      $http.post('/patient/getPatient', {}).success(function (data){
+        $scope.currentPatient = data.currentPatient
+      })
+    }
+
+
+
   }
 }])

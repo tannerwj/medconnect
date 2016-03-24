@@ -63,6 +63,14 @@ router.get('/patient/getDoctors', auth, function (req, res){
 	})
 })
 
+router.post('/patient/getPatient', auth, function (req, res){
+	pat.getPatient(req.user.id).then(function (result){
+		if(result){
+			return res.json(result) }
+		res.sendStatus(400)
+	})
+})
+
 router.post('/patient/changePassword', auth, function (req, res){
 	acc.changePassword(req.body.newPass, req.body.oldPass, req.body.currentPass, req.user.id).then(function (result){
 		res.sendStatus(result ? 200 : 400)

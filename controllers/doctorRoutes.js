@@ -70,7 +70,16 @@ router.post('/doctor/specific-doctor', function (req, res){
   })
 })
 
+router.post('/doctor/getDoctor', auth, function (req, res){
+	doc.getDoctor(req.user.id).then(function (result){
+		if(result){
+			return res.json(result) }
+		res.sendStatus(400)
+	})
+})
+
 router.post('/doctor/changePassword', auth, function (req, res){
+	console.log("goes through here")
 	acc.changePassword(req.body.newPass, req.body.oldPass, req.body.currentPass, req.user.id).then(function (result){
 		res.sendStatus(result ? 200 : 400)
 	})

@@ -100,10 +100,21 @@ var info = function (id){
   })
 }
 
+var getDoctor = function (userId){
+  return Promise.all([
+    db.query('SELECT * FROM Users where userID = ? order by lastName, firstName;', [userId])
+  ]).then(function (result){
+    return {
+      currentDoctor: result[0][0][0]
+    }
+  })
+}
+
 module.exports = {
   register: register,
   edit: edit,
   deleteDoctor: deleteDoctor,
   getDoctorDetails: getDoctorDetails,
-  info: info
+  info: info,
+  getDoctor : getDoctor
 }
