@@ -63,14 +63,9 @@
   <div class="list-group adminList" ng-show='currentAdmins'>
     <li class="list-group-item list" ng-repeat='d in currentAdmins | filter:query'>
       <div class='adminName'>{{d.email}}</div>
-      <div class="btn-group" uib-dropdown>
-        <button type="button" class="btn btn-default dropdown-toggle" uib-dropdown-toggle>
-          Options <span class="caret"></span>
-        </button>
-        <ul class='dropdown-menu'>
-          <li ng-click='delete(d)'><a href="#"><i class="fa fa-minus"></i> remove</a></li>
-        </ul>
-      </div>
+      <div class="btn-group" role="group">
+          <button type="button" ng-click="delete(d)" class="btn btn-danger">delete</button>
+        </div>
     </li>
   </div>
 </div>

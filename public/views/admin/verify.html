@@ -29,12 +29,12 @@
 		<span class="span-or">Unverified</span>
 	</div>
   <div class="list-group adminList" ng-show='unverified'>
-    <li class="list-group-item list" ng-repeat='u in unverified | filter:query'>
+    <li class="list-group-item list" ng-repeat='u in unverified | filter:query | orderBy:"lastName":false'>
       <h5>{{u.lastName + ', ' + u.firstName}}</h5>
       Code: {{u.verificationCode}}
       <div class="btn-group" role="group">
-        <button type="button" ng-click="verify(u)" class="btn btn-success">Verify</button>
-        <button type="button" ng-click="deny(u)" class="btn btn-primary">Deny</button>
+        <button type="button" ng-click="verify(u, unverified)" class="btn btn-success">Verify</button>
+        <button type="button" ng-click="deny(u, unverified)" class="btn btn-danger">Deny</button>
       </div>
     </li>
   </div>
@@ -43,11 +43,12 @@
     <span class="span-or">Denied</span>
   </div>
   <div class="list-group adminList" ng-show='denied'>
-    <li class="list-group-item list" ng-repeat='d in denied | filter:query'>
+    <li class="list-group-item list" ng-repeat='d in denied | filter:query | orderBy:"lastName":false'>
       <h5>{{d.lastName + ', ' + d.firstName}}</h5>
       Code: {{d.verificationCode}}
       <div class="btn-group" role="group">
-        <button type="button" ng-click="verify(d)" class="btn btn-success">Verify</button>
+        <button type="button" ng-click="verify(d, denied)" class="btn btn-success">Verify</button>
+        <button type="button" ng-click="unverify(d, denied)" class="btn btn-primary">Unverify</button>
       </div>
     </li>
   </div>
@@ -56,11 +57,12 @@
 		<span class="span-or">Verified</span>
 	</div>
   <div class="list-group adminList" ng-show='verified'>
-    <li class="list-group-item list" ng-repeat='v in verified | filter:query'>
+    <li class="list-group-item list" ng-repeat='v in verified | filter:query | orderBy:"lastName":false'>
       <h5>{{v.lastName + ', ' + v.firstName}}</h5>
       Code: {{v.verificationCode}}
       <div class="btn-group" role="group">
-        <button type="button" ng-click="deny(v)" class="btn btn-primary">Deny</button>
+        <button type="button" ng-click="deny(v, verified)" class="btn btn-danger">Deny</button>
+        <button type="button" ng-click="unverify(v, verified)" class="btn btn-primary">Unverify</button>
       </div>
     </li>
   </div>
