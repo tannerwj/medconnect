@@ -86,6 +86,12 @@ medconnect.config(['$routeProvider', '$locationProvider',
           isPatient: isPatient
         }
       })
+      .when('/patient/seeDoctor', {
+        templateUrl: '/views/patient/seeDoctor.html',
+        resolve:{
+          isPatient: isPatient
+        }
+      })
       .when('/patient/records', {
         templateUrl: '/views/patient/recordsmenu.html',
 				resolve:{
@@ -417,7 +423,7 @@ medconnect.controller('AdminManage', ['$http', '$scope', function($http, $scope)
     }).success(function (){
       $scope.success = d.name + ' successfully updated'
       $scope.failure = false
-      d.isEdit = false  
+      d.isEdit = false
     })
   }
 
