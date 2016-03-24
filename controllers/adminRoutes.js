@@ -17,7 +17,7 @@ var auth = function (req, res, next){
 
 router.post('/admin/add', auth, function (req, res){
 	admin.add(req.body.type, req.body.data).then(function (result){
-		res.sendStatus(result ? 200 : 400)
+		res.json(result)
 	})
 })
 
@@ -48,7 +48,7 @@ router.post('/admin/activate', auth, function (req, res){
 
 router.post('/admin/delete', auth, function (req, res){
 	admin.delete(req.body.type, req.body.id).then(function (result){
-		res.sendStatus(result ? 200 : 400)
+		res.json(result)
 	})
 })
 
@@ -98,8 +98,10 @@ router.post('/admin/createAdmin', auth, function (req, res){
 })
 
 router.post('/admin/deleteAdmin', auth, function (req, res){
-	acc.deleteUser(req.body.id).then(function (result){
-		res.sendStatus(result ? 200 : 400)
+	acc.findUserByEmail(req.body.email).then(function(user){
+		acc.deleteUser(user.userID).then(function (result){
+			res.sendStatus(result ? 200 : 400)
+		})
 	})
 })
 
