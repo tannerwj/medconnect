@@ -50,8 +50,7 @@ medconnect.config(['$routeProvider', '$locationProvider',
         controller:'nav'
       })
       .when('/register-doctor', {
-        templateUrl: '/views/doctor/register.html',
-        controller:'nav'
+        templateUrl: '/views/doctor/register.html'
       })
       .when('/doctor', {
         templateUrl: '/views/doctor/index.html',
