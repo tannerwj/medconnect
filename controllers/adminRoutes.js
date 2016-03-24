@@ -114,8 +114,9 @@ router.post('/admin/getAdmin', auth, function (req, res){
 })
 
 router.post('/admin/changePassword', auth, function (req, res){
-	acc.changePassword(req.body.newPass, req.body.oldPass, req.body.currentPass, req.user.id).then(function (result){
+	acc.changePassword(req.body.newPass, req.body.curPass, req.user.id).then(function (result){
 		res.sendStatus(result ? 200 : 400)
 	})
 })
+
 module.exports = router

@@ -21,21 +21,26 @@ var register = function (user){
 	})
 }
 
-var changePassword = function(newPass, oldPass, currentPass, userId){
-  return new Promise(function(resolve, reject){
-    bcrypt.compare(oldPass, currentPass, function (err, res) {
-      if(res){
-        bcrypt.genSalt(BCRYPT_ROUNDS, function (salt){
-          bcrypt.hash(newPass, salt, null, function (err, hash) {
-            if(err) return reject(err)
-            return resolve(db.query('UPDATE Users set password = ? where userID = ?;', [hash, userId]).then( function (result){
-              return result[0].affectedRows === 1
-            }))
+var changePassword = function(newPass, currentPass, userId){
+  return db.query('SELECT password FROM Users WHERE userID =?;', [userId]).then(function (result){
+    var user = result[0][0]
+    if (!user){ return false }
+
+		return new Promise(function (resolve, reject){
+      bcrypt.compare(currentPass, user.password, function (err, res) {
+        if(res){
+          bcrypt.genSalt(BCRYPT_ROUNDS, function (salt){
+            bcrypt.hash(newPass, salt, null, function (err, hash) {
+              if (err){ return resolve(false) }
+              return db.query('UPDATE Users SET password = ? WHERE userID =?;', [hash, userId]).then( function (result){
+                return resolve(result[0].affectedRows === 1)
+              })
+            })
           })
-        })
-      }else{
-        return resolve(false)
-      }
+        }else{
+          return resolve(false)
+        }
+      })
     })
   })
 }

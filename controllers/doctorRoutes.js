@@ -11,16 +11,13 @@ const USERTYPE = 0
 var auth = function (req, res, next){
 	if (req.isAuthenticated() && req.user.type === USERTYPE){
 		return next()
-	}else{
-		res.sendStatus(401)
 	}
+	res.sendStatus(401)
 }
 
 router.get('/doctor/info', auth, function (req, res){
 	doc.info(req.user.id).then(function(result){
-		if(result){
-			return res.json(result)
-		}
+		if(result){ return res.json(result) }
 		res.sendStatus(400)
 	})
 })
@@ -62,25 +59,20 @@ router.post('/doctor/edit', auth, function (req, res){
 router.post('/doctor/specific-doctor', function (req, res){
   var docId = req.body.id
   doc.getDoctorDetails(docId).then(function (doctor){
-    if(doctor){
-      res.send(doctor)
-    }else{
-      res.sendStatus(400)
-    }
+    if(doctor){ return res.json(doctor) }
+    res.sendStatus(400)
   })
 })
 
 router.post('/doctor/getDoctor', auth, function (req, res){
 	doc.getDoctor(req.user.id).then(function (result){
-		if(result){
-			return res.json(result) }
+		if(result){	return res.json(result) }
 		res.sendStatus(400)
 	})
 })
 
 router.post('/doctor/changePassword', auth, function (req, res){
-	console.log("goes through here")
-	acc.changePassword(req.body.newPass, req.body.oldPass, req.body.currentPass, req.user.id).then(function (result){
+	acc.changePassword(req.body.newPass, req.body.curPass, req.user.id).then(function (result){
 		res.sendStatus(result ? 200 : 400)
 	})
 })

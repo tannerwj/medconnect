@@ -474,108 +474,41 @@ medconnect.controller('CreateAdmin', ['$http', '$scope', function($http, $scope)
 medconnect.controller('ChangePassword', ['$http', '$scope', function($http, $scope){
   $scope.success = false
   $scope.failure = false
-  $scope.currentAdmin = {}
-  $scope.currentDoctor = {}
-  $scope.currentPatient = {}
-  $scope.type = "";
+  $scope.type = ""
 
   $scope.init = function (type){
-    $scope.type = type;
-    getData(type)
+    $scope.type = type
   }
 
   $scope.changePassword = function(){
-    console.log('attempting to change password')
-    if($scope.type == "admin"){
-      if($scope.admin.password === $scope.admin.passwordConfirm){
-        $http.post('/admin/changePassword', {
-          newPass: $scope.admin.password,
-          oldPass: $scope.admin.currentPassword,
-          currentPass: $scope.currentAdmin.password
-        }).success(function (data){
-          $scope.success = 'Password changed successfully'
-          $scope.failure = false
-          $scope.admin.currentPassword = ''
-          $scope.admin.password = ''
-          $scope.admin.passwordConfirm = ''
-        }).error(function(err){
-          $scope.success = false
-          $scope.failure = 'Current password is incorrect'
-        })
-      }else{
-        $scope.success = false
-        $scope.failure = 'Passwords must match'
-        $scope.admin.password = ''
-        $scope.admin.passwordConfirm = ''
-      }
-    }
-    else if($scope.type == "doctor"){
-      if($scope.doctor.password === $scope.doctor.passwordConfirm){
-        $http.post('/doctor/changePassword', {
-          newPass: $scope.doctor.password,
-          oldPass: $scope.doctor.currentPassword,
-          currentPass: $scope.doctor.password
-        }).success(function (data){
-          $scope.success = 'Password changed successfully'
-          $scope.failure = false
-          $scope.doctor.currentPassword = ''
-          $scope.doctor.password = ''
-          $scope.doctor.passwordConfirm = ''
-        }).error(function(err){
-          $scope.success = false
-          $scope.failure = 'Current password is incorrect'
-        })
-      }else{
-        $scope.success = false
-        $scope.failure = 'Passwords must match'
-        $scope.doctor.password = ''
-        $scope.doctor.passwordConfirm = ''
-      }
-    }
-    else if($scope.type == "patient"){
-      if($scope.patient.password === $scope.patient.passwordConfirm){
-        $http.post('/patient/changePassword', {
-          newPass: $scope.patient.password,
-          oldPass: $scope.patient.currentPassword,
-          currentPass: $scope.patient.password
-        }).success(function (data){
-          $scope.success = 'Password changed successfully'
-          $scope.failure = false
-          $scope.patient.currentPassword = ''
-          $scope.patient.password = ''
-          $scope.patient.passwordConfirm = ''
-        }).error(function(err){
-          $scope.success = false
-          $scope.failure = 'Current password is incorrect'
-        })
-      }else{
-        $scope.success = false
-        $scope.failure = 'Passwords must match'
-        $scope.patient.password = ''
-        $scope.patient.passwordConfirm = ''
-      }
-    }
-  }
-
-  var getData = function (type){
-
-    if(type === "admin"){
-      $http.post('/admin/getAdmin', {}).success(function (data){
-        $scope.currentAdmin = data.currentAdmin
-      })
-    }
-    else if(type === "doctor"){
-      $http.post('/doctor/getDoctor', {}).success(function (data){
-        $scope.currentDoctor = data.currentDoctor
-      })
-    }
-    else if(type === "patient"){
-      $http.post('/patient/getPatient', {}).success(function (data){
-        $scope.currentPatient = data.currentPatient
-      })
+    if($scope.password !== $scope.passwordConfirm){
+      $scope.success = false
+      $scope.failure = 'Passwords must match'
+      $scope.password = ''
+      $scope.passwordConfirm = ''
+      return
     }
 
+    if($scope.type === 'patient'){
+      var url = '/patient/changePassword'
+    }else if($scope.type === 'doctor'){
+      var url = '/doctor/changePassword'
+    }else if($scope.type === 'admin'){
+      var url = '/admin/changePassword'
+    }
 
-
+    $http.post(url, {
+      newPass: $scope.password,
+      curPass: $scope.currentPassword
+    }).success(function (data){
+      $scope.success = 'Password changed successfully'
+      $scope.failure = false
+      $scope.currentPassword = ''
+      $scope.password = ''
+      $scope.passwordConfirm = ''
+    }).error(function(err){
+      $scope.success = false
+      $scope.failure = 'Current password is incorrect'
+    })
   }
 }])
