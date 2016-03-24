@@ -376,22 +376,24 @@ medconnect.controller('AdminManage', ['$http', '$scope', function($http, $scope)
     $http.post('/admin/add', {
 			type: type,
 			data: $scope.name
-		}).success(function(){
-      $scope.success = $scope.name + ' successfully added'
-      $scope.failure = false
-      $scope.actives.push({name:$scope.name})
-      $scope.name = ''
-    }).error(function (){
-      $scope.failure = $scope.name + ' already exists'
-      $scope.success = false
-      for(var i=0;i<actives.length;i++){
-        if(actives[i].name === $scope.name){
-          actives.splice(i, 1)
-          break
+		}).success(function(id){
+      if(id){
+        $scope.success = $scope.name + ' successfully added'
+        $scope.failure = false
+        $scope.actives.push({_id:id, name:$scope.name})
+        $scope.name = ''
+      }else{
+        $scope.failure = $scope.name + ' already exists'
+        $scope.success = false
+        for(var i=0;i<$scope.actives.length;i++){
+          if($scope.actives[i].name === $scope.name){
+            $scope.actives.splice(i, 1)
+            break
+          }
         }
+        $scope.name = ''
       }
-      $scope.name = ''
-		})
+    })
   }
 
   $scope.deactivate = function (d){
@@ -401,7 +403,7 @@ medconnect.controller('AdminManage', ['$http', '$scope', function($http, $scope)
     })
     $scope.success = d.name + ' successfully deactivated'
     $scope.failure = false
-    $scope.inactives.push({name:d.name})
+    $scope.inactives.push({_id:d._id, name:d.name})
     for(var i=0;i<$scope.actives.length;i++){
       if($scope.actives[i].name === d.name){
         $scope.actives.splice(i, 1)
@@ -439,7 +441,7 @@ medconnect.controller('AdminManage', ['$http', '$scope', function($http, $scope)
     })
     $scope.success = d.name + ' successfully activated'
     $scope.failure = false
-    $scope.actives.push({name:d.name})
+    $scope.actives.push({_id:d._id, name:d.name})
     for(var i=0;i<$scope.inactives.length;i++){
       if($scope.inactives[i].name === d.name){
         $scope.inactives.splice(i, 1)
@@ -452,16 +454,24 @@ medconnect.controller('AdminManage', ['$http', '$scope', function($http, $scope)
     $http.post('/admin/delete', {
       type: type,
       id: d._id
-    })
-    $scope.success = d.name + ' successfully deleted'
-    $scope.failure = false
-    for(var i=0;i<$scope.inactives.length;i++){
-      if($scope.inactives[i].name === d.name){
-        $scope.inactives.splice(i, 1)
-        break
+    }).success(function(result){
+      if(result && result !== 'in use'){
+        $scope.success = d.name + ' successfully deleted'
+        $scope.failure = false
+        for(var i=0;i<$scope.inactives.length;i++){
+          if($scope.inactives[i].name === d.name){
+            $scope.inactives.splice(i, 1)
+            break
+          }
+        }
+      }else if(result){
+        $scope.failure = d.name + ' is in use and cannot be deleted'
+        $scope.success = false
+      }else{
+        $scope.failure = d.name + ' deletion unsuccessful'
+        $scope.success = false
       }
-    }
-      
+    })
   }
 
   var getData = function (){
@@ -506,7 +516,7 @@ medconnect.controller('CreateAdmin', ['$http', '$scope', function($http, $scope)
 
   $scope.delete = function (d){
     $http.post('/admin/deleteAdmin', {
-      id: d.userID
+      email: d.email
     })
     $scope.success = d.email + ' successfully deleted'
     $scope.failure = false

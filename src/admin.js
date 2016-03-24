@@ -6,7 +6,7 @@ exports.add = function (type, data){
   if(!table){ return false }
 
   return db.query('INSERT INTO '+table+' (name) VALUES (?);', [data]).then(function (result){
-    return result[0].affectedRows === 1
+    return result[0].insertId
   }).catch(function (err){
     return false
   })
@@ -120,6 +120,8 @@ exports.delete = function (type, id){
 
   return db.query('DELETE FROM '+table+' WHERE _id =?;', [id]).then(function (result){
     return result[0].affectedRows === 1
+  }).catch(function(){
+    return 'in use'
   })
 }
 
