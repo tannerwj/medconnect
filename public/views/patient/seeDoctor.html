@@ -2,7 +2,10 @@
   <h1>Selected Doctor</h1>
   <div class="panel panel-info">
     <div class="panel-heading">
-      <h3 class="panel-title">{{doctor.name}}</h3>
+      <h3 class="panel-title">{{doctor.name}}
+        <span class="pull-right"><i class="fa fa-check-circle-o fa-fw"></i></span>
+        <!-- ng-show="doctor.verified" -->
+      </h3>
     </div>
     <div class="panel-body">
       <div class="row">

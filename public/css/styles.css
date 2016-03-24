@@ -130,6 +130,16 @@ h1 {
 .table-user-information > tbody > tr > td {
     border-top: 0;
 }
-.toppad
-{margin-top:20px;
+.toppad {
+  margin-top:20px;
+}
+
+.profileAlerts .alert{
+  margin-bottom : 0;
+  padding:5px;
+  padding-right:30px;
+}
+
+.fa-check-circle-o{
+  color:green;
 }
