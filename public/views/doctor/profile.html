@@ -100,7 +100,8 @@
 							<div ng-transclude></div>
 						</div>
 					</script>
-					<uib-alert ng-repeat="alert in alerts" type="success" close="closeAlert($index)">{{alert.msg}}</uib-alert>
+					<uib-alert ng-show="doctor.editMode" ng-repeat="alert in alerts" type="none" close="closeAlert($index)">{{alert.msg}}</uib-alert>
+					<uib-alert ng-show="!doctor.editMode" ng-repeat="alert in alerts" type="none">{{alert.msg}}</uib-alert>
 					<uib-alert ng-show="doctor.empty" type="warning" close="closeAlert($index)">Please select one or more specialties</uib-alert>
 				</div>
 		</div>

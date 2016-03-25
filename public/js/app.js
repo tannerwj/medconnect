@@ -41,38 +41,16 @@ medconnect.config(['$routeProvider', '$locationProvider',
       })
       return deferred.promise
     }
-
     $locationProvider.html5Mode({enabled:true, requireBase : false});
 
+    // Patient Routes
     $routeProvider
       .when('/', {
         templateUrl: '/views/login.html',
         controller:'nav'
       })
-      .when('/register-doctor', {
-        templateUrl: '/views/doctor/register.html'
-      })
-      .when('/doctor', {
-        templateUrl: '/views/doctor/index.html',
-				resolve:{
-					isDoctor: isDoctor
-				}
-      })
-      .when('/doctor/edit', {
-        templateUrl: '/views/doctor/profile.html',
-				resolve:{
-					isDoctor: isDoctor
-				}
-      })
       .when('/register-patient', {
         templateUrl: '/views/patient/register.html'
-      })
-      .when('/doctor/changePassword', {
-        templateUrl: '/views/doctor/changePassword.html',
-        resolve:{
-          isDoctor: isDoctor
-        },
-        controller: 'ChangePassword'
       })
       .when('/patient', {
         templateUrl: '/views/patient/index.html',
@@ -123,7 +101,37 @@ medconnect.config(['$routeProvider', '$locationProvider',
 					isPatient: isPatient
 				}
       })
-
+      // Doctor Routes
+      $routeProvider
+      .when('/register-doctor', {
+        templateUrl: '/views/doctor/register.html'
+      })
+      .when('/doctor', {
+        templateUrl: '/views/doctor/index.html',
+        resolve:{
+          isDoctor: isDoctor
+        }
+      })
+      .when('/doctor/edit', {
+        templateUrl: '/views/doctor/profile.html',
+        resolve:{
+          isDoctor: isDoctor
+        }
+      })
+      .when('/doctor/avaliable', {
+        templateUrl: '/views/doctor/avaliable.html',
+        resolve:{
+          isDoctor: isDoctor
+        }
+      })
+      .when('/doctor/changePassword', {
+        templateUrl: '/views/doctor/changePassword.html',
+        resolve:{
+          isDoctor: isDoctor
+        },
+        controller: 'ChangePassword'
+      })
+    // Admin Routes
     $routeProvider
       .when('/admin', {
         templateUrl: '/views/admin/index.html',
