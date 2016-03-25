@@ -3,8 +3,10 @@
   <div class="panel panel-info">
     <div class="panel-heading">
       <h3 class="panel-title">{{doctor.name}}
-        <span class="pull-right"><i class="fa fa-check-circle-o fa-fw"></i></span>
-        <!-- ng-show="doctor.verified" -->
+        <span class="pull-right">Verified:
+          <i ng-show="doctor.verified" class="fa fa-check-circle-o fa-fw"></i>
+          <i ng-show="!doctor.verified" class="fa fa-question fa-fw"></i>
+        </span>
       </h3>
     </div>
     <div class="panel-body">
