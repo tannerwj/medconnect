@@ -112,8 +112,6 @@
 			vm.editMode = !vm.editMode;
 		}
 
-		// http://www.newhealthguide.org/Types-Of-Doctors.html
-
 		vm.add = function(){
 			if(vm.ids.indexOf(vm.selectedItem._id) >= 0){
 				vm.error = true;
