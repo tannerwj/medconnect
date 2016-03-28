@@ -181,8 +181,80 @@
 
   }]);
 
-	medconnect.controller('VerifyDoctor', ['$http', function ($http) {
+	medconnect.controller('DoctorAvaliable', function ($scope, $filter, $http, $uibModal) {
 
-  }])
+			var d = new Date();
+			d.setHours( 0 );
+			d.setMinutes( 0 );
+
+			$scope.ms = d;
+			$scope.me = d;
+			$scope.tus = d;
+			$scope.tue = d;
+			$scope.ws = d;
+			$scope.we = d;
+			$scope.ths = d;
+			$scope.the = d;
+			$scope.fs = d;
+			$scope.fe = d;
+			$scope.sas = d;
+			$scope.sae = d;
+			$scope.sus = d;
+			$scope.sue = d;
+
+			$scope.ismeridian = false;
+		  $scope.hstep = 1;
+		  $scope.mstep = 15;
+
+			$scope.submit = function(){
+
+				// Days, starttime, endtime, don't modify this array, I am using it for modal
+				$scope.scheduleArr = [
+					['Monday', $filter('date')($scope.ms, 'shortTime'),  $filter('date')($scope.me, 'shortTime')],
+					['Tuesday', $filter('date')($scope.tus, 'shortTime'), $filter('date')($scope.tue, 'shortTime')],
+					['Wendesday', $filter('date')($scope.ws, 'shortTime'), $filter('date')($scope.we, 'shortTime')],
+					['Thursday', $filter('date')($scope.ths, 'shortTime'), $filter('date')($scope.the, 'shortTime')],
+					['Friday', $filter('date')($scope.fs, 'shortTime'),$filter('date')($scope.fe, 'shortTime')],
+					['Saturday', $filter('date')($scope.sas, 'shortTime'), $filter('date')($scope.sae, 'shortTime')],
+					['Sunday', $filter('date')($scope.sus, 'shortTime'), $filter('date')($scope.sue, 'shortTime')]
+				]
+
+ 				// opens up modal
+				$scope.open(false);
+
+				// $http({
+				// 	method: 'POST',
+				// 	url: '/doctor/doctorSchedule',
+				// 	data: scheduleArr
+				// }).success(function (data) {
+				// 	$scope.open(false);
+				// 	console.log(data);
+				// }).error(function (err) {
+				// 	$scope.open(true);
+				// })
+
+			}
+
+			$scope.open = function (error, size) {
+
+				if(error){
+					$scope.item = "Server Error, try back again later please";
+				}else{
+					$scope.item = "Congratulations, you have successfully registered!";
+				}
+				var modalInstance = $uibModal.open({
+					animation: true,
+					templateUrl: '../views/modal.html',
+					controller: 'ModalInstanceCtrl',
+					size: size,
+					resolve: {
+						item : function(){
+							return $scope.scheduleArr
+						}
+					}
+				});
+			};
+
+		});
 
 }());

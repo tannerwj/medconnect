@@ -5,6 +5,9 @@
    <p>
     {{item}}
    </p>
+   <table class="table table-striped table-bordered" ng-hide="{{!schedule}}">
+     <tr ng-repeat="s in schedule"><td>{{s[0]}}</td><td>{{s[1]}} to {{s[2]}}</td></tr>
+   </table>
 </div>
 <div class="modal-footer">
     <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
