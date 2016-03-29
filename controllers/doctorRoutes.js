@@ -77,4 +77,10 @@ router.post('/doctor/changePassword', auth, function (req, res){
 	})
 })
 
+router.post('/doctor/setAvailability', auth, function (req, res){
+	doc.setAvailability(req.body.data, req.user.id).then(function (result){
+		res.sendStatus(result ? 200 : 400)
+	})
+})
+
 module.exports = router
