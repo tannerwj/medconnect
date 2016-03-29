@@ -51,7 +51,7 @@ var doctorExists = function (id){
 
 var getDoctorDetails = function (id){
   return Promise.all([
-    db.query('SELECT address, verified, experience, volunteerNotes, otherNotes FROM DoctorProfile WHERE userID = ? LIMIT 1;', [id]),
+    db.query('SELECT address, phone, verified, experience, volunteerNotes, otherNotes, availability FROM DoctorProfile WHERE userID = ? LIMIT 1;', [id]),
     db.query('SELECT name FROM Specialties, SpecialtyDoctor WHERE Specialties._id = SpecialtyDoctor.specialtyID AND SpecialtyDoctor.doctorID = ?;', [id])
   ]).then(function (results){
     if(!results[0][0]){ return false }
@@ -59,24 +59,23 @@ var getDoctorDetails = function (id){
     var profile = results[0][0][0]
     var specialties = results[1][0]
 
-    var doctor = {
+    return {
       loc: profile.address,
       phone: profile.phone,
       ver: profile.verified,
       vol: profile.volunteerNotes,
       notes: profile.otherNotes,
+      availability: profile.availability,
       specialties: specialties
     }
-
-    return doctor
   })
 }
 
 var info = function (id){
   return Promise.all([
     db.query('SELECT email, firstName, lastName FROM Users WHERE userID =? LIMIT 1;', [id]),
-    db.query('SELECT address, phone, verified, verificationCode, experience, volunteerNotes, otherNotes FROM DoctorProfile WHERE userID =? LIMIT 1;', [id]),
-    db.query('SELECT specialtyID AS _id, name FROM Specialties, SpecialtyDoctor WHERE Specialties._id = SpecialtyDoctor.specialtyID AND SpecialtyDoctor.doctorID = ?;', [id])
+    db.query('SELECT address, phone, verified, verificationCode, experience, volunteerNotes, otherNotes, availability FROM DoctorProfile WHERE userID =? LIMIT 1;', [id]),
+    db.query('SELECT Specialties._id, Specialties.name FROM Specialties, SpecialtyDoctor WHERE Specialties._id = SpecialtyDoctor.specialtyID AND SpecialtyDoctor.doctorID = ?;', [id])
 ]).then(function (results){
     var tmp1 = results[0][0][0]
     var tmp2 = results[1][0][0]
@@ -95,6 +94,7 @@ var info = function (id){
       exp: tmp2.experience,
       vol: tmp2.volunteerNotes,
       notes: tmp2.otherNotes,
+      availability: tmp2.availability,
       specialties: specialties
     }
   })
@@ -102,11 +102,17 @@ var info = function (id){
 
 var getDoctor = function (userId){
   return Promise.all([
-    db.query('SELECT * FROM Users where userID = ? order by lastName, firstName;', [userId])
+    db.query('SELECT * FROM Users WHERE userID =? ORDER BY lastName, firstName;', [userId])
   ]).then(function (result){
     return {
       currentDoctor: result[0][0][0]
     }
+  })
+}
+
+var setAvailability = function (data, userId){
+  return db.query('UPDATE DoctorProfile SET availability =? WHERE userID =?;', [data, userId]).then(function (result){
+    return result[0].affectedRows === 1
   })
 }
 
@@ -116,5 +122,6 @@ module.exports = {
   deleteDoctor: deleteDoctor,
   getDoctorDetails: getDoctorDetails,
   info: info,
-  getDoctor : getDoctor
+  getDoctor: getDoctor,
+  setAvailability: setAvailability
 }

@@ -95,7 +95,7 @@
 			vm.volunteerNotes = info.vol;
 			vm.otherNotes = info.notes;
 		}).catch(function (error) {
-			console.log("Error is : " + error);
+			console.log("Error is : ", error);
 		});
 
 		vm.edit = function () {
@@ -115,7 +115,7 @@
 		vm.add = function(){
 			if(vm.ids.indexOf(vm.selectedItem._id) >= 0){
 				vm.error = true;
-				vm.message = "No duplicate speciality";
+				vm.message = "Duplicate speciality";
 				return false;
 			}else{
 				vm.empty = false;
@@ -153,9 +153,9 @@
 		$scope.open = function (error, size) {
 
 	    if(error){
-	      $scope.item = "Missing/Incorrect fields, please try again.";
+	      $scope.item = "Missing/Incorrect fields, please try again";
 	    }else{
-	      $scope.item = "Fantastic, you have successfully Edited your profile!";
+	      $scope.item = "You have successfully edited your profile";
 	    }
 	    var modalInstance = $uibModal.open({
 	      animation: true,
@@ -221,17 +221,17 @@
 
  				// opens up modal
 				$scope.open(false);
-
-				// $http({
-				// 	method: 'POST',
-				// 	url: '/doctor/doctorSchedule',
-				// 	data: scheduleArr
-				// }).success(function (data) {
-				// 	$scope.open(false);
-				// 	console.log(data);
-				// }).error(function (err) {
-				// 	$scope.open(true);
-				// })
+				$http({
+					method: 'POST',
+					url: '/doctor/setAvailability',
+					data: {
+						data: JSON.stringify($scope.scheduleArr)
+					}
+				}).success(function (data) {
+					$scope.open(false)
+				}).error(function (err) {
+					$scope.open(true)
+				})
 
 			}
 
