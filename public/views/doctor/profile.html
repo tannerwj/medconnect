@@ -114,8 +114,10 @@
 	<div class="col-xs-12 col-sm-offset-4 col-sm-4">
 		<input type='button' class="btn btn-primary fullWidth" ng-click="doctor.add()" value="Add speciality"></button>
 	</div>
-	<div ng-show="doctor.error" class="col-xs-2">
-		<div class="alert alert-danger" role="alert">{{doctor.message}}</div>
+</div>
+<div class="form-group" ng-show="doctor.error">
+	<div class="col-xs-12 col-sm-offset-4 col-sm-4">
+		<div class="alert alert-danger text-center" role="alert">{{doctor.message}}</div>
 	</div>
 </div>
 	<div class="form-group">
@@ -131,41 +133,3 @@
 	<p ng-message="required">This field is required.</p>
 	<p ng-message="email">This needs to be a valid email</p>
 </script>
-
-<!--This is for passwords-->
-<!-- <div class="form-group" ng-class="{ 'has-error': doctorForm.password.$touched && doctorForm.password.$invalid }">
-  <label for="password" class="col-sm-4 control-label">Current Password:</label>
-  <div class="col-sm-4">
-    <div class="input-group">
-      <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
-      <input placeholder="********" type="password" name="password" class="form-control" id="password" ng-model="doctor.password" ng-maxlength="120" ng-readonly="!doctor.editMode">
-    </div>
-      <div class="help-block" ng-messages="doctorForm.password.$error" ng-show="doctorForm.password.$touched">
-        <div ng-messages-include="my-custom-messages"></div>
-    </div>
-  </div>
-</div>
-<div class="form-group" ng-show="doctor.editMode" ng-class="{ 'has-error': doctorForm.passwordNew.$touched && doctorForm.passwordNew.$invalid }">
-  <label for="password" class="col-sm-4 control-label">New Password:</label>
-  <div class="col-sm-4">
-    <div class="input-group">
-      <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
-      <input placeholder="********" type="password" name="passwordNew" class="form-control" id="password" ng-model="doctor.passwordNew" ng-maxlength="120">
-    </div>
-      <div class="help-block" ng-messages="doctorForm.passwordNew.$error" ng-show="doctorForm.passwordNew.$touched">
-        <div ng-messages-include="my-custom-messages"></div>
-    </div>
-  </div>
-</div>
-<div class="form-group" ng-show = "doctor.editMode" ng-class="{ 'has-error': doctorForm.passwordConfirm.$touched && doctorForm.passwordConfirm.$invalid }">
-  <label for="passwordConfirm" class="col-sm-4 control-label">Confirm New Password:</label>
-  <div class="col-sm-4">
-    <div class="input-group">
-      <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
-      <input type="password" class="form-control" name="passwordConfirm"id="passwordConfirm" ng-model="doctor.passwordConfirm" ng-maxlength="120">
-    </div>
-    <div class="help-block" ng-messages="doctorForm.passwordConfirm.$error" ng-show="doctorForm.passwordConfirm.$touched">
-      <div ng-messages-include="my-custom-messages"></div>
-  </div>
-  </div>
-</div> -->
