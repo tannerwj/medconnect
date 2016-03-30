@@ -130,6 +130,11 @@ h1 {
   margin-bottom:0;
   padding:5px;
 }
+.profileAlerts .fullWidth{
+  width:100%;
+}
+
+
 .fa-check-circle-o{
   color:green;
 }
