@@ -64,7 +64,7 @@ CREATE TABLE `DoctorProfile` (
 	`experience` varchar(10) NOT NULL,
 	`volunteerNotes` varchar(255) NOT NULL,
 	`otherNotes` varchar(255) NOT NULL,
-	`availability` varchar(255),
+	`availability` varchar(500),
 	PRIMARY KEY (`userID`)
 );
 

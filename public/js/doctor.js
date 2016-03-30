@@ -77,7 +77,6 @@
 			var specs = info.specialties;
 			if(specs.length <= 0){
 				vm.empty = true;
-				console.log(true)
 			}
 			for(var o in specs) {
 				var spec = specs[o];
@@ -183,44 +182,64 @@
 
 	medconnect.controller('DoctorAvaliable', function ($scope, $filter, $http, $uibModal) {
 
-			var d = new Date();
-			d.setHours( 0 );
-			d.setMinutes( 0 );
+		$http.get('/doctor/info').success(function (info) {
+			if(info.availability){
 
-			$scope.ms = d;
-			$scope.me = d;
-			$scope.tus = d;
-			$scope.tue = d;
-			$scope.ws = d;
-			$scope.we = d;
-			$scope.ths = d;
-			$scope.the = d;
-			$scope.fs = d;
-			$scope.fe = d;
-			$scope.sas = d;
-			$scope.sae = d;
-			$scope.sus = d;
-			$scope.sue = d;
+				var a = JSON.parse(info.availability);
+				$scope.ms = a[0][1];
+				$scope.me = a[0][2];
+				$scope.tus = a[1][1];
+				$scope.tue = a[1][2];
+				$scope.ws = a[2][1];
+				$scope.we = a[2][2];
+				$scope.ths = a[3][1];
+				$scope.the = a[3][2];
+				$scope.fs = a[4][1];
+				$scope.fe = a[4][2];
+				$scope.sas = a[5][1];
+				$scope.sae = a[5][2];
+				$scope.sus = a[6][1];
+				$scope.sue = a[6][2];
+			}else{
+				var d = new Date();
+				d.setHours( 0 );
+				d.setMinutes( 0 );
 
-			$scope.ismeridian = false;
-		  $scope.hstep = 1;
-		  $scope.mstep = 15;
+				$scope.ms = d;
+				$scope.me = d;
+				$scope.tus = d;
+				$scope.tue = d;
+				$scope.ws = d;
+				$scope.we = d;
+				$scope.ths = d;
+				$scope.the = d;
+				$scope.fs = d;
+				$scope.fe = d;
+				$scope.sas = d;
+				$scope.sae = d;
+				$scope.sus = d;
+				$scope.sue = d;
+
+				$scope.ismeridian = true;
+				$scope.hstep = 1;
+				$scope.mstep = 15;
+			}
+		}).catch(function (error) {
+			console.log("Error is : ", error);
+		});
 
 			$scope.submit = function(){
 
-				// Days, starttime, endtime, don't modify this array, I am using it for modal
 				$scope.scheduleArr = [
-					['Monday', $filter('date')($scope.ms, 'shortTime'),  $filter('date')($scope.me, 'shortTime')],
-					['Tuesday', $filter('date')($scope.tus, 'shortTime'), $filter('date')($scope.tue, 'shortTime')],
-					['Wendesday', $filter('date')($scope.ws, 'shortTime'), $filter('date')($scope.we, 'shortTime')],
-					['Thursday', $filter('date')($scope.ths, 'shortTime'), $filter('date')($scope.the, 'shortTime')],
-					['Friday', $filter('date')($scope.fs, 'shortTime'),$filter('date')($scope.fe, 'shortTime')],
-					['Saturday', $filter('date')($scope.sas, 'shortTime'), $filter('date')($scope.sae, 'shortTime')],
-					['Sunday', $filter('date')($scope.sus, 'shortTime'), $filter('date')($scope.sue, 'shortTime')]
+					['Monday', $scope.ms,  $scope.me],
+					['Tuesday', $scope.tus, $scope.tue],
+					['Wednesday', $scope.ws, $scope.we],
+					['Thursday', $scope.ths, $scope.the],
+					['Friday', $scope.fs, $scope.fe],
+					['Saturday', $scope.sas, $scope.sae],
+					['Sunday', $scope.sus, $scope.sue]
 				]
 
- 				// opens up modal
-				$scope.open(false);
 				$http({
 					method: 'POST',
 					url: '/doctor/setAvailability',

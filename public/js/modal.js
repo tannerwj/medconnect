@@ -1,7 +1,7 @@
 (function(){
   var medconnect = angular.module("mcModal", []);
 
-  medconnect.controller('ModalInstanceCtrl', function ($scope, $location, $uibModalInstance, item) {
+  medconnect.controller('ModalInstanceCtrl', function ($scope, $location, $filter, $uibModalInstance, item) {
 
     if(typeof(item) === 'string'){
       $scope.item = item;

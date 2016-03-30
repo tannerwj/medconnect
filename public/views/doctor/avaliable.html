@@ -1,35 +1,86 @@
 <div class='main' ng-controller="DoctorAvaliable">
   <h1>Availability</h1>
-  <h6 class="text-center"><em>Insert hours in 24hour format (Not meridian)</em></h6>
   <div class="text-center">
     <button type="button" class="btn btn-primary" ng-click="submit()">Update</button>
+  </div>.
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Monday</h3>
+    </div>
+    <div class="panel-body">
+      <uib-timepicker ng-model='ms' hour-step="1" minute-step="30" show-meridian="ismeridian"></uib-timepicker>
+      <p class="text-center">To</p>
+      <uib-timepicker ng-model='me' hour-step="1" minute-step="30" show-meridian="ismeridian"></uib-timepicker>
+    </div>
   </div>
-  <div class="col-xs-12"><h3 class="text-center">Monday</h3></div>
-  <div class="col-xs-5"><uib-timepicker ng-model='ms' hour-step="1" minute-step="30" show-meridian="ismeridian"></uib-timepicker></div>
-  <div class="col-xs-2"><table class="avaliable"><tbody><tr></tr><tr><td>To</td></tr><tr></tr></tbody></table></div>
-  <div class="col-xs-5"><uib-timepicker ng-model='me' hour-step="1" minute-step="30" show-meridian="ismeridian"></uib-timepicker></div>
-  <div class="col-xs-12"><h3 class="text-center">Tuesday</h3></div>
-  <div class="col-xs-5"><uib-timepicker ng-model='tus' hour-step="1" minute-step="30" show-meridian="ismeridian"></uib-timepicker></div>
-  <div class="col-xs-2"><table class="avaliable"><tbody><tr></tr><tr><td>To</td></tr><tr></tr></tbody></table></div>
-  <div class="col-xs-5"><uib-timepicker ng-model='tue' hour-step="1" minute-step="30" show-meridian="ismeridian"></uib-timepicker></div>
-  <div class="col-xs-12"><h3 class="text-center">Wendesday</h3></div>
-  <div class="col-xs-5"><uib-timepicker ng-model='ws' hour-step="1" minute-step="30" show-meridian="ismeridian"></uib-timepicker></div>
-  <div class="col-xs-2"><table class="avaliable"><tbody><tr></tr><tr><td>To</td></tr><tr></tr></tbody></table></div>
-  <div class="col-xs-5"><uib-timepicker ng-model='we' hour-step="1" minute-step="30" show-meridian="ismeridian"></uib-timepicker></div>
-  <div class="col-xs-12"><h3 class="text-center">Thursday</h3></div>
-  <div class="col-xs-5"><uib-timepicker ng-model='ths' hour-step="1" minute-step="30" show-meridian="ismeridian"></uib-timepicker></div>
-  <div class="col-xs-2"><table class="avaliable"><tbody><tr></tr><tr><td>To</td></tr><tr></tr></tbody></table></div>
-  <div class="col-xs-5"><uib-timepicker ng-model='the' hour-step="1" minute-step="30" show-meridian="ismeridian"></uib-timepicker></div>
-  <div class="col-xs-12"><h3 class="text-center">Friday</h3></div>
-  <div class="col-xs-5"><uib-timepicker ng-model='fs' hour-step="1" minute-step="30" show-meridian="ismeridian"></uib-timepicker></div>
-  <div class="col-xs-2"><table class="avaliable"><tbody><tr></tr><tr><td>To</td></tr><tr></tr></tbody></table></div>
-  <div class="col-xs-5"><uib-timepicker ng-model='fe' hour-step="1" minute-step="30" show-meridian="ismeridian"></uib-timepicker></div>
-  <div class="col-xs-12"><h3 class="text-center">Saturday</h3></div>
-  <div class="col-xs-5"><uib-timepicker ng-model='sas' hour-step="1" minute-step="30" show-meridian="ismeridian"></uib-timepicker></div>
-  <div class="col-xs-2"><table class="avaliable"><tbody><tr></tr><tr><td>To</td></tr><tr></tr></tbody></table></div>
-  <div class="col-xs-5"><uib-timepicker ng-model='sae' hour-step="1" minute-step="30" show-meridian="ismeridian"></uib-timepicker></div>
-  <div class="col-xs-12"><h3 class="text-center">Sunday</h3></div>
-  <div class="col-xs-5"><uib-timepicker ng-model='sus' hour-step="1" minute-step="30" show-meridian="ismeridian"></uib-timepicker></div>
-  <div class="col-xs-2"><table class="avaliable"><tbody><tr></tr><tr><td>To</td></tr><tr></tr></tbody></table></div>
-  <div class="col-xs-5"><uib-timepicker ng-model='sue' hour-step="1" minute-step="30" show-meridian="ismeridian"></uib-timepicker></div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Tuesday</h3>
+    </div>
+    <div class="panel-body">
+      <uib-timepicker ng-model='tus' hour-step="1" minute-step="30" show-meridian="ismeridian"></uib-timepicker>
+      <p class="text-center">To</p>
+      <uib-timepicker ng-model='tue' hour-step="1" minute-step="30" show-meridian="ismeridian"></uib-timepicker>
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Wendesday</h3>
+    </div>
+    <div class="panel-body">
+      <uib-timepicker ng-model='ws' hour-step="1" minute-step="30" show-meridian="ismeridian"></uib-timepicker>
+      <p class="text-center">To</p>
+      <uib-timepicker ng-model='we' hour-step="1" minute-step="30" show-meridian="ismeridian"></uib-timepicker>
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Thursday</h3>
+    </div>
+    <div class="panel-body">
+      <uib-timepicker ng-model='ths' hour-step="1" minute-step="30" show-meridian="ismeridian"></uib-timepicker>
+      <p class="text-center">To</p>
+      <uib-timepicker ng-model='the' hour-step="1" minute-step="30" show-meridian="ismeridian"></uib-timepicker>
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Friday</h3>
+    </div>
+    <div class="panel-body">
+      <uib-timepicker ng-model='fs' hour-step="1" minute-step="30" show-meridian="ismeridian"></uib-timepicker>
+      <p class="text-center">To</p>
+      <uib-timepicker ng-model='fe' hour-step="1" minute-step="30" show-meridian="ismeridian"></uib-timepicker>
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Saturday</h3>
+    </div>
+    <div class="panel-body">
+      <uib-timepicker ng-model='sas' hour-step="1" minute-step="30" show-meridian="ismeridian"></uib-timepicker>
+      <p class="text-center">To</p>
+      <uib-timepicker ng-model='sae' hour-step="1" minute-step="30" show-meridian="ismeridian"></uib-timepicker>
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Sunday</h3>
+    </div>
+    <div class="panel-body">
+      <uib-timepicker ng-model='sus' hour-step="1" minute-step="30" show-meridian="ismeridian"></uib-timepicker>
+      <p class="text-center">To</p>
+      <uib-timepicker ng-model='sue' hour-step="1" minute-step="30" show-meridian="ismeridian"></uib-timepicker>
+    </div>
+  </div>
+
 </div>
+
+<!-- <div class="col-xs-2"><table class="avaliable"><tbody><tr></tr><tr><td>To</td></tr><tr></tr></tbody></table></div> -->
