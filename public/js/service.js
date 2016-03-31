@@ -24,7 +24,8 @@
         experience : doctor.exp,
         notes : data.notes,
         volunteerNotes : data.vol,
-        verified : data.ver
+        verified : data.ver,
+        availability : data.availability
       }
     }).error(function(err){
       console.log('Server error: ' + err);

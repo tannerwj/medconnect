@@ -220,7 +220,6 @@
 				$scope.sus = d;
 				$scope.sue = d;
 
-				$scope.ismeridian = true;
 				$scope.hstep = 1;
 				$scope.mstep = 15;
 			}
