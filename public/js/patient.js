@@ -149,7 +149,6 @@ medconnect.controller('PatientSearch', ['$http', '$location', 'doctorInfo', func
 medconnect.controller('seeDoctor', ['$http', '$location', 'doctorInfo', function($http, $location, doctorInfo){
 
   var vm = this;
-  vm.viewSchedule = false;
   var doctor = doctorInfo.getDoctorInfo();
   vm.id = doctor.userID;
   vm.name = doctor.name;
@@ -159,29 +158,35 @@ medconnect.controller('seeDoctor', ['$http', '$location', 'doctorInfo', function
   vm.notes = doctor.notes;
   vm.volunteerNotes = doctor.volunteerNotes;
   vm.verified = doctor.verified;
+
+  vm.next = function(){
+    $location.url("/patient/seeDoctorSchedule");
+  }
+}]);
+
+medconnect.controller('seeDoctorSchedule', ['$http', '$location', 'doctorInfo', function($http, $location, doctorInfo){
+
+  var vm = this;
+  var doctor = doctorInfo.getDoctorInfo();
   vm.availability = doctor.availability;
   vm.lastName = doctor.name.split(" ")[1];
 
-  vm.next = function(){
-    vm.viewSchedule = true;
+  var a = JSON.parse(vm.availability);
+  vm.ms = a[0][1];
+  vm.me = a[0][2];
+  vm.tus = a[1][1];
+  vm.tue = a[1][2];
+  vm.ws = a[2][1];
+  vm.we = a[2][2];
+  vm.ths = a[3][1];
+  vm.the = a[3][2];
+  vm.fs = a[4][1];
+  vm.fe = a[4][2];
+  vm.sas = a[5][1];
+  vm.sae = a[5][2];
+  vm.sus = a[6][1];
+  vm.sue = a[6][2];
 
-    var a = JSON.parse(vm.availability);
-    vm.ms = a[0][1];
-    vm.me = a[0][2];
-    vm.tus = a[1][1];
-    vm.tue = a[1][2];
-    vm.ws = a[2][1];
-    vm.we = a[2][2];
-    vm.ths = a[3][1];
-    vm.the = a[3][2];
-    vm.fs = a[4][1];
-    vm.fe = a[4][2];
-    vm.sas = a[5][1];
-    vm.sae = a[5][2];
-    vm.sus = a[6][1];
-    vm.sue = a[6][2];
-
-  }
 
 }]);
 

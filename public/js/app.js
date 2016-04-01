@@ -76,6 +76,12 @@ medconnect.config(['$routeProvider', '$locationProvider',
           isPatient: isPatient
         }
       })
+      .when('/patient/seeDoctorSchedule', {
+        templateUrl: '/views/patient/seeDoctorSchedule.html',
+        resolve:{
+          isPatient: isPatient
+        }
+      })
       .when('/patient/records', {
         templateUrl: '/views/patient/recordsmenu.html',
 				resolve:{
