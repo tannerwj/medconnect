@@ -187,6 +187,137 @@ medconnect.controller('seeDoctorSchedule', ['$http', '$location', 'doctorInfo', 
   vm.sus = a[6][1];
   vm.sue = a[6][2];
 
+  vm.submit = function(){
+    $location.url("/patient/requestAppointment");
+  }
+
+}]);
+
+medconnect.controller('requestAppointment', ['$scope', '$http', '$location', 'doctorInfo', '$uibModal', function($scope, $http, $location, doctorInfo, $uibModal){
+
+  var doctor = doctorInfo.getDoctorInfo();
+  $scope.availability = doctor.availability;
+  $scope.lastName = doctor.name.split(" ")[1];
+
+  var d = new Date();
+  d.setHours( 0 );
+  d.setMinutes( 0 );
+  $scope.time = d;
+  $scope.date = new Date();
+
+  $scope.submit = function(){
+
+    // $http({
+    //   method: 'POST',
+    //   url: '/patient/requestAppointment',
+    //   data: {
+    //     id : doctor.id,
+    //     date : $scope.date,
+    //     time : $scope.time
+    //   }
+    // }).success(function (data) {
+    //   $scope.open(false)
+    // }).error(function (err) {
+    //   $scope.open(true)
+    // })
+
+  }
+
+  $scope.open = function (error, size) {
+
+    if(error){
+      $scope.item = "Server Error, try back again later please";
+    }else{
+      $scope.item = "You have successfully requested an appointment!";
+    }
+    var modalInstance = $uibModal.open({
+      animation: true,
+      templateUrl: '../views/modal.html',
+      controller: 'ModalInstanceCtrl',
+      size: size,
+      resolve: {
+        item : function(){
+          return $scope.item
+        }
+      }
+    });
+  };
+
+  // Datepicker
+  $scope.inlineOptions = {
+    customClass: getDayClass,
+    minDate: new Date(),
+    showWeeks: true
+  };
+
+  $scope.dateOptions = {
+    dateDisabled: disabled,
+    formatYear: 'yy',
+    maxDate: new Date(2020, 5, 22),
+    minDate: new Date(),
+    startingDay: 1
+  };
+
+  // Disable weekend selection
+  function disabled(data) {
+    var date = data.date,
+      mode = data.mode;
+    return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+  }
+
+
+  $scope.open1 = function() {
+    $scope.popup1.opened = true;
+  };
+
+  $scope.open2 = function() {
+    $scope.popup2.opened = true;
+  };
+
+  $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+  $scope.format = $scope.formats[0];
+  $scope.altInputFormats = ['M!/d!/yyyy'];
+
+  $scope.popup1 = {
+    opened: false
+  };
+
+  $scope.popup2 = {
+    opened: false
+  };
+
+  var tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  var afterTomorrow = new Date();
+  afterTomorrow.setDate(tomorrow.getDate() + 1);
+  $scope.events = [
+    {
+      date: tomorrow,
+      status: 'full'
+    },
+    {
+      date: afterTomorrow,
+      status: 'partially'
+    }
+  ];
+
+  function getDayClass(data) {
+    var date = data.date,
+      mode = data.mode;
+    if (mode === 'day') {
+      var dayToCheck = new Date(date).setHours(0,0,0,0);
+
+      for (var i = 0; i < $scope.events.length; i++) {
+        var currentDay = new Date($scope.events[i].date).setHours(0,0,0,0);
+
+        if (dayToCheck === currentDay) {
+          return $scope.events[i].status;
+        }
+      }
+    }
+
+    return '';
+  }
 
 }]);
 

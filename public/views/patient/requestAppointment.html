@@ -1,0 +1,17 @@
+<div class="main" ng-controller="requestAppointment">
+    <h1>Request Appointment</h1>
+      <h4>Select Date</h4>
+      <uib-datepicker ng-model="date" class="well well-sm" datepicker-options="inlineOptions"></uib-datepicker>
+      <hr />
+      <h4>Select time</h4>
+      <uib-timepicker ng-model='time' hour-step="1" minute-step="30" show-meridian="true"></uib-timepicker>
+
+      <pre>Date is: <em>{{date | date:'fullDate' }} </em></pre>
+      <pre>Time is: <em>{{time | date:'shortTime'}} </em></pre>
+
+    <hr />
+    <div class="text-center">
+      <button class="btn btn-primary" ng-click="submit()">Request Appointment</button>
+    </div>
+    <br />
+</div>
