@@ -68,19 +68,21 @@
 		var vm = this;
 		vm.editMode = false;
 		vm.ids = [];
-		vm.datas = [];
-		vm.items = []; //grabs specialties from admin
+		vm.items = []; // list of specialties to choose
+		$scope.alerts = [];
 		vm.error = false;
 		vm.message = "";
 
 		$http.get('/doctor/info').success(function (info) {
 			var specs = info.specialties;
-			var tmp = [];
+			if(specs.length <= 0){
+				vm.empty = true;
+			}
 			for(var o in specs) {
 				var spec = specs[o];
+				spec.msg = spec.name;
+				$scope.alerts.push(spec)
 				vm.ids.push(spec._id);
-				vm.datas.push(spec.name);
-			  tmp.push(spec.name);
 			}
 			vm.email = info.email;
 			vm.firstName = info.firstName;
@@ -91,9 +93,8 @@
 			vm.experience = info.exp;
 			vm.volunteerNotes = info.vol;
 			vm.otherNotes = info.notes;
-			vm.specialties = tmp
 		}).catch(function (error) {
-			console.log("Error is : " + error);
+			console.log("Error is : ", error);
 		});
 
 		vm.edit = function () {
@@ -110,45 +111,21 @@
 			vm.editMode = !vm.editMode;
 		}
 
-		// http://www.newhealthguide.org/Types-Of-Doctors.html
-
 		vm.add = function(){
 			if(vm.ids.indexOf(vm.selectedItem._id) >= 0){
 				vm.error = true;
-				vm.message = "No duplicate speciality";
+				vm.message = "Duplicate speciality";
 				return false;
 			}else{
-				//cards
+				vm.empty = false;
 				vm.ids.push(vm.selectedItem._id);
-				vm.datas.push(vm.selectedItem.name);
-				vm.specialties = vm.datas.join(", ");
+				$scope.alerts.push({msg:vm.selectedItem.name});
 				vm.error = false;
 				return true;
 			}
 		}
 
-		$scope.open = function (error, size) {
-
-	    if(error){
-	      $scope.item = "Missing/Incorrect fields, please try again.";
-	    }else{
-	      $scope.item = "Fantastic, you have successfully Edited your profile!";
-	    }
-	    var modalInstance = $uibModal.open({
-	      animation: true,
-	      templateUrl: '../views/modal.html',
-	      controller: 'ModalInstanceCtrl',
-	      size: size,
-	      resolve: {
-	        item : function(){
-	          return $scope.item;
-	        }
-	      }
-	    });
-	  };
-
 		vm.save = function () {
-			console.log(vm.ids);
 			$http({
 					method: 'POST',
 					url: '/doctor/edit',
@@ -171,11 +148,131 @@
 	        console.log('Server error: ' + err);
 	      })
 		}
+		// Modal open
+		$scope.open = function (error, size) {
+
+	    if(error){
+	      $scope.item = "Missing/Incorrect fields, please try again";
+	    }else{
+	      $scope.item = "You have successfully edited your profile";
+	    }
+	    var modalInstance = $uibModal.open({
+	      animation: true,
+	      templateUrl: '../views/modal.html',
+	      controller: 'ModalInstanceCtrl',
+	      size: size,
+	      resolve: {
+	        item : function(){
+	          return $scope.item;
+	        }
+	      }
+	    });
+	  };
+		// Alert close
+		$scope.closeAlert = function(index) {
+			if(!vm.editMode){
+
+			}else{
+				vm.ids.splice(index, 1);
+				$scope.alerts.splice(index, 1);
+			}
+		};
 
   }]);
 
-	medconnect.controller('VerifyDoctor', ['$http', function ($http) {
+	medconnect.controller('DoctorAvaliable', function ($scope, $filter, $http, $uibModal) {
 
-  }])
+		$http.get('/doctor/info').success(function (info) {
+			if(info.availability){
+
+				var a = JSON.parse(info.availability);
+				$scope.ms = a[0][1];
+				$scope.me = a[0][2];
+				$scope.tus = a[1][1];
+				$scope.tue = a[1][2];
+				$scope.ws = a[2][1];
+				$scope.we = a[2][2];
+				$scope.ths = a[3][1];
+				$scope.the = a[3][2];
+				$scope.fs = a[4][1];
+				$scope.fe = a[4][2];
+				$scope.sas = a[5][1];
+				$scope.sae = a[5][2];
+				$scope.sus = a[6][1];
+				$scope.sue = a[6][2];
+			}else{
+				var d = new Date();
+				d.setHours( 0 );
+				d.setMinutes( 0 );
+
+				$scope.ms = d;
+				$scope.me = d;
+				$scope.tus = d;
+				$scope.tue = d;
+				$scope.ws = d;
+				$scope.we = d;
+				$scope.ths = d;
+				$scope.the = d;
+				$scope.fs = d;
+				$scope.fe = d;
+				$scope.sas = d;
+				$scope.sae = d;
+				$scope.sus = d;
+				$scope.sue = d;
+
+				$scope.hstep = 1;
+				$scope.mstep = 15;
+			}
+		}).catch(function (error) {
+			console.log("Error is : ", error);
+		});
+
+			$scope.submit = function(){
+
+				$scope.scheduleArr = [
+					['Monday', $scope.ms,  $scope.me],
+					['Tuesday', $scope.tus, $scope.tue],
+					['Wednesday', $scope.ws, $scope.we],
+					['Thursday', $scope.ths, $scope.the],
+					['Friday', $scope.fs, $scope.fe],
+					['Saturday', $scope.sas, $scope.sae],
+					['Sunday', $scope.sus, $scope.sue]
+				]
+
+				$http({
+					method: 'POST',
+					url: '/doctor/setAvailability',
+					data: {
+						data: JSON.stringify($scope.scheduleArr)
+					}
+				}).success(function (data) {
+					$scope.open(false)
+				}).error(function (err) {
+					$scope.open(true)
+				})
+
+			}
+
+			$scope.open = function (error, size) {
+
+				if(error){
+					$scope.item = "Server Error, try back again later please";
+				}else{
+					$scope.item = "Congratulations, you have successfully registered!";
+				}
+				var modalInstance = $uibModal.open({
+					animation: true,
+					templateUrl: '../views/modal.html',
+					controller: 'ModalInstanceCtrl',
+					size: size,
+					resolve: {
+						item : function(){
+							return $scope.scheduleArr
+						}
+					}
+				});
+			};
+
+		});
 
 }());

@@ -21,6 +21,30 @@ var register = function (user){
 	})
 }
 
+var changePassword = function(newPass, currentPass, userId){
+  return db.query('SELECT password FROM Users WHERE userID =?;', [userId]).then(function (result){
+    var user = result[0][0]
+    if (!user){ return false }
+
+		return new Promise(function (resolve, reject){
+      bcrypt.compare(currentPass, user.password, function (err, res) {
+        if(res){
+          bcrypt.genSalt(BCRYPT_ROUNDS, function (salt){
+            bcrypt.hash(newPass, salt, null, function (err, hash) {
+              if (err){ return resolve(false) }
+              return db.query('UPDATE Users SET password = ? WHERE userID =?;', [hash, userId]).then( function (result){
+                return resolve(result[0].affectedRows === 1)
+              })
+            })
+          })
+        }else{
+          return resolve(false)
+        }
+      })
+    })
+  })
+}
+
 var deleteUser = function (id){
   return userExists(id).then( function (exists){
     if(exists){
@@ -60,5 +84,6 @@ module.exports = {
   deleteUser: deleteUser,
   findUserById: findUserById,
   findUserByEmail: findUserByEmail,
-  userExists: userExists
+  userExists: userExists,
+  changePassword: changePassword
 }

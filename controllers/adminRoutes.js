@@ -4,7 +4,7 @@ const router = express.Router()
 
 const db = require('../config/db')
 const admin = require('../src/admin')
-const account = require('../src/account')
+const acc = require('../src/account')
 
 const USERTYPE = 2
 
@@ -17,7 +17,7 @@ var auth = function (req, res, next){
 
 router.post('/admin/add', auth, function (req, res){
 	admin.add(req.body.type, req.body.data).then(function (result){
-		res.sendStatus(result ? 200 : 400)
+		res.json(result)
 	})
 })
 
@@ -29,7 +29,7 @@ router.post('/admin/view', auth, function (req, res){
 })
 
 router.post('/admin/edit', auth, function (req, res){
-	admin.edit(req.body.type, req.body.id).then(function (result){
+	admin.edit(req.body.type, req.body.name, req.body.id).then(function (result){
 		res.sendStatus(result ? 200 : 400)
 	})
 })
@@ -48,7 +48,7 @@ router.post('/admin/activate', auth, function (req, res){
 
 router.post('/admin/delete', auth, function (req, res){
 	admin.delete(req.body.type, req.body.id).then(function (result){
-		res.sendStatus(result ? 200 : 400)
+		res.json(result)
 	})
 })
 
@@ -59,21 +59,62 @@ router.post('/admin/viewAdmins', auth, function (req, res){
 	})
 })
 
+router.post('/admin/viewDoctors', auth, function (req, res){
+	admin.viewDoctors().then(function (result){
+		if(result){ return res.json(result) }
+		res.sendStatus(400)
+	})
+})
+
+router.post('/admin/verifyDoctor', auth, function (req, res){
+	admin.verifyDoctor(req.body.user).then(function (result){
+		res.sendStatus(result ? 200 : 400)
+	})
+})
+
+router.post('/admin/denyDoctor', auth, function (req, res){
+	admin.denyDoctor(req.body.user).then(function (result){
+		res.sendStatus(result ? 200 : 400)
+	})
+})
+
+router.post('/admin/unverifyDoctor', auth, function (req, res){
+	admin.unverifyDoctor(req.body.user).then(function (result){
+		res.sendStatus(result ? 200 : 400)
+	})
+})
+
 router.post('/admin/createAdmin', auth, function (req, res){
 	var user = {
 		type: 2,
-		first: req.body.data.firstName,
-		last: req.body.data.lastName,
+		first: '',
+		last: '',
 		email: req.body.data.email,
 		pass: req.body.data.password
 	}
-	account.register(user).then(function (result){
+	acc.register(user).then(function (result){
 		res.sendStatus(result ? 200 : 400)
 	})
 })
 
 router.post('/admin/deleteAdmin', auth, function (req, res){
-	account.deleteUser(req.body.id).then(function (result){
+	acc.findUserByEmail(req.body.email).then(function(user){
+		acc.deleteUser(user.userID).then(function (result){
+			res.sendStatus(result ? 200 : 400)
+		})
+	})
+})
+
+router.post('/admin/getAdmin', auth, function (req, res){
+	admin.getAdmin(req.user.id).then(function (result){
+		if(result){
+			return res.json(result) }
+		res.sendStatus(400)
+	})
+})
+
+router.post('/admin/changePassword', auth, function (req, res){
+	acc.changePassword(req.body.newPass, req.body.curPass, req.user.id).then(function (result){
 		res.sendStatus(result ? 200 : 400)
 	})
 })

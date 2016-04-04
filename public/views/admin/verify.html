@@ -1,0 +1,69 @@
+<div class="admin" ng-init=init()>
+  <h1>Verify Doctors</h1>
+  <div class="alert alert-success" role="alert" ng-show='success'>
+		<button type='button' class='close' aria-label='Close' ng-click='success = false'>
+			<span aria-hidden='true'>&times;</span>
+		</button>
+    {{success}}
+  </div>
+  <div class="alert alert-info" role="alert" ng-show='failure'>
+		<button type='button' class='close' aria-label='Close' ng-click='failure = false'>
+			<span aria-hidden='true'>&times;</span>
+		</button>
+    {{failure}}
+  </div>
+  <div class="login-or">
+    <hr class="hr-or">
+    <span class="span-or">Filter</span>
+  </div>
+  <form class="form-horizontal">
+    <div class="form-group">
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-search fa-fw"></i></span>
+        <input type="text" id="search" class="form-control" ng-model="query">
+      </div>
+    </div>
+  </form>
+	<div class="login-or">
+		<hr class="hr-or">
+		<span class="span-or">Unverified</span>
+	</div>
+  <div class="list-group adminList" ng-show='unverified'>
+    <li class="list-group-item list" ng-repeat='u in unverified | filter:query | orderBy:"lastName":false'>
+      <h5>{{u.lastName + ', ' + u.firstName}}</h5>
+      Code: {{u.verificationCode}}
+      <div class="btn-group" role="group">
+        <button type="button" ng-click="verify(u, unverified)" class="btn btn-success">Verify</button>
+        <button type="button" ng-click="deny(u, unverified)" class="btn btn-danger">Deny</button>
+      </div>
+    </li>
+  </div>
+  <div class="login-or">
+    <hr class="hr-or">
+    <span class="span-or">Denied</span>
+  </div>
+  <div class="list-group adminList" ng-show='denied'>
+    <li class="list-group-item list" ng-repeat='d in denied | filter:query | orderBy:"lastName":false'>
+      <h5>{{d.lastName + ', ' + d.firstName}}</h5>
+      Code: {{d.verificationCode}}
+      <div class="btn-group" role="group">
+        <button type="button" ng-click="verify(d, denied)" class="btn btn-success">Verify</button>
+        <button type="button" ng-click="unverify(d, denied)" class="btn btn-primary">Unverify</button>
+      </div>
+    </li>
+  </div>
+	<div class="login-or">
+		<hr class="hr-or">
+		<span class="span-or">Verified</span>
+	</div>
+  <div class="list-group adminList" ng-show='verified'>
+    <li class="list-group-item list" ng-repeat='v in verified | filter:query | orderBy:"lastName":false'>
+      <h5>{{v.lastName + ', ' + v.firstName}}</h5>
+      Code: {{v.verificationCode}}
+      <div class="btn-group" role="group">
+        <button type="button" ng-click="deny(v, verified)" class="btn btn-danger">Deny</button>
+        <button type="button" ng-click="unverify(v, verified)" class="btn btn-primary">Unverify</button>
+      </div>
+    </li>
+  </div>
+</div>
