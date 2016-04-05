@@ -19,6 +19,9 @@ var edit = function (user){
     db.query('UPDATE PatientProfile SET bloodType =?, address =?, phone =? WHERE userID =?;', [user.blood, user.address, user.phone, user.id])
   ]).then(function (results){
     return results[0][0].affectedRows === 1 && results[1][0].affectedRows === 1
+  }).catch(function (err){
+    console.log(err)
+    return false
   })
 }
 
@@ -35,12 +38,18 @@ var deletePatient = function (id){
         return results[0].affectedRows && results[1]
       })
     }
+  }).catch(function (err){
+    console.log(err)
+    return false
   })
 }
 
 var patientExists = function (id){
   return db.query('SELECT 1 FROM PatientProfile WHERE userID =? LIMIT 1;', [id]).then( function (result){
     return result[0][0] !== undefined
+  }).catch(function (err){
+    console.log(err)
+    return false
   })
 }
 
@@ -62,6 +71,9 @@ var info = function (id){
       address: tmp2.address,
       phone: tmp2.phone
     }
+  }).catch(function (err){
+    console.log(err)
+    return false
   })
 }
 
@@ -89,6 +101,9 @@ var getDoctors = function (){
         }
       })
     })
+  }).catch(function (err){
+    console.log(err)
+    return false
   })
 }
 
@@ -104,6 +119,9 @@ var getDoctor = function (id){
       vol: profile.volunteerNotes,
       notes: profile.otherNotes
     }
+  }).catch(function (err){
+    console.log(err)
+    return false
   })
 }
 
@@ -114,7 +132,126 @@ var getPatient = function (userId){
     return {
       currentPatient: result[0][0][0]
     }
+  }).catch(function (err){
+    console.log(err)
+    return false
   })
+}
+
+var requestAppointment = function (patientId, doctorId, requestedDate){
+  var date = new Date(requestedDate).toISOString().replace(/T/, ' ').replace(/\..+/, '')
+  return db.query("INSERT INTO Visits (visitStatus, patientID, doctorID, visitDate, diagnosis, symptoms) VALUES (?,?,?,?,'','');", [db.REQUESTED_VISIT, patientId, doctorId, date]).then(function (result){
+    return result[0].affectedRows === 1
+  }).catch(function (err){
+    console.log(err)
+    return false
+  })
+}
+
+var getCurrentAppointments = function (patientID){
+  return Promise.all([
+    db.query('SELECT Visits.visitID, Visits.visitDate, Users.firstName, Users.lastName FROM Visits, Users WHERE Users.userID = Visits.doctorID AND Visits.visitStatus =? AND Visits.patientID =?;', [db.REQUESTED_VISIT, patientID]),
+    db.query('SELECT Visits.visitID, Visits.visitDate, Users.firstName, Users.lastName FROM Visits, Users WHERE Users.userID = Visits.doctorID AND Visits.visitStatus =? AND Visits.patientID =?;', [db.REJECTED_VISIT, patientID]),
+    db.query('SELECT Visits.visitID, Visits.visitDate, Users.firstName, Users.lastName FROM Visits, Users WHERE Users.userID = Visits.doctorID AND Visits.visitStatus =? AND Visits.patientID =?;', [db.ACCEPTED_VISIT, patientID]),
+  ]).then(function (results){
+    return {
+      requested: results[0][0],
+      rejected: results[1][0],
+      accepted: results[2][0]
+    }
+  }).catch(function (err){
+    console.log(err)
+    return false
+  })
+}
+
+var getAppointmentDetail = function (visitID, patientID){
+ return Promise.all([
+   db.query('SELECT Visits.visitStatus, Visits.visitDate, Visits.diagnosis, Visits.symptoms, Users.firstName, Users.lastName FROM Visits, Users WHERE Users.userID = Visits.doctorID AND Visits.visitID =? AND Visits.patientID =? LIMIT 1;', [visitID, patientID]),
+   db.query('SELECT noteID, note FROM Notes WHERE visitID =?;', [visitID]),
+   db.query('SELECT * FROM Vitals WHERE visitID =? LIMIT 1;', [visitID]),
+   db.query('SELECT * FROM MedicationPatient, Medications WHERE MedicationPatient.medicationID = Medications._id AND MedicationPatient.visitID =?;', [visitID]),
+   db.query('SELECT * FROM ExternalData, DataType WHERE ExternalData.dataID = DataType._id AND ExternalData.visitID =?;', [visitID])
+ ]).then(function (results){
+   var visit = results[0][0][0]
+   if(!visit){ return false }
+
+   return {
+     visit: visit,
+     notes: results[1][0],
+     vitals: results[2][0][0],
+     prescriptions: results[3][0],
+     images: results[4][0]
+   }
+ }).catch(function (err){
+   console.log(err)
+   return false
+ })
+}
+
+var getPastAppointments = function (patientID){
+  return db.query('SELECT Visits.visitID, Visits.visitDate, Users.firstName, Users.lastName FROM Visits, Users WHERE Users.userID = Visits.doctorID AND Visits.visitStatus =? AND Visits.patientID =?;', [db.COMPLETED_VISIT,patientID])
+  .then(function (results){
+    return results[0]
+  }).catch(function (err){
+    console.log(err)
+    return false
+  })
+}
+
+var completeAppointment = function (visitID, patientID){
+  return db.query('SELECT 1 FROM Visits WHERE Visits.visitID =? AND Visits.patientID =? LIMIT 1;', [visitID, patientID])
+  .then(function (result){
+    if(!result[0][0]){ return false }
+    return db.query('UPDATE Visits SET visitStatus =? WHERE visitID =?;', [db.COMPLETED_VISIT, visitID]).then(function (result){
+      return results[0][0].changedRows === 1
+    })
+  }).catch(function (err){
+    console.log(err)
+    return false
+  })
+}
+
+var deleteRejectedAppointment = function (visitID, patientID){
+  return db.query('SELECT 1 FROM Visits WHERE Visits.visitID =? AND Visits.patientID =? AND Visits.visitStatus =? LIMIT 1;', [visitID, patientID, db.REJECTED_VISIT])
+  .then(function (result){
+    if(!result[0][0]){ return false }
+    return db.query('DELETE FROM Visits WHERE visitID =?;', [visitID]).then(function (result){
+      return results[0][0].affectedRows === 1
+    })
+  }).catch(function (err){
+    console.log(err)
+    return false
+  })
+}
+
+var editAppointmentDetails = function (visitID, diagnosis, symptoms, patientID){
+  return db.query('SELECT 1 FROM Visits WHERE Visits.visitID =? AND Visits.patientID =? LIMIT 1;', [visitID, doctorID])
+  .then(function (result){
+    if(!result[0][0]){ return false }
+    return db.query('UPDATE Visits SET diagnosis =?, symptoms =? WHERE visitID =?;', [diagnosis, symptoms, visitID]).then(function (result){
+      return results[0][0].affectedRows === 1
+    })
+  }).catch(function (err){
+    console.log(err)
+    return false
+  })
+}
+
+var addVitals = function (vitals, patientID){
+  
+}
+
+var addNote = function (note, patientID){
+
+}
+
+var addImage = function (image, patientID){
+
+}
+
+var addPrescription = function (prescription, patientID){
+
 }
 
 module.exports = {
@@ -124,5 +261,16 @@ module.exports = {
   info: info,
   getDoctors: getDoctors,
   getDoctor: getDoctor,
-  getPatient: getPatient
+  getPatient: getPatient,
+  requestAppointment: requestAppointment,
+  getCurrentAppointments: getCurrentAppointments,
+  getAppointmentDetail: getAppointmentDetail,
+  getPastAppointments: getPastAppointments,
+  completeAppointment: completeAppointment,
+  deleteRejectedAppointment: deleteRejectedAppointment,
+  editAppointmentDetails: editAppointmentDetails,
+  addVitals: addVitals,
+  addNote: addNote,
+  addImage: addImage,
+  addPrescription: addPrescription
 }

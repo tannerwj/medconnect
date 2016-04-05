@@ -26,6 +26,7 @@ describe('Test doctor backend', function(){
     specialties: [],
     other: 'none'
   }
+  var schedule = [["Monday","2016-04-05T11:00:11.911Z","2016-04-05T21:00:11.911Z"],["Tuesday","2016-04-05T11:00:11.911Z","2016-04-05T22:00:11.911Z"],["Wednesday","2016-04-05T11:00:11.911Z","2016-04-05T20:00:11.911Z"],["Thursday","2016-04-05T06:00:11.911Z","2016-04-05T06:00:11.911Z"],["Friday","2016-04-05T06:00:11.911Z","2016-04-05T06:00:11.911Z"],["Saturday","2016-04-05T06:00:11.911Z","2016-04-05T06:00:11.911Z"],["Sunday","2016-04-05T06:00:11.911Z","2016-04-05T06:00:11.911Z"]]
 	before(function () {
     return acc.findUserByEmail(user.email).then(function (user){
       if(user){
@@ -53,4 +54,13 @@ describe('Test doctor backend', function(){
       }
     })
 	})
+  it('Sets doctor availability', function (){
+    return acc.findUserByEmail(editUser.email).then(function (user){
+      if(user){
+        return doc.setAvailability(JSON.stringify(schedule), user.userID).then(function (val){
+          expect(val).to.equal(true)
+        })
+      }
+    })
+  })
 })

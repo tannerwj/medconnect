@@ -6,10 +6,8 @@ const db = require('../config/db')
 const admin = require('../src/admin')
 const acc = require('../src/account')
 
-const USERTYPE = 2
-
 var auth = function (req, res, next){
-	if (req.isAuthenticated() && req.user.type === USERTYPE){
+	if (req.isAuthenticated() && req.user.type === db.ADMIN){
 		return next()
 	}
 	res.sendStatus(401)
@@ -86,7 +84,7 @@ router.post('/admin/unverifyDoctor', auth, function (req, res){
 
 router.post('/admin/createAdmin', auth, function (req, res){
 	var user = {
-		type: 2,
+		type: db.ADMIN,
 		first: '',
 		last: '',
 		email: req.body.data.email,

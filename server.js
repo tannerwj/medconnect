@@ -17,7 +17,7 @@ const favicon = require('serve-favicon')
 const app	= express()
 const acc = require('./src/account')
 
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 80
 
 const db = require('./config/db')
 
