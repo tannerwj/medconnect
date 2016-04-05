@@ -99,14 +99,14 @@
 
 		vm.edit = function () {
 			$http({
-					method: 'POST',
-					url: '/data/getStatic',
-					data: {
-						'type': 'specialties'
-					}
-				}).success(function(items){
-					vm.items = items;
-				});
+				method: 'POST',
+				url: '/data/getStatic',
+				data: {
+					'type': 'specialties'
+				}
+			}).success(function(items){
+				vm.items = items;
+			});
 
 			vm.editMode = !vm.editMode;
 		}

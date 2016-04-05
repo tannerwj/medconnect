@@ -7,6 +7,15 @@ database.configure({
 	'database': 'medconnect'
 })
 
+database.REQUESTED_VISIT = 1
+database.REJECTED_VISIT = 2
+database.ACCEPTED_VISIT = 3
+database.COMPLETED_VISIT = 4
+
+database.DOCTOR = 0
+database.PATIENT = 1
+database.ADMIN = 2
+
 database.escape = function (str) {
 	return str.replace(/[\0\x08\x09\x1a\n\r"'\\\%]/g, function (char) {
 		switch (char) {

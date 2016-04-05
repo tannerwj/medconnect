@@ -5,13 +5,18 @@ CREATE TABLE `Visits` (
 	`visitStatus` tinyint(1) NOT NULL,
 	`patientID` int(15) NOT NULL,
 	`doctorID` int(15) NOT NULL,
-	`address` varchar(255) NOT NULL,
 	`visitDate` DATETIME NOT NULL,
-	`reason` varchar(255) NOT NULL,
 	`diagnosis` varchar(255) NOT NULL,
 	`symptoms` varchar(255) NOT NULL,
-	`comments` varchar(255) NOT NULL,
 	PRIMARY KEY (`visitID`)
+);
+
+CREATE TABLE `Notes` (
+	`noteID` int(15) NOT NULL AUTO_INCREMENT,
+	`userID` int(15) NOT NULL,
+	`visitID` int(15) NOT NULL,
+	`note` varchar(1000) NOT NULL,
+	PRIMARY KEY (`noteID`)
 );
 
 CREATE TABLE `Users` (
@@ -33,6 +38,7 @@ CREATE TABLE `UserType` (
 INSERT INTO `UserType` (`typeID`, `typeName`) VALUES (0, 'doctor'), (1, 'patient'), (2, 'admin');
 
 CREATE TABLE `Vitals` (
+	`vitalID` int(15) NOT NULL AUTO_INCREMENT,
 	`userID` int(15) NOT NULL,
 	`visitID` int(15) NOT NULL,
 	`vitalsDate` DATETIME NOT NULL,
@@ -43,7 +49,8 @@ CREATE TABLE `Vitals` (
 	`pulse` varchar(10) NOT NULL,
 	`respiratoryRate` varchar(10) NOT NULL,
 	`bloodPressure` varchar(10) NOT NULL,
-	`bloodOxygenSat` varchar(10) NOT NULL
+	`bloodOxygenSat` varchar(10) NOT NULL,
+	PRIMARY KEY (`vitalID`)
 );
 
 CREATE TABLE `PatientProfile` (
@@ -121,7 +128,7 @@ CREATE TABLE `ExternalData` (
 	`dataTypeID` int(5) NOT NULL,
 	`filePath` varchar(255) NOT NULL,
 	`dataName` varchar(80) NOT NULL,
-	`uploadDate` DATETIME NOT NULL,
+	`uploadDate` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`dataID`)
 );
 

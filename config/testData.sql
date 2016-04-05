@@ -66,7 +66,7 @@ create procedure create_data()
 			(1000, 2, 'admin2@admin.com', 'Test10', 'Admin', '$2a$10$refQBWY1ZfHHUPWixvQ.Zur1pD.0s1FhHTzkxPj9z0C/80RW64rqG'),
 			(1001, 2, 'admin3@admin.com', 'Test11', 'Admin', '$2a$10$refQBWY1ZfHHUPWixvQ.Zur1pD.0s1FhHTzkxPj9z0C/80RW64rqG'),
 			(1002, 2, 'admin4@admin.com', 'Test12', 'Admin', '$2a$10$refQBWY1ZfHHUPWixvQ.Zur1pD.0s1FhHTzkxPj9z0C/80RW64rqG');
-		
+
 		insert into PatientProfile(userID, gender, bloodType, address, phone)
 		values(995, 'M', 'A+', '123 Patient St.', '111-222-3333'),
 			(996, 'F', 'O-', '456 Patient St.', '111-222-3333'),
@@ -85,25 +85,25 @@ create procedure create_data()
 			(14, 995),
 			(12, 997);
 
-		insert into Visits(visitID, visitStatus, patientID, doctorID, address, visitDate, reason, diagnosis, symptoms, comments)
-		values(899, 1, 995, 990, '123 Visit St.', '2015-02-01 12:00:00', 'Check-up', 'Healthy', '--none--', 'Looks healthy'),
-			(900, 1, 995, 990, '456 Visit St.', '2015-08-04 13:15:00', 'Stomach pains', 'Food coma', 'pains in stomach', 'no more buffets, please'),
-			(901, 1, 995, 990, '789 Visit St.', '2015-10-21 09:00:00', 'Stomach pains', 'Excessive eating', 'pains in stomach', 'eat less'),
-			(902, 1, 996, 993, '123 Visit St.', '2015-04-13 14:20:00', 'Dizziness', 'Anorexic', 'too skinny', 'eat more'),
-			(903, 1, 996, 992, '123 Visit St.', '2015-12-01 08:00:00', 'Headaches', 'Loud music', 'large, spiked hair', 'turn down the music'),
-			(904, 1, 996, 990, '123 Visit St.', '2016-01-05 13:45:00', 'Cramping', 'Excessive eating', 'pains in stomach', 'stop eating'),
-			(905, 1, 996, 991, '123 Visit St.', '2016-03-20 15:15:00', 'Check-up', 'Healthy', '--none--', 'Looks healthy'),
-			(906, 1, 997, 993, '123 Visit St.', '2015-01-31 11:00:00', 'Leg cramps', 'Running', 'in shape, fatigue', 'stop running when you black out'),
-			(907, 1, 997, 994, '456 Visit St.', '2015-02-15 11:15:00', 'Migraines', 'Too much sun', 'sunburnt, headaches', 'sunscreen?'),
-			(908, 1, 997, 992, '123 Visit St.', '2015-06-01 09:30:00', 'Check-up', 'Healthy', '--none--', 'Looks healthy'),
-			(909, 1, 997, 990, '123 Visit St.', '2015-10-30 11:15:00', 'Check-up (follow up)', 'Healthy', '--none--', 'Looks healthy'),
-			(910, 1, 997, 993, '456 Visit St.', '2016-01-07 12:15:00', 'Migraines', 'Loud music', 'punk rocker', 'teenager'),
-			(911, 1, 997, 991, '123 Visit St.', '2015-03-03 16:45:00', 'Headaches', 'Vampire', 'large fangs', 'Get garlic necklace'),
-			(912, 1, 997, 994, '456 Visit St.', '2015-03-21 09:15:00', 'Dizziness', 'Spinning in circles', 'child-like behavior', 'Waste of time'),
-			(913, 1, 998, 993, '789 Visit St.', '2015-02-13 08:45:00', 'Check-up', 'Healthy', '--none--', 'Looks healthy'),
-			(914, 1, 998, 991, '789 Visit St.', '2015-08-19 09:45:00', 'Check-up', 'Healthy', '--none--', 'Looks healthy'),
-			(915, 1, 998, 993, '456 Visit St.', '2016-01-26 13:00:00', 'Coughing', 'Smoking', 'coughing, bad breath', 'no comments'),
-			(916, 1, 998, 992, '789 Visit St.', '2016-02-28 11:15:00', 'Coughing (follow up)', 'Still smoking', 'coughing, bad breath', 'no comments');
+		insert into Visits(visitID, visitStatus, patientID, doctorID, visitDate, diagnosis, symptoms)
+		values(899, 1, 995, 990, '2015-02-01 12:00:00', '', 'Looks healthy'),
+			(900, 1, 995, 990, '2015-08-04 13:15:00', 'pains in stomach', 'no more buffets, please'),
+			(901, 1, 995, 990, '2015-10-21 09:00:00', 'pains in stomach', 'eat less'),
+			(902, 1, 996, 993, '2015-04-13 14:20:00', 'too skinny', 'eat more'),
+			(903, 1, 996, 992, '2015-12-01 08:00:00', 'large, spiked hair', 'turn down the music'),
+			(904, 1, 996, 990, '2016-01-05 13:45:00', 'pains in stomach', 'stop eating'),
+			(905, 1, 996, 991, '2016-03-20 15:15:00', '', 'Looks healthy'),
+			(906, 1, 997, 993, '2015-01-31 11:00:00', 'in shape, fatigue', 'stop running when you black out'),
+			(907, 1, 997, 994, '2015-02-15 11:15:00', 'sunburnt, headaches', 'sunscreen?'),
+			(908, 1, 997, 992, '2015-06-01 09:30:00', '', 'Looks healthy'),
+			(909, 1, 997, 990, '2015-10-30 11:15:00', 'Check-up (follow up)', 'Looks healthy'),
+			(910, 1, 997, 993, '2016-01-07 12:15:00', 'punk rocker', 'teenager'),
+			(911, 1, 997, 991, '2015-03-03 16:45:00', 'large fangs', 'Get garlic necklace'),
+			(912, 1, 997, 994, '2015-03-21 09:15:00', 'child-like behavior', 'Waste of time'),
+			(913, 1, 998, 993, '2015-02-13 08:45:00', '', 'Looks healthy'),
+			(914, 1, 998, 991, '2015-08-19 09:45:00', '', 'Looks healthy'),
+			(915, 1, 998, 993, '2016-01-26 13:00:00', 'coughing, bad breath', 'no comments'),
+			(916, 1, 998, 992, '2016-02-28 11:15:00', 'coughing, bad breath', 'no comments');
 
 		insert into Vitals(userID, visitID, vitalsDate, height, weight, BMI, temperature, pulse, respiratoryRate, bloodPressure, bloodOxygenSat)
 		values(995, 899, '2015-02-01 12:00:00', '5\'10\"', '164', '23', '98.7', '110', '18', '120/80', '98%'),

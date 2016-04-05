@@ -6,10 +6,8 @@ const db = require('../config/db')
 const pat = require('../src/patient')
 const acc = require('../src/account')
 
-const USERTYPE = 1
-
 var auth = function (req, res, next){
-	if (req.isAuthenticated() && req.user.type === USERTYPE){
+	if (req.isAuthenticated() && req.user.type === db.PATIENT){
 		return next()
 	}
 	res.sendStatus(401)
@@ -24,7 +22,7 @@ router.get('/patient/info', auth, function (req, res){
 
 router.post('/patient/register', function (req, res){
 	var user = {
-		type 	: USERTYPE,
+		type 	: db.PATIENT,
 		email : req.body.email,
 		first: req.body.first,
 		last: req.body.last,
@@ -68,6 +66,75 @@ router.post('/patient/getPatient', auth, function (req, res){
 
 router.post('/patient/changePassword', auth, function (req, res){
 	acc.changePassword(req.body.newPass, req.body.curPass, req.user.id).then(function (result){
+		res.sendStatus(result ? 200 : 400)
+	})
+})
+
+router.post('/patient/requestAppointment', auth, function (req, res){
+	pat.requestAppointment(req.user.id, req.body.doctorID, req.body.reqDate).then(function (result){
+		res.sendStatus(result ? 200 : 400)
+	})
+})
+
+router.get('/patient/getCurrentAppointments', auth, function (req, res){
+	pat.getCurrentAppointments(req.user.id).then(function (result){
+		if(result){ return res.json(result) }
+		res.sendStatus(400)
+	})
+})
+
+router.post('/patient/getAppointmentDetail', auth, function (req, res){
+	pat.getAppointmentDetail(req.body.visitID, req.user.id).then(function (result){
+		if(result){ return res.json(result) }
+		res.sendStatus(400)
+	})
+})
+
+router.get('/patient/getPastAppointments', auth, function (req, res){
+	pat.getPastAppointments(req.user.id).then(function (result){
+		if(result){ return res.json(result) }
+		res.sendStatus(400)
+	})
+})
+
+router.post('/patient/completeAppointment', auth, function (req, res){
+	pat.completeAppointment(req.body.visitID, req.user.id).then(function (result){
+		res.sendStatus(result ? 200 : 400)
+	})
+})
+
+router.post('/patient/deleteRejectedAppointment', auth, function (req, res){
+	pat.deleteRejectedAppointment(req.body.visitID, req.user.id).then(function (result){
+		res.sendStatus(result ? 200 : 400)
+	})
+})
+
+router.post('/patient/editAppointmentDetails', auth, function (req, res){
+	pat.editAppointmentDetails(req.body.visitID, req.body.diagnosis, req.body.symptoms, req.user.id).then(function (result){
+		res.sendStatus(result ? 200 : 400)
+	})
+})
+
+router.post('/patient/addVitals', auth, function (req, res){
+	pat.addVitals(req.body, req.user.id).then(function (result){
+		res.sendStatus(result ? 200 : 400)
+	})
+})
+
+router.post('/patient/addNote', auth, function (req, res){
+	pat.addNote(req.body, req.user.id).then(function (result){
+		res.sendStatus(result ? 200 : 400)
+	})
+})
+
+router.post('/patient/addImage', auth, function (req, res){
+	pat.addImage(req.body, req.user.id).then(function (result){
+		res.sendStatus(result ? 200 : 400)
+	})
+})
+
+router.post('/patient/addPrescription', auth, function (req, res){
+	pat.addPrescription(req.body, req.user.id).then(function (result){
 		res.sendStatus(result ? 200 : 400)
 	})
 })

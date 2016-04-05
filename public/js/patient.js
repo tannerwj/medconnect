@@ -118,7 +118,7 @@ medconnect.controller('PatientProfile', ['$http', '$location', '$uibModal', '$sc
         console.log(data);
       }).error(function(err){
         $scope.open(true);
-        console.log('Server error: ' + err);
+        console.log('Server error: ', err);
       })
   }
 
@@ -206,21 +206,19 @@ medconnect.controller('requestAppointment', ['$scope', '$http', '$location', 'do
   $scope.date = new Date();
 
   $scope.submit = function(){
-
-    // $http({
-    //   method: 'POST',
-    //   url: '/patient/requestAppointment',
-    //   data: {
-    //     id : doctor.id,
-    //     date : $scope.date,
-    //     time : $scope.time
-    //   }
-    // }).success(function (data) {
-    //   $scope.open(false)
-    // }).error(function (err) {
-    //   $scope.open(true)
-    // })
-
+    $http({
+      method: 'POST',
+      url: '/patient/requestAppointment',
+      data: {
+        id : doctor.id,
+        date : $scope.date,
+        time : $scope.time
+      }
+    }).success(function (data) {
+      $scope.open(false)
+    }).error(function (err) {
+      $scope.open(true)
+    })
   }
 
   $scope.open = function (error, size) {
