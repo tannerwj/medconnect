@@ -335,6 +335,7 @@ medconnect.controller('appointments', ['$http', '$location', '$scope', function(
   $scope.req = true;
   $scope.acc = true;
   $scope.rej = true;
+  $scope.details = false;
 
   $http.get('/patient/getCurrentAppointments').success(function(info){
 
@@ -358,12 +359,57 @@ medconnect.controller('appointments', ['$http', '$location', '$scope', function(
   });
 
   $scope.appointmentDetails = function(id){
+    $http({
+      method: 'POST',
+      url: '/patient/getAppointmentDetail',
+      data: {
+        visitID : id
+      }
+    }).success(function (data) {
+      $scope.details = true;
+      $scope.editMode = false;
+      console.log(data)
+      $scope.name = data.visit.firstName + " " + data.visit.lastName;
+      $scope.date = data.visit.visitDate;
+      $scope.diagnosis = data.visit.diagnosis;
+      $scope.symptoms = data.visit.symptoms;
 
+      data.prescriptions.forEach(function(pre, index){
+        if(data.prescriptions.length-1 === (index)){
+          $scope.prescriptions += pre;
+        }else{
+          $scope.prescriptions += pre + ", ";
+        }
+      });
+
+      data.notes.forEach(function(note, index){
+        if(data.notes.length-1 === (index)){
+          $scope.prescriptions += note;
+        }else{
+          $scope.prescriptions += note + ", ";
+        }
+      });
+
+    }).error(function (err) {
+      console.log("error")
+    })
   }
 
-  // var next = function(){
-  //   $location.url("/patient/seeDoctorSchedule?" + "id=" + doctorID + "&name=" + doctorName);
-  // }
+  $scope.edit = function(){
+    $scope.editMode = !$scope.editMode;
+  }
+
+  //   var r = new FileReader();
+  //
+  //   r.onloadend = function(e){
+  //     var data = e.target.result;
+  //  }
+  //  console.log(r.readAsArrayBuffer(f));
+
+  $scope.save = function(){
+    var imgList = document.getElementById('file').files;
+
+  }
 
 }]);
 
