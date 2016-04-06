@@ -2,6 +2,15 @@
 
 var medconnect = angular.module("mcPatient", []);
 
+medconnect.controller('PatientHome', ['$http', '$scope', '$location', function($http, $scope, $location){
+  $scope.logout = function(){
+    $http.get('/logout')
+    .success(function(){
+      $location.url('/')
+    })
+  }
+}])
+
 medconnect.controller('PatientRegister', ['$http', '$location', '$uibModal', '$scope', function($http, $location, $uibModal, $scope){
 
   var vm = this;
@@ -142,7 +151,6 @@ medconnect.controller('PatientSearch', ['$http', '$location', function($http, $l
     var doctorID =  doctor.userID;
     $location.url("/patient/seeDoctor?" + "id=" + doctorID + "&name=" + doctor.name);
   }
-
 
 }]);
 
@@ -316,6 +324,5 @@ medconnect.controller('seeDoctorSchedule', ['$http', '$location', '$scope', func
   }
 
 }]);
-
 
 }());

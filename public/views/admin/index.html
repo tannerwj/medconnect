@@ -1,5 +1,5 @@
 <h1>Admin Home</h1>
-<div class="admin">
+<div class="admin" ng-controller="AdminHome">
   <div class="list-group">
     <a href='/admin/verify' class="list-group-item">Verify Doctor<i class="fa fa-chevron-right fa-fw fa-pull-right"></i></a>
     <a href='/admin/medications' class="list-group-item">Manage Medications<i class="fa fa-chevron-right fa-fw fa-pull-right"></i></a>
@@ -8,6 +8,6 @@
     <a href='/admin/datatypes' class="list-group-item">Manage Data Types<i class="fa fa-chevron-right fa-fw fa-pull-right"></i></a>
     <a href='/admin/manageAdmins' class="list-group-item">Manage Admins<i class="fa fa-chevron-right fa-fw fa-pull-right"></i></a>
     <a href='/admin/changePassword' class="list-group-item">Change Password<i class="fa fa-chevron-right fa-fw fa-pull-right"></i></a>
-    <a href='/logout' class="list-group-item">Logout<i class="fa fa-chevron-right fa-fw fa-pull-right"></i></a>
+    <a ng-click='logout()' class="list-group-item">Logout<i class="fa fa-chevron-right fa-fw fa-pull-right"></i></a>
   </div>
 </div>
