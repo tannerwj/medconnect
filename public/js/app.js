@@ -42,6 +42,18 @@ medconnect.config(['$routeProvider', '$locationProvider',
       return deferred.promise
     }
 
+    var isLoggedIn = function($q, $http, $location){
+      var deferred = $q.defer()
+      $http.get('/loggedin').success(function(userType){
+        if (userType === '0' || userType === '1' || userType === '2' ){
+          deferred.resolve()
+        }else{
+          deferred.reject()
+          $location.url('/')
+        }
+      })
+    }
+
     var isUser = function($q, $http, $location){
       var deferred = $q.defer()
       $http.get('/loggedin').success(function (userType){
@@ -175,6 +187,14 @@ medconnect.config(['$routeProvider', '$locationProvider',
         },
         controller: 'ChangePassword'
       })
+    // Shared routes
+    $routeProvider
+      .when('/addVitals/:visitID', {
+        templateUrl: '/views/addVitals.html',
+        resolve:{
+          isLoggedIn: isLoggedIn
+        }
+      })
     // Admin Routes
     $routeProvider
       .when('/admin', {
@@ -280,6 +300,20 @@ medconnect.controller('Login', ['$http', '$location', function($http, $location)
   }
 }}]);
 
+medconnect.controller('addVitals', ['$http', '$scope', '$routeParams', function($http, $scope, $routeParams){
+  $scope.vitals = {}
+  $scope.init = function(){
+    if($routeParams.visitID !== 'new'){
+      getData()
+    }
+  }
+
+  var getData = function(){
+    $http.post('')
+  }
+
+}])
+
 medconnect.controller('VerifyDoctor', ['$http', '$scope', function($http, $scope){
   $scope.success = false
   $scope.failure = false
@@ -343,7 +377,6 @@ medconnect.controller('VerifyDoctor', ['$http', '$scope', function($http, $scope
       $scope.denied = data.denied
     })
   }
-
 }])
 
 medconnect.controller('AdminManage', ['$http', '$scope', function($http, $scope){
