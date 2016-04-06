@@ -2,6 +2,15 @@
 
   var medconnect = angular.module("mcAdmin", []);
 
+  medconnect.controller('AdminHome', ['$http', '$scope', '$location', function($http, $scope, $location){
+    $scope.logout = function(){
+      $http.get('/logout')
+      .success(function(){
+        $location.url('/')
+      })
+    }
+  }])
+
   medconnect.controller('AdminManage', ['$http', '$scope', function($http, $scope){
     $scope.success = false
     $scope.failure = false

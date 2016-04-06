@@ -1,0 +1,17 @@
+<h1>Past Patients</h1>
+<form class="form-horizontal col-sm-4 col-sm-offset-4">
+      <div class="form-group">
+        <div class="col-xs-12">
+          <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-search fa-fw"></i></span>
+            <input type="text" id="search" class="form-control" ng-model="query">
+          </div>
+        </div>
+      </div>
+    </form>
+<div class="col-sm-4 col-sm-offset-4" ng-controller="DoctorPastPatients" ng-init="init()">
+	<div class="list-group">
+		<a ng-repeat="patient in pastPatients | filter:query | orderBy:'lastName':'firstName'" ng-href="/doctor/pastAppointments/{{patient.userID}}" class="list-group-item">{{patient.lastName}}, {{patient.firstName}}<i class="fa fa-chevron-right fa-fw fa-pull-right"></i></a>
+		<h3 ng-hide="pastPatients.length">No past patients</h3>
+	</div>
+</div>

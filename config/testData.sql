@@ -40,10 +40,11 @@ create procedure create_data()
 			(904, 'Abilify');
 
 		insert into DataType(_id, name)
-		values(10, 'pdf'),
-			(11, 'jpeg'),
-			(12, 'png'),
-			(13, 'docx');
+		values(10, 'MRI'),
+			(11, 'XRAY'),
+			(12, 'Test Results'),
+			(13, 'Other Scans'),
+			(14, 'Exam');
 
 		insert into Allergies(_id, name)
 		values(10, 'Mold'),
@@ -53,32 +54,32 @@ create procedure create_data()
 			(14, 'Cats');
 
 		insert into Users(userID, userType, email, lastName, firstName, password)
-		values(990, 0, 'test0@test.com', 'Test0', 'Doctor', '$2a$10$refQBWY1ZfHHUPWixvQ.Zur1pD.0s1FhHTzkxPj9z0C/80RW64rqG'),
-			(991, 0, 'test1@test.com', 'Test1', 'Doctor', '$2a$10$refQBWY1ZfHHUPWixvQ.Zur1pD.0s1FhHTzkxPj9z0C/80RW64rqG'),
-			(992, 0, 'test2@test.com', 'Test2', 'Doctor', '$2a$10$refQBWY1ZfHHUPWixvQ.Zur1pD.0s1FhHTzkxPj9z0C/80RW64rqG'),
-			(993, 0, 'test3@test.com', 'Test3', 'Doctor', '$2a$10$refQBWY1ZfHHUPWixvQ.Zur1pD.0s1FhHTzkxPj9z0C/80RW64rqG'),
-			(994, 0, 'test4@test.com', 'Test4', 'Doctor', '$2a$10$refQBWY1ZfHHUPWixvQ.Zur1pD.0s1FhHTzkxPj9z0C/80RW64rqG'),
-			(995, 1, 'patient1@patient.com', 'Test5', 'Patient', '$2a$10$refQBWY1ZfHHUPWixvQ.Zur1pD.0s1FhHTzkxPj9z0C/80RW64rqG'),
-			(996, 1, 'patient2@patient.com', 'Test6', 'Patient', '$2a$10$refQBWY1ZfHHUPWixvQ.Zur1pD.0s1FhHTzkxPj9z0C/80RW64rqG'),
-			(997, 1, 'patient3@patient.com', 'Test7', 'Patient', '$2a$10$refQBWY1ZfHHUPWixvQ.Zur1pD.0s1FhHTzkxPj9z0C/80RW64rqG'),
-			(998, 1, 'patient4@patient.com', 'Test8', 'Patient', '$2a$10$refQBWY1ZfHHUPWixvQ.Zur1pD.0s1FhHTzkxPj9z0C/80RW64rqG'),
-			(999, 2, 'admin1@admin.com', 'Test9', 'Admin', '$2a$10$refQBWY1ZfHHUPWixvQ.Zur1pD.0s1FhHTzkxPj9z0C/80RW64rqG'),
-			(1000, 2, 'admin2@admin.com', 'Test10', 'Admin', '$2a$10$refQBWY1ZfHHUPWixvQ.Zur1pD.0s1FhHTzkxPj9z0C/80RW64rqG'),
-			(1001, 2, 'admin3@admin.com', 'Test11', 'Admin', '$2a$10$refQBWY1ZfHHUPWixvQ.Zur1pD.0s1FhHTzkxPj9z0C/80RW64rqG'),
-			(1002, 2, 'admin4@admin.com', 'Test12', 'Admin', '$2a$10$refQBWY1ZfHHUPWixvQ.Zur1pD.0s1FhHTzkxPj9z0C/80RW64rqG');
+		values(990, 0, 'doctor0@doctor.com', 'Omri', 'Gavin', '$2a$10$refQBWY1ZfHHUPWixvQ.Zur1pD.0s1FhHTzkxPj9z0C/80RW64rqG'),
+			(991, 0, 'doctor1@doctor.com', 'Abner', 'Baldassare', '$2a$10$refQBWY1ZfHHUPWixvQ.Zur1pD.0s1FhHTzkxPj9z0C/80RW64rqG'),
+			(992, 0, 'doctor2@doctor.com', 'Sigge', 'Dagrun', '$2a$10$refQBWY1ZfHHUPWixvQ.Zur1pD.0s1FhHTzkxPj9z0C/80RW64rqG'),
+			(993, 0, 'doctor3@doctor.com', 'Aleksandre', 'Argi', '$2a$10$refQBWY1ZfHHUPWixvQ.Zur1pD.0s1FhHTzkxPj9z0C/80RW64rqG'),
+			(994, 0, 'doctor4@doctor.com', 'Jordana', 'Maolshea', '$2a$10$refQBWY1ZfHHUPWixvQ.Zur1pD.0s1FhHTzkxPj9z0C/80RW64rqG'),
+			(995, 1, 'patient1@patient.com', 'Gwil', 'Stane', '$2a$10$refQBWY1ZfHHUPWixvQ.Zur1pD.0s1FhHTzkxPj9z0C/80RW64rqG'),
+			(996, 1, 'patient2@patient.com', 'Anapa', 'Terell', '$2a$10$refQBWY1ZfHHUPWixvQ.Zur1pD.0s1FhHTzkxPj9z0C/80RW64rqG'),
+			(997, 1, 'patient3@patient.com', 'Konstancja', 'Beverly', '$2a$10$refQBWY1ZfHHUPWixvQ.Zur1pD.0s1FhHTzkxPj9z0C/80RW64rqG'),
+			(998, 1, 'patient4@patient.com', 'Gisilbert', 'Bogdan', '$2a$10$refQBWY1ZfHHUPWixvQ.Zur1pD.0s1FhHTzkxPj9z0C/80RW64rqG'),
+			(999, 2, 'admin1@admin.com', 'Hallbjörn', 'Tsveta', '$2a$10$refQBWY1ZfHHUPWixvQ.Zur1pD.0s1FhHTzkxPj9z0C/80RW64rqG'),
+			(1000, 2, 'admin2@admin.com', 'Shikoba', 'Gulrukh', '$2a$10$refQBWY1ZfHHUPWixvQ.Zur1pD.0s1FhHTzkxPj9z0C/80RW64rqG'),
+			(1001, 2, 'admin3@admin.com', 'Tsvetanka', 'Trendafilka', '$2a$10$refQBWY1ZfHHUPWixvQ.Zur1pD.0s1FhHTzkxPj9z0C/80RW64rqG'),
+			(1002, 2, 'admin4@admin.com', 'Viviane', 'Corina', '$2a$10$refQBWY1ZfHHUPWixvQ.Zur1pD.0s1FhHTzkxPj9z0C/80RW64rqG');
 
 		insert into PatientProfile(userID, gender, bloodType, address, phone)
-		values(995, 'M', 'A+', '123 Patient St.', '111-222-3333'),
-			(996, 'F', 'O-', '456 Patient St.', '111-222-3333'),
-			(997, 'F', 'AB', '789 Patient St.', '111-222-3333'),
-			(998, 'M', 'O', '013 Patient St.', '111-222-3333');
+		values(995, 'M', 'A+', 'Chhetrapati, Thamel, 44600, Nepal', '97714285922'),
+			(996, 'F', 'O-', '619 Chaksibari Marg, Thamel, Nepal', '97714913884'),
+			(997, 'F', 'AB', '230 hotel marg lazimpat kathmandu nepal, 9771', '97714255977'),
+			(998, 'M', 'O', '59 Z Street Thamel, Nepal', '97714249735');
 
 		insert into DoctorProfile(userID, address, phone, verified, verificationCode, experience, volunteerNotes, otherNotes)
-		values(990, '123 Test St., Provo, UT 84601', '111-222-3333', -1, 'asdfhqwrasfhiw239823ry', '8 years', 'Awesome', 'other notes'),
-			(991, '123 Test St., Provo, UT 84601', '111-222-3333', 0, '1348eqf134fof8gewqfq3o8', '7 years', 'Awesome', 'other notes'),
-			(992, '123 Test St., Provo, UT 84601', '111-222-3333', 0, '2q38r919fefq3pfh34fqfff', '2 years', 'Awesome', 'other notes'),
-			(993, '123 Test St., Provo, UT 84601', '111-222-3333', 1, 'q394fqdiqanwefiuhqw239f', '3 years', 'Awesome', 'other notes'),
-			(994, '123 Test St., Provo, UT 84601', '111-222-3333', 1, '134r9fqf3h4f9843fhf8qoq', '80 years', 'Awesome', 'other notes');
+		values(990, 'Bansbari, Hattigaunda, 981, Nepal', '97714913884', -1, 'asdfhqwrasfhiw239823ry', '8 years', '3 months working at clinic in Karaputar', 'Prefer to treat entire family'),
+			(991, 'Bouddha, 44600, Nepal', '97714285922', 0, '1348eqf134fof8gewqfq3o8', '7 years', 'Every Saturday I provide free in-home consultations', 'Looking for new patients'),
+			(992, 'Swayambhu, West Ring Road, Buddha Park, Nepal', '97714262986', 0, '2q38r919fefq3pfh34fqfff', '2 years', '', 'Unable to accept new patients'),
+			(993, 'Chibahal,Thamel, 44600, Nepal', '97714249735', 1, 'q394fqdiqanwefiuhqw239f', '3 years', '2 trips to India as researcher', 'Searching to increase patient numbers'),
+			(994, 'P road,Thamel, 44600, Nepal', '97714255977', 1, '134r9fqf3h4f9843fhf8qoq', '15 years', '4 doctor abroad trips through VolunteerForever', 'Looking for new patients');
 
 		insert into AllergyPatient(allergyID, userID)
 		values(10, 995),
@@ -90,20 +91,20 @@ create procedure create_data()
 			(900, 1, 995, 990, '2015-08-04 13:15:00', 'pains in stomach', 'no more buffets, please'),
 			(901, 1, 995, 990, '2015-10-21 09:00:00', 'pains in stomach', 'eat less'),
 			(902, 1, 996, 993, '2015-04-13 14:20:00', 'too skinny', 'eat more'),
-			(903, 1, 996, 992, '2015-12-01 08:00:00', 'large, spiked hair', 'turn down the music'),
-			(904, 1, 996, 990, '2016-01-05 13:45:00', 'pains in stomach', 'stop eating'),
-			(905, 1, 996, 991, '2016-03-20 15:15:00', '', 'Looks healthy'),
-			(906, 1, 997, 993, '2015-01-31 11:00:00', 'in shape, fatigue', 'stop running when you black out'),
-			(907, 1, 997, 994, '2015-02-15 11:15:00', 'sunburnt, headaches', 'sunscreen?'),
-			(908, 1, 997, 992, '2015-06-01 09:30:00', '', 'Looks healthy'),
-			(909, 1, 997, 990, '2015-10-30 11:15:00', 'Check-up (follow up)', 'Looks healthy'),
-			(910, 1, 997, 993, '2016-01-07 12:15:00', 'punk rocker', 'teenager'),
-			(911, 1, 997, 991, '2015-03-03 16:45:00', 'large fangs', 'Get garlic necklace'),
-			(912, 1, 997, 994, '2015-03-21 09:15:00', 'child-like behavior', 'Waste of time'),
-			(913, 1, 998, 993, '2015-02-13 08:45:00', '', 'Looks healthy'),
-			(914, 1, 998, 991, '2015-08-19 09:45:00', '', 'Looks healthy'),
-			(915, 1, 998, 993, '2016-01-26 13:00:00', 'coughing, bad breath', 'no comments'),
-			(916, 1, 998, 992, '2016-02-28 11:15:00', 'coughing, bad breath', 'no comments');
+			(903, 2, 996, 992, '2015-12-01 08:00:00', 'large, spiked hair', 'turn down the music'),
+			(904, 2, 996, 990, '2016-01-05 13:45:00', 'pains in stomach', 'stop eating'),
+			(905, 2, 996, 991, '2016-03-20 15:15:00', '', 'Looks healthy'),
+			(906, 2, 997, 993, '2015-01-31 11:00:00', 'in shape, fatigue', 'stop running when you black out'),
+			(907, 2, 997, 994, '2015-02-15 11:15:00', 'sunburnt, headaches', 'sunscreen?'),
+			(908, 3, 997, 992, '2015-06-01 09:30:00', '', 'Looks healthy'),
+			(909, 3, 997, 990, '2015-10-30 11:15:00', 'Check-up (follow up)', 'Looks healthy'),
+			(910, 3, 997, 993, '2016-01-07 12:15:00', 'punk rocker', 'teenager'),
+			(911, 4, 997, 991, '2015-03-03 16:45:00', 'large fangs', 'Get garlic necklace'),
+			(912, 4, 997, 994, '2015-03-21 09:15:00', 'child-like behavior', 'Waste of time'),
+			(913, 4, 998, 993, '2015-02-13 08:45:00', '', 'Looks healthy'),
+			(914, 4, 998, 991, '2015-08-19 09:45:00', '', 'Looks healthy'),
+			(915, 4, 998, 993, '2016-01-26 13:00:00', 'coughing, bad breath', 'no comments'),
+			(916, 4, 998, 992, '2016-02-28 11:15:00', 'coughing, bad breath', 'no comments');
 
 		insert into Vitals(userID, visitID, vitalsDate, height, weight, BMI, temperature, pulse, respiratoryRate, bloodPressure, bloodOxygenSat)
 		values(995, 899, '2015-02-01 12:00:00', '5\'10\"', '164', '23', '98.7', '110', '18', '120/80', '98%'),

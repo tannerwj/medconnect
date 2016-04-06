@@ -41,6 +41,24 @@ medconnect.config(['$routeProvider', '$locationProvider',
       })
       return deferred.promise
     }
+
+    var isUser = function($q, $http, $location){
+      var deferred = $q.defer()
+      $http.get('/loggedin').success(function (userType){
+        if (userType === '0'){
+          $location.url('/doctor')
+        }else if(userType === '1'){
+          $location.url('/patient')
+        }else if(userType === '2'){
+          $location.url('/admin')
+        }else{
+          deferred.reject()
+          $location.url('/')
+        }
+      })
+      return deferred.promise
+    }
+
     $locationProvider.html5Mode({enabled:true, requireBase : false});
 
     // Patient Routes
@@ -144,6 +162,18 @@ medconnect.config(['$routeProvider', '$locationProvider',
           isDoctor: isDoctor
         }
       })
+      .when('/doctor/pastPatients', {
+        templateUrl: '/views/doctor/pastPatients.html',
+        resolve:{
+          isDoctor: isDoctor
+        }
+      })
+      .when('/doctor/pastAppointments/:id', {
+        templateUrl: '/views/doctor/pastAppointments.html',
+        resolve:{
+          isDoctor: isDoctor
+        }
+      })
       .when('/doctor/changePassword', {
         templateUrl: '/views/doctor/changePassword.html',
         resolve:{
@@ -192,7 +222,9 @@ medconnect.config(['$routeProvider', '$locationProvider',
         resolve:{ isAdmin: isAdmin },
         controller: 'ChangePassword'
       })
-
+      .otherwise({
+        resolve:{isUser: isUser}
+      })
   }]);
 
 medconnect.controller('nav', ['$http', '$location', '$scope', '$rootScope', '$window', function($http, $location, $scope, $rootScope, $window){

@@ -2,6 +2,15 @@
 
 	var medconnect = angular.module("mcDoctor", []);
 
+	medconnect.controller('DoctorHome', ['$http', '$scope', '$location', function($http, $scope, $location){
+		$scope.logout = function(){
+			$http.get('/logout')
+			.success(function(){
+				$location.url('/')
+			})
+		}
+	}])
+
 	medconnect.controller('DoctorRegister', ['$http', '$location', '$uibModal', '$scope', function ($http, $location, $uibModal, $scope) {
 
 		var vm = this;
@@ -61,7 +70,7 @@
 			}
 		}
 
-  }]);
+  	}]);
 
 	medconnect.controller('DoctorProfile', ['$http','$location', '$uibModal', '$scope', function ($http, $location, $uibModal, $scope) {
 
@@ -178,7 +187,48 @@
 			}
 		};
 
-  }]);
+  	}]);
+
+	medconnect.controller('DoctorPastPatients', ['$http', '$scope', function($http, $scope){
+		$scope.pastPatients = []
+		$scope.init = function(){
+			getData();
+		}
+
+		var getData = function(){
+			$http.get('/doctor/getPastPatients')
+				.success(function(result){
+					$scope.pastPatients = result
+				})
+				.error(function(err){
+
+				})
+		}
+
+	}]);
+
+	medconnect.controller('DoctorPastAppointments', ['$http', '$scope', '$routeParams', function($http, $scope, $routeParams){
+		$scope.pastAppointments = []
+		$scope.name = null
+		$scope.init = function(){
+			getData();
+		}
+
+		var getData = function(){
+			$http.post('/doctor/getPastAppointments', {
+				patientID: $routeParams.id
+			})
+			.success(function(result){
+				$scope.pastAppointments = result
+				$scope.name = result[0].firstName + ' ' + result[0].lastName
+			})
+			.error(function(err){
+
+			})
+		}
+
+	}]);
+
 
 	medconnect.controller('DoctorAvaliable', function ($scope, $filter, $http, $uibModal) {
 
@@ -344,6 +394,6 @@
 				});
 			};
 
-		});
+	});
 
 }());
