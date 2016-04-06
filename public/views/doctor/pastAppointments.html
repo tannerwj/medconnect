@@ -1,0 +1,20 @@
+<div ng-controller="DoctorPastAppointments" ng-init="init()">
+	<h3>Appointment History for</h3>
+	<h4 style="text-align:center;">{{name}}</h4>
+	<br/>
+	<form class="form-horizontal col-sm-4 col-sm-offset-4">
+      <div class="form-group">
+        <div class="col-xs-12">
+          <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-search fa-fw"></i></span>
+            <input type="text" id="search" class="form-control" ng-model="query">
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="col-sm-4 col-sm-offset-4">
+		<div class="list-group">
+			<a ng-repeat="appt in pastAppointments | filter:query | orderBy:'-visitDate'" ng-href="/doctor/appointmentDetail/{{appt.visitID}}" class="list-group-item">{{appt.visitDate | date:'yyyy-MM-dd h:mma'}}<i class="fa fa-chevron-right fa-fw fa-pull-right"></i></a>
+		</div>
+	</div>
+</div>

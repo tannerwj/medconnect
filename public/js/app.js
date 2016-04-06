@@ -138,6 +138,18 @@ medconnect.config(['$routeProvider', '$locationProvider',
           isDoctor: isDoctor
         }
       })
+      .when('/doctor/pastPatients', {
+        templateUrl: '/views/doctor/pastPatients.html',
+        resolve:{
+          isDoctor: isDoctor
+        }
+      })
+      .when('/doctor/pastAppointments/:id', {
+        templateUrl: '/views/doctor/pastAppointments.html',
+        resolve:{
+          isDoctor: isDoctor
+        }
+      })
       .when('/doctor/changePassword', {
         templateUrl: '/views/doctor/changePassword.html',
         resolve:{
