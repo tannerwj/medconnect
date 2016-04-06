@@ -155,23 +155,21 @@ medconnect.controller('PatientSearch', ['$http', '$location', function($http, $l
 }]);
 
 medconnect.controller('seeDoctor', ['$http', '$location', '$routeParams', function($http, $location, $routeParams){
-
   var vm = this;
   var doctorID = $routeParams.doctor_id
 
-    $http.post('/patient/specific-doctor', {
+  $http.post('/patient/specific-doctor', {
     'id' : doctorID
-    }).success(function(doctor){
-      vm.name = doctor.first + ' ' + doctor.last
-      vm.location = doctor.loc
-      vm.specialties = doctor.specialties.map(function (s){ return s.name }).join(', ')
-      vm.experience = doctor.exp
-      vm.notes = doctor.notes
-      vm.volunteerNotes = doctor.vol
-    }).error(function(err){
-      console.log('Server error: ' + err)
-    })
-
+  }).success(function(doctor){
+    vm.name = doctor.first + ' ' + doctor.last
+    vm.location = doctor.loc
+    vm.specialties = doctor.specialties.map(function (s){ return s.name }).join(', ')
+    vm.experience = doctor.exp
+    vm.notes = doctor.notes
+    vm.volunteerNotes = doctor.vol
+  }).error(function(err){
+    console.log('Server error: ' + err)
+  })
 
   vm.next = function(){
     $location.url("/patient/seeDoctorSchedule/" + doctorID);
