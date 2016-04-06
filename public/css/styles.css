@@ -52,6 +52,9 @@ h1 {
   text-align: center;
   line-height: 300%;
 }
+h3{
+  text-align: center;
+}
 .login .alert-danger{
     margin-top:10px
 }
@@ -156,7 +159,7 @@ h1 {
 }
 
 .specialties .list-group{
-  padding-left: 15px
+  padding-left: 15px;
 }
 
 .timePicker .panel-body .uib-timepicker:nth-child(1){
