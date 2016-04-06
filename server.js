@@ -75,6 +75,7 @@ app.all('/patient/*', require('./controllers/patientRoutes'))
 app.all('/doctor/*', require('./controllers/doctorRoutes'))
 app.all('/admin/*', require('./controllers/adminRoutes'))
 app.all('/data/*', require('./controllers/dataRoutes'))
+app.all('/images/*', require('./controllers/images'))
 app.use(express.static(__dirname + '/public'))
 app.all('/*', require('./controllers/routes'))
 
