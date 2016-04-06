@@ -1,21 +1,21 @@
 <div class='main' ng-controller="DoctorAvaliable">
   <h1>Availability</h1>
   <div class="text-center">
-    <h4>Check your rest days</h4>
-    <label>Monday:<input type="checkbox" ng-model="checkboxModel.monday"></label><br/>
-    <label>Tuesday:<input type="checkbox" ng-model="checkboxModel.tuesday"></label><br/>
-    <label>Wednesday:<input type="checkbox" ng-model="checkboxModel.wednesday"></label><br/>
-    <label>Thursday:<input type="checkbox" ng-model="checkboxModel.thursday"></label><br/>
-    <label>Friday:<input type="checkbox" ng-model="checkboxModel.friday"></label><br/>
-    <label>Saturday:<input type="checkbox" ng-model="checkboxModel.saturday"></label><br/>
-    <label>Sunday:<input type="checkbox" ng-model="checkboxModel.sunday"></label><br/>
-
     <button type="button" class="btn btn-primary" ng-click="submit()">Update</button>
   </div>
   <br>
   <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title">Monday</h3>
+    <div class='panel-heading'>
+      <div class='row'>
+        <div class='col-xs-7'>
+          <h3 class="panel-title">Monday</h3>
+        </div>
+        <div class="col-xs-4">
+          <label class="checkbox-inline">
+            <input type="checkbox" ng-model="checkboxModel.monday"> Unavailable
+          </label>
+        </div>
+      </div>
     </div>
     <div class="panel-body">
       <uib-timepicker ng-disabled="checkboxModel.monday" ng-model='ms' hour-step="1" minute-step="30" show-meridian="true"></uib-timepicker>
@@ -23,10 +23,18 @@
       <uib-timepicker ng-disabled="checkboxModel.monday" ng-model='me' hour-step="1" minute-step="30" show-meridian="true"></uib-timepicker>
     </div>
   </div>
-
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title">Tuesday</h3>
+      <div class='row'>
+        <div class='col-xs-7'>
+          <h3 class="panel-title">Tuesday</h3>
+        </div>
+        <div class="col-xs-4">
+          <label class="checkbox-inline">
+            <input type="checkbox" ng-model="checkboxModel.tuesday"> Unavailable
+          </label>
+        </div>
+      </div>
     </div>
     <div class="panel-body">
       <uib-timepicker ng-disabled="checkboxModel.tuesday" ng-model='tus' hour-step="1" minute-step="30" show-meridian="true"></uib-timepicker>
@@ -34,10 +42,18 @@
       <uib-timepicker ng-disabled="checkboxModel.tuesday" ng-model='tue' hour-step="1" minute-step="30" show-meridian="true"></uib-timepicker>
     </div>
   </div>
-
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title">Wendesday</h3>
+      <div class='row'>
+        <div class='col-xs-7'>
+          <h3 class="panel-title">Wendesday</h3>
+        </div>
+        <div class="col-xs-4">
+          <label class="checkbox-inline">
+            <input type="checkbox" ng-model="checkboxModel.wednesday"> Unavailable
+          </label>
+        </div>
+      </div>
     </div>
     <div class="panel-body">
       <uib-timepicker ng-disabled="checkboxModel.wednesday" ng-model='ws' hour-step="1" minute-step="30" show-meridian="true"></uib-timepicker>
@@ -48,7 +64,16 @@
 
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title">Thursday</h3>
+      <div class='row'>
+        <div class='col-xs-7'>
+          <h3 class="panel-title">Thursday</h3>
+        </div>
+        <div class="col-xs-4">
+          <label class="checkbox-inline">
+            <input type="checkbox" ng-model="checkboxModel.thursday"> Unavailable
+          </label>
+        </div>
+      </div>
     </div>
     <div class="panel-body">
       <uib-timepicker ng-disabled="checkboxModel.thursday" ng-model='ths' hour-step="1" minute-step="30" show-meridian="true"></uib-timepicker>
@@ -59,7 +84,16 @@
 
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title">Friday</h3>
+      <div class='row'>
+        <div class='col-xs-7'>
+          <h3 class="panel-title">Friday</h3>
+        </div>
+        <div class="col-xs-4">
+          <label class="checkbox-inline">
+            <input type="checkbox" ng-model="checkboxModel.friday"> Unavailable
+          </label>
+        </div>
+      </div>
     </div>
     <div class="panel-body">
       <uib-timepicker ng-disabled="checkboxModel.friday" ng-model='fs' hour-step="1" minute-step="30" show-meridian="true"></uib-timepicker>
@@ -67,10 +101,18 @@
       <uib-timepicker ng-disabled="checkboxModel.friday" ng-model='fe' hour-step="1" minute-step="30" show-meridian="true"></uib-timepicker>
     </div>
   </div>
-
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title">Saturday</h3>
+      <div class='row'>
+        <div class='col-xs-7'>
+          <h3 class="panel-title">Saturday</h3>
+        </div>
+        <div class="col-xs-4">
+          <label class="checkbox-inline">
+            <input type="checkbox" ng-model="checkboxModel.saturday"> Unavailable
+          </label>
+        </div>
+      </div>
     </div>
     <div class="panel-body">
       <uib-timepicker ng-disabled="checkboxModel.saturday" ng-model='sas' hour-step="1" minute-step="30" show-meridian="true"></uib-timepicker>
@@ -78,10 +120,18 @@
       <uib-timepicker ng-disabled="checkboxModel.saturday" ng-model='sae' hour-step="1" minute-step="30" show-meridian="true"></uib-timepicker>
     </div>
   </div>
-
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title">Sunday</h3>
+      <div class='row'>
+        <div class='col-xs-7'>
+          <h3 class="panel-title">Sunday</h3>
+        </div>
+        <div class="col-xs-4">
+          <label class="checkbox-inline">
+            <input type="checkbox" ng-model="checkboxModel.sunday"> Unavailable
+          </label>
+        </div>
+      </div>
     </div>
     <div class="panel-body">
       <uib-timepicker ng-disabled="checkboxModel.sunday" ng-model='sus' hour-step="1" minute-step="30" show-meridian="true"></uib-timepicker>
@@ -89,7 +139,4 @@
       <uib-timepicker ng-disabled="checkboxModel.sunday" ng-model='sue' hour-step="1" minute-step="30" show-meridian="true"></uib-timepicker>
     </div>
   </div>
-
 </div>
-
-<!-- <div class="col-xs-2"><table class="avaliable"><tbody><tr></tr><tr><td>To</td></tr><tr></tr></tbody></table></div> -->

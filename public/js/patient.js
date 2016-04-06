@@ -149,60 +149,47 @@ medconnect.controller('PatientSearch', ['$http', '$location', function($http, $l
 
   vm.viewDoctor = function(doctor){
     var doctorID =  doctor.userID;
-    $location.url("/patient/seeDoctor?" + "id=" + doctorID + "&name=" + doctor.name);
+    $location.url("/patient/seeDoctor/" + doctorID);
   }
 
 }]);
 
-medconnect.controller('seeDoctor', ['$http', '$location', function($http, $location){
+medconnect.controller('seeDoctor', ['$http', '$location', '$routeParams', function($http, $location, $routeParams){
 
   var vm = this;
-  var doctorID = $location.search().id;
-  var doctorName = $location.search().name;
+  var doctorID = $routeParams.doctor_id
 
-    $http({
-      method:'POST',
-      url:'/doctor/specific-doctor',
-      data: {
-        'id' : doctorID
-      }
-    }).success(function(data){
-      doctor = data;
-      vm.name = doctorName;
-      vm.location = doctor.loc;
-      vm.specialties = doctor.specialties.join(', ')
-      vm.experience = doctor.exp;
-      vm.notes = doctor.notes;
-      vm.volunteerNotes = doctor.vol;
+    $http.post('/patient/specific-doctor', {
+    'id' : doctorID
+    }).success(function(doctor){
+      vm.name = doctor.first + ' ' + doctor.last
+      vm.location = doctor.loc
+      vm.specialties = doctor.specialties.map(function (s){ return s.name }).join(', ')
+      vm.experience = doctor.exp
+      vm.notes = doctor.notes
+      vm.volunteerNotes = doctor.vol
     }).error(function(err){
-      console.log('Server error: ' + err);
+      console.log('Server error: ' + err)
     })
 
 
   vm.next = function(){
-    $location.url("/patient/seeDoctorSchedule?" + "id=" + doctorID + "&name=" + doctorName);
+    $location.url("/patient/seeDoctorSchedule/" + doctorID);
   }
 
 }]);
 
-medconnect.controller('seeDoctorSchedule', ['$http', '$location', '$uibModal', '$scope', function($http, $location, $uibModal, $scope){
+medconnect.controller('seeDoctorSchedule', ['$http', '$location', '$uibModal', '$scope', '$routeParams', function($http, $location, $uibModal, $scope, $routeParams){
 
-  var doctorID = $location.search().id;
-  var doctorName = $location.search().name;
+  var doctorID = $routeParams.doctor_id
 
-  $http({
-    method:'POST',
-    url:'/doctor/specific-doctor',
-    data: {
-      'id' : doctorID
-    }
-  }).success(function(data){
-    doctor = data;
-    $scope.lastName = doctorName.split(" ")[1];
-    $scope.availability = JSON.parse(doctor.availability);
-
+  $http.post('/patient/specific-doctor', {
+    'id' : doctorID
+  }).success(function(doctor){
+    $scope.lastName = doctor.last
+    $scope.availability = JSON.parse(doctor.availability)
   }).error(function(err){
-    console.log('Server error: ' + err);
+    console.log('Server error: ' + err)
   })
 
   $scope.submit = function(){
@@ -343,10 +330,7 @@ medconnect.controller('seeDoctorSchedule', ['$http', '$location', '$uibModal', '
 
     return '';
   }
-
 }]);
-
-}());
 
 medconnect.controller('appointments', ['$http', '$location', '$scope', function($http, $location, $scope){
 
@@ -384,3 +368,5 @@ medconnect.controller('appointments', ['$http', '$location', '$scope', function(
   // }
 
 }]);
+
+}());

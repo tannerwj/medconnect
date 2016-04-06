@@ -125,6 +125,36 @@ var getDoctor = function (id){
   })
 }
 
+var getDoctorDetails = function (id){
+  return Promise.all([
+    db.query('SELECT firstName, lastName FROM Users WHERE userID =? LIMIT 1;', [id]),
+    db.query('SELECT address, phone, verified, experience, volunteerNotes, otherNotes, availability FROM DoctorProfile WHERE userID = ? LIMIT 1;', [id]),
+    db.query('SELECT name FROM Specialties, SpecialtyDoctor WHERE Specialties._id = SpecialtyDoctor.specialtyID AND SpecialtyDoctor.doctorID = ?;', [id])
+  ]).then(function (results){
+    if(!results[0][0]){ return false }
+
+    var doctor = results[0][0][0]
+    var profile = results[1][0][0]
+    var specialties = results[2][0]
+
+    return {
+      first: doctor.firstName,
+      last: doctor.lastName,
+      loc: profile.address,
+      phone: profile.phone,
+      ver: profile.verified,
+      exp : profile.experience,
+      vol: profile.volunteerNotes,
+      notes: profile.otherNotes,
+      availability: profile.availability,
+      specialties: specialties
+    }
+  }).catch(function (err){
+    console.log(err)
+    return false
+  })
+}
+
 var getPatient = function (userId){
   return Promise.all([
     db.query('SELECT * FROM Users where userID = ? order by lastName, firstName;', [userId])
@@ -300,6 +330,7 @@ module.exports = {
   info: info,
   getDoctors: getDoctors,
   getDoctor: getDoctor,
+  getDoctorDetails: getDoctorDetails,
   getPatient: getPatient,
   requestAppointment: requestAppointment,
   getCurrentAppointments: getCurrentAppointments,
