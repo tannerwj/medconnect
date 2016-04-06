@@ -174,7 +174,6 @@ medconnect.controller('seeDoctor', ['$http', '$location', function($http, $locat
       vm.experience = doctor.exp;
       vm.notes = doctor.notes;
       vm.volunteerNotes = doctor.vol;
-      vm.verified = doctor.ver;
     }).error(function(err){
       console.log('Server error: ' + err);
     })
@@ -186,7 +185,7 @@ medconnect.controller('seeDoctor', ['$http', '$location', function($http, $locat
 
 }]);
 
-medconnect.controller('seeDoctorSchedule', ['$http', '$location', '$scope', function($http, $location, $scope){
+medconnect.controller('seeDoctorSchedule', ['$http', '$location', '$uibModal', '$scope', function($http, $location, $uibModal, $scope){
 
   var doctorID = $location.search().id;
   var doctorName = $location.search().name;
@@ -207,12 +206,14 @@ medconnect.controller('seeDoctorSchedule', ['$http', '$location', '$scope', func
   })
 
   $scope.submit = function(){
+    var date = $scope.date.getDate();
+    $scope.time.setDate(date);
     $http({
       method: 'POST',
       url: '/patient/requestAppointment',
       data: {
-        id : doctorID,
-        date : $scope.date + " " + $scope.time
+        doctorID : doctorID,
+        reqDate : $scope.time
       }
     }).success(function (data) {
       $scope.open(false)
@@ -220,6 +221,26 @@ medconnect.controller('seeDoctorSchedule', ['$http', '$location', '$scope', func
       $scope.open(true)
     })
   }
+
+  $scope.open = function (error, size) {
+
+    if(error){
+      $scope.item = "Missing/Incorrect fields, please try again.";
+    }else{
+      $scope.item = "You have successfully requested an appointment!";
+    }
+    var modalInstance = $uibModal.open({
+      animation: true,
+      templateUrl: '../views/modal.html',
+      controller: 'ModalInstanceCtrl',
+      size: size,
+      resolve: {
+        item : function(){
+          return $scope.item;
+        }
+      }
+    });
+  };
 
   var d = new Date();
   d.setHours( 0 );
@@ -326,3 +347,40 @@ medconnect.controller('seeDoctorSchedule', ['$http', '$location', '$scope', func
 }]);
 
 }());
+
+medconnect.controller('appointments', ['$http', '$location', '$scope', function($http, $location, $scope){
+
+  $scope.req = true;
+  $scope.acc = true;
+  $scope.rej = true;
+
+  $http.get('/patient/getCurrentAppointments').success(function(info){
+
+    if(info.requested.length > 0){
+      $scope.requested = info.requested;
+    }else{
+      $scope.req = false;
+    }
+    if(info.accepted.length > 0){
+      $scope.accepted = info.accepted;
+    }else{
+      $scope.acc = false;
+    }
+    if(info.rejected.length > 0){
+      $scope.rejected = info.rejected;
+    }else{
+      $scope.rej = false;
+    }
+  }).catch(function(error){
+    console.log("Error is : " + error);
+  });
+
+  $scope.appointmentDetails = function(id){
+
+  }
+
+  // var next = function(){
+  //   $location.url("/patient/seeDoctorSchedule?" + "id=" + doctorID + "&name=" + doctorName);
+  // }
+
+}]);

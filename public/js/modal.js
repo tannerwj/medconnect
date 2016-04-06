@@ -9,7 +9,7 @@
         $scope.ok = function () {
           $uibModalInstance.close($location.url('/'));
         };
-      }else if($scope.item[0] === "A" || $scope.item[0] === "Y"){ // registration pages
+      }else if($scope.item[0] === "A" || $scope.item[0] === "Y"){
         $scope.ok = function () {
           $uibModalInstance.close($location.url('/patient'));
         };
