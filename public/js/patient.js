@@ -124,7 +124,7 @@ medconnect.controller('PatientProfile', ['$http', '$location', '$uibModal', '$sc
 
 }])
 
-medconnect.controller('PatientSearch', ['$http', '$location', 'doctorInfo', function($http, $location, doctorInfo){
+medconnect.controller('PatientSearch', ['$http', '$location', function($http, $location){
   var vm = this;
   vm.doctors = [];
   vm.sortField = 'name'; // initialize sorting by lastName
@@ -139,80 +139,72 @@ medconnect.controller('PatientSearch', ['$http', '$location', 'doctorInfo', func
   })
 
   vm.viewDoctor = function(doctor){
-    doctorInfo.saveDoctorInfo(doctor);
-    $location.url("/patient/seeDoctor");
+    var doctorID =  doctor.userID;
+    $location.url("/patient/seeDoctor?" + "id=" + doctorID + "&name=" + doctor.name);
   }
 
 
 }]);
 
-medconnect.controller('seeDoctor', ['$http', '$location', 'doctorInfo', function($http, $location, doctorInfo){
+medconnect.controller('seeDoctor', ['$http', '$location', function($http, $location){
 
   var vm = this;
-  var doctor = doctorInfo.getDoctorInfo();
-  vm.id = doctor.userID;
-  vm.name = doctor.name;
-  vm.location = doctor.location;
-  vm.specialties = doctor.specialties;
-  vm.experience = doctor.experience;
-  vm.notes = doctor.notes;
-  vm.volunteerNotes = doctor.volunteerNotes;
-  vm.verified = doctor.verified;
+  var doctorID = $location.search().id;
+  var doctorName = $location.search().name;
+
+    $http({
+      method:'POST',
+      url:'/doctor/specific-doctor',
+      data: {
+        'id' : doctorID
+      }
+    }).success(function(data){
+      doctor = data;
+      vm.name = doctorName;
+      vm.location = doctor.loc;
+      vm.specialties = doctor.specialties[0].name + ", " + doctor.specialties[1].name;
+      vm.experience = doctor.exp;
+      vm.notes = doctor.notes;
+      vm.volunteerNotes = doctor.vol;
+      vm.verified = doctor.ver;
+    }).error(function(err){
+      console.log('Server error: ' + err);
+    })
+
 
   vm.next = function(){
-    $location.url("/patient/seeDoctorSchedule");
-  }
-}]);
-
-medconnect.controller('seeDoctorSchedule', ['$http', '$location', 'doctorInfo', function($http, $location, doctorInfo){
-
-  var vm = this;
-  var doctor = doctorInfo.getDoctorInfo();
-  vm.availability = doctor.availability;
-  vm.lastName = doctor.name.split(" ")[1];
-
-  var a = JSON.parse(vm.availability);
-  vm.ms = a[0][1];
-  vm.me = a[0][2];
-  vm.tus = a[1][1];
-  vm.tue = a[1][2];
-  vm.ws = a[2][1];
-  vm.we = a[2][2];
-  vm.ths = a[3][1];
-  vm.the = a[3][2];
-  vm.fs = a[4][1];
-  vm.fe = a[4][2];
-  vm.sas = a[5][1];
-  vm.sae = a[5][2];
-  vm.sus = a[6][1];
-  vm.sue = a[6][2];
-
-  vm.submit = function(){
-    $location.url("/patient/requestAppointment");
+    $location.url("/patient/seeDoctorSchedule?" + "id=" + doctorID + "&name=" + doctorName);
   }
 
 }]);
 
-medconnect.controller('requestAppointment', ['$scope', '$http', '$location', 'doctorInfo', '$uibModal', function($scope, $http, $location, doctorInfo, $uibModal){
+medconnect.controller('seeDoctorSchedule', ['$http', '$location', '$scope', function($http, $location, $scope){
 
-  var doctor = doctorInfo.getDoctorInfo();
-  $scope.availability = doctor.availability;
-  $scope.lastName = doctor.name.split(" ")[1];
+  var doctorID = $location.search().id;
+  var doctorName = $location.search().name;
 
-  var d = new Date();
-  d.setHours( 0 );
-  d.setMinutes( 0 );
-  $scope.time = d;
-  $scope.date = new Date();
+  $http({
+    method:'POST',
+    url:'/doctor/specific-doctor',
+    data: {
+      'id' : doctorID
+    }
+  }).success(function(data){
+    doctor = data;
+    $scope.lastName = doctorName.split(" ")[1];
+    $scope.availability = JSON.parse(doctor.availability);
+
+  }).error(function(err){
+    console.log('Server error: ' + err);
+  })
 
   $scope.submit = function(){
     $http({
       method: 'POST',
       url: '/patient/requestAppointment',
       data: {
-        id : doctor.id,
-        date : $scope.date,
-        time : $scope.time
+        id : doctorID,
+        date : $scope.date + " " + $scope.time
       }
     }).success(function (data) {
       $scope.open(false)
@@ -220,6 +212,12 @@ medconnect.controller('requestAppointment', ['$scope', '$http', '$location', 'do
       $scope.open(true)
     })
   }
+
+  var d = new Date();
+  d.setHours( 0 );
+  d.setMinutes( 0 );
+  $scope.time = d;
+  $scope.date = new Date();
 
   $scope.open = function (error, size) {
 
@@ -318,5 +316,6 @@ medconnect.controller('requestAppointment', ['$scope', '$http', '$location', 'do
   }
 
 }]);
+
 
 }());

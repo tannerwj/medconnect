@@ -1,83 +1,23 @@
-<div ng-controller="seeDoctorSchedule as doctor" class = "timePicker main">
-  <h1>Doctor {{doctor.lastName}}'s Schedule</h1>
-  <div class="text-center">
-    <button type="button" class="btn btn-primary" ng-click="doctor.submit()">Request Appointment</button>
-  </div>.
+<div ng-controller="seeDoctorSchedule" class = "timePicker main">
+  <h1>Doctor {{lastName}}'s Schedule</h1>
 
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title">Monday</h3>
-    </div>
-    <div class="panel-body">
-      <uib-timepicker ng-model='doctor.ms' ng-disabled = "true" hour-step="1" minute-step="30" show-meridian="true" show-spinners="false"></uib-timepicker>
-      <p class="text-center">To</p>
-      <uib-timepicker ng-model='doctor.me' ng-disabled = "true" hour-step="1" minute-step="30" show-meridian="true" show-spinners="false"></uib-timepicker>
-    </div>
-  </div>
+  <table class="table table-striped table-bordered table-hover">
+    <tr ng-repeat="s in availability"><td>{{s[0]}}</td><td>{{s[1] | date : 'shortTime'}} to {{s[2] | date : 'shortTime'}}</td></tr>
+  </table>
 
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title">Tuesday</h3>
-    </div>
-    <div class="panel-body">
-      <uib-timepicker ng-model='doctor.tus' ng-disabled = "true" hour-step="1" minute-step="30" show-meridian="true" show-spinners="false"></uib-timepicker>
-      <p class="text-center">To</p>
-      <uib-timepicker ng-model='doctor.tue' ng-disabled = "true" hour-step="1" minute-step="30" show-meridian="true" show-spinners="false"></uib-timepicker>
-    </div>
-  </div>
+  <h4>Select Date</h4>
+  <uib-datepicker ng-model="date" class="well well-sm" datepicker-options="inlineOptions"></uib-datepicker>
+  <hr />
+  <h4>Select time</h4>
+  <uib-timepicker ng-model='time' hour-step="1" minute-step="30" show-meridian="true"></uib-timepicker>
 
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title">Wendesday</h3>
-    </div>
-    <div class="panel-body">
-      <uib-timepicker ng-model='doctor.ws' ng-disabled = "true" hour-step="1" minute-step="30" show-meridian="true" show-spinners="false"></uib-timepicker>
-      <p class="text-center">To</p>
-      <uib-timepicker ng-model='doctor.we' ng-disabled = "true" hour-step="1" minute-step="30" show-meridian="true" show-spinners="false"></uib-timepicker>
-    </div>
-  </div>
+  <pre>Date is: <em>{{date | date:'fullDate' }} </em></pre>
+  <pre>Time is: <em>{{time | date:'shortTime'}} </em></pre>
 
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title">Thursday</h3>
-    </div>
-    <div class="panel-body">
-      <uib-timepicker ng-model='doctor.ths' ng-disabled = "true" hour-step="1" minute-step="30" show-meridian="true" show-spinners="false"></uib-timepicker>
-      <p class="text-center">To</p>
-      <uib-timepicker ng-model='doctor.the' ng-disabled = "true" hour-step="1" minute-step="30" show-meridian="true" show-spinners="false"></uib-timepicker>
-    </div>
-  </div>
+<hr />
+<div class="text-center">
+  <button class="btn btn-primary" ng-click="submit()">Request Appointment</button>
+</div>
+<br />
 
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title">Friday</h3>
-    </div>
-    <div class="panel-body">
-      <uib-timepicker ng-model='doctor.fs' ng-disabled = "true" hour-step="1" minute-step="30" show-meridian="true" show-spinners="false"></uib-timepicker>
-      <p class="text-center">To</p>
-      <uib-timepicker ng-model='doctor.fe' ng-disabled = "true" hour-step="1" minute-step="30" show-meridian="true" show-spinners="false"></uib-timepicker>
-    </div>
-  </div>
-
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title">Saturday</h3>
-    </div>
-    <div class="panel-body">
-      <uib-timepicker ng-model='doctor.sas' ng-disabled = "true" hour-step="1" minute-step="30" show-meridian="true" show-spinners="false"></uib-timepicker>
-      <p class="text-center">To</p>
-      <uib-timepicker ng-model='doctor.sae' ng-disabled = "true" hour-step="1" minute-step="30" show-meridian="true" show-spinners="false"></uib-timepicker>
-    </div>
-  </div>
-
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title">Sunday</h3>
-    </div>
-    <div class="panel-body">
-      <uib-timepicker ng-model='doctor.sus' ng-disabled = "true" hour-step="1" minute-step="30" show-meridian="true" show-spinners="false"></uib-timepicker>
-      <p class="text-center">To</p>
-      <uib-timepicker ng-model='doctor.sue' ng-disabled = "true" hour-step="1" minute-step="30" show-meridian="true" show-spinners="false"></uib-timepicker>
-    </div>
-  </div>
 </div>
