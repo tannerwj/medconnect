@@ -9,7 +9,7 @@
         $scope.ok = function () {
           $uibModalInstance.close($location.url('/'));
         };
-      }else if($scope.item[0] === "A" || $scope.item[0] === "Y"){
+      }else if($scope.item[0] === "A" || $scope.item[0] === "Y" || $scope.item[0] === "S"){
         $scope.ok = function () {
           $uibModalInstance.close($location.url('/patient'));
         };
@@ -29,4 +29,32 @@
       };
     });
 
-}());
+    medconnect.controller('appointmentModal', function ($scope, $location, $filter, $uibModalInstance, item){
+
+      $scope.item = item[0];
+      $scope.delete = function () {
+        $uibModalInstance.close(item);
+      };
+
+      $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+      };
+
+
+      })
+
+      medconnect.controller('imgModal', function ($scope, $location, $filter, $uibModalInstance, item){
+
+         $scope.img = item[0];
+        $scope.delete = function () {
+          $uibModalInstance.close(item);
+        };
+
+        $scope.cancel = function () {
+          $uibModalInstance.dismiss('cancel');
+        };
+
+
+        })
+
+    }());
