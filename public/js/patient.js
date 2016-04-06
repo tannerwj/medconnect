@@ -170,7 +170,7 @@ medconnect.controller('seeDoctor', ['$http', '$location', function($http, $locat
       doctor = data;
       vm.name = doctorName;
       vm.location = doctor.loc;
-      vm.specialties = doctor.specialties[0].name + ", " + doctor.specialties[1].name;
+      vm.specialties = doctor.specialties.join(', ')
       vm.experience = doctor.exp;
       vm.notes = doctor.notes;
       vm.volunteerNotes = doctor.vol;
