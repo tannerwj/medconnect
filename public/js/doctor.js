@@ -2,6 +2,15 @@
 
 	var medconnect = angular.module("mcDoctor", []);
 
+	medconnect.controller('DoctorHome', ['$http', '$scope', '$location', function($http, $scope, $location){
+		$scope.logout = function(){
+			$http.get('/logout')
+			.success(function(){
+				$location.url('/')
+			})
+		}
+	}])
+
 	medconnect.controller('DoctorRegister', ['$http', '$location', '$uibModal', '$scope', function ($http, $location, $uibModal, $scope) {
 
 		var vm = this;
