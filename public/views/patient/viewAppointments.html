@@ -1,6 +1,7 @@
-<div class = "main text-center" ng-controller="appointments">
-  <h1>Appointments</h1>
-  <h4>Scheduled Appointments</h4>
+<div class = "main" ng-controller="appointments">
+  <div ng-show = "!details" class="text-center">
+    <h1>Appointments</h1>
+      <h4>Scheduled Appointments</h4>
   <div class="list-group">
     <a class="list-group-item " ng-show="!acc">You have no scheduled appointments</a>
     <a ng-repeat="doc in accepted" ng-click="appointmentDetails(doc.visitID)" class="list-group-item list-group-item-success"><strong>Dr. {{doc.firstName}} {{doc.lastName}}</strong>  <em>{{doc.visitDate | date : 'short'}}</em><i class="fa fa-chevron-right fa-fw fa-pull-right"></i></a>
@@ -9,11 +10,55 @@
   <h4>Pending Appointments</h4>
   <div class="list-group">
     <a class="list-group-item" ng-show="!req">You have no pending appointments</a>
-    <a ng-repeat="doc in requested" ng-click="appointmentDetails()" class="list-group-item list-group-item-info"><strong>Dr. {{doc.firstName}} {{doc.lastName}}</strong>  <em>{{doc.visitDate | date : 'short'}}</em><i class="fa fa-chevron-right fa-fw fa-pull-right"></i></a>
+    <a ng-repeat="doc in requested" ng-click="appointmentDetails(doc.visitID)" class="list-group-item list-group-item-info"><strong>Dr. {{doc.firstName}} {{doc.lastName}}</strong>  <em>{{doc.visitDate | date : 'short'}}</em><i class="fa fa-chevron-right fa-fw fa-pull-right"></i></a>
   </div>
   <h4>Rejected Appointments</h4>
   <div class="list-group">
     <a class="list-group-item" ng-show="!rej">You have no rejected appointments</a>
-    <a ng-repeat="doc in rejected" ng-click="appointmentDetails()" class="list-group-item list-group-item-dange"><strong>Dr. {{doc.firstName}} {{doc.lastName}}</strong>  <em>{{doc.visitDate | date : 'short'}}</em><i class="fa fa-chevron-right fa-fw fa-pull-right"></i></a>
+    <a ng-repeat="doc in rejected" ng-click="appointmentDetails(doc.visitID)" class="list-group-item list-group-item-dange"><strong>Dr. {{doc.firstName}} {{doc.lastName}}</strong>  <em>{{doc.visitDate | date : 'short'}}</em><i class="fa fa-chevron-right fa-fw fa-pull-right"></i></a>
+  </div>
+  </div>
+  <div ng-show = "details">
+    <h1>Appointment Details</h1>
+
+  <div class="form-group">
+    <label for="name">Name</label>
+    <!-- <div class="input-group"> -->
+      <!-- <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span> -->
+      <input type="text" class="form-control" id="name" value = "Dr. {{name}}" readonly>
+    <!-- </div> -->
+  </div>
+  <div class="form-group">
+    <label for="date">Visit Date</label>
+      <input type="text" class="form-control" id="date" value = "{{date | date : 'short' }}" readonly>
+  </div>
+  <div class="form-group">
+    <label for="dia">Diagnosis</label>
+      <input type="text" class="form-control" id="dia" ng-model="diagnosis" ng-readonly="!editMode">
+  </div>
+  <div class="form-group">
+    <label for="sy">Symptoms</label>
+      <input type="text" class="form-control" id="sy" ng-model="symptoms" ng-readonly="!editMode">
+  </div>
+  <div class="form-group">
+    <label for="pr">Prescriptions</label>
+    <textarea class="form-control" id="pr" rows="2"  ng-model="prescriptions" ng-readonly="!editMode"></textarea>
+  </div>
+  <div class="form-group">
+    <label for="notes">Notes</label>
+    <textarea class="form-control" id="notes" rows="2"  ng-model="notes" ng-readonly="!editMode"></textarea>
+  </div>
+  <div class="form-group">
+    <label for="notes">Images</label>
+    <input ng-show="editMode" type="file" id="file" name="file" multiple><br />
+  </div>
+
+  <button ng-show="!editMode" ng-click="edit()" class="btn btn-lg btn-primary btn-block">
+    Edit
+  </button>
+  <button ng-show="editMode" ng-click="save()" class="btn btn-lg btn-primary btn-block">
+    Save
+  </button>
+
   </div>
 </div>
