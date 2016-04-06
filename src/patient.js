@@ -239,7 +239,7 @@ var editAppointmentDetails = function (visitID, diagnosis, symptoms, patientID){
 }
 
 var addVitals = function (vitals, patientID){
-  
+
 }
 
 var addNote = function (note, patientID){
