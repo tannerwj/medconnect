@@ -149,70 +149,56 @@ medconnect.controller('PatientSearch', ['$http', '$location', function($http, $l
 
   vm.viewDoctor = function(doctor){
     var doctorID =  doctor.userID;
-    $location.url("/patient/seeDoctor?" + "id=" + doctorID + "&name=" + doctor.name);
+    $location.url("/patient/seeDoctor/" + doctorID);
   }
 
 }]);
 
-medconnect.controller('seeDoctor', ['$http', '$location', function($http, $location){
-
+medconnect.controller('seeDoctor', ['$http', '$location', '$routeParams', function($http, $location, $routeParams){
   var vm = this;
-  var doctorID = $location.search().id;
-  var doctorName = $location.search().name;
+  var doctorID = $routeParams.doctor_id
 
-    $http({
-      method:'POST',
-      url:'/doctor/specific-doctor',
-      data: {
-        'id' : doctorID
-      }
-    }).success(function(data){
-      doctor = data;
-      vm.name = doctorName;
-      vm.location = doctor.loc;
-      vm.specialties = doctor.specialties[0].name + ", " + doctor.specialties[1].name;
-      vm.experience = doctor.exp;
-      vm.notes = doctor.notes;
-      vm.volunteerNotes = doctor.vol;
-      vm.verified = doctor.ver;
-    }).error(function(err){
-      console.log('Server error: ' + err);
-    })
-
+  $http.post('/patient/specific-doctor', {
+    'id' : doctorID
+  }).success(function(doctor){
+    vm.name = doctor.first + ' ' + doctor.last
+    vm.location = doctor.loc
+    vm.specialties = doctor.specialties.map(function (s){ return s.name }).join(', ')
+    vm.experience = doctor.exp
+    vm.notes = doctor.notes
+    vm.volunteerNotes = doctor.vol
+  }).error(function(err){
+    console.log('Server error: ' + err)
+  })
 
   vm.next = function(){
-    $location.url("/patient/seeDoctorSchedule?" + "id=" + doctorID + "&name=" + doctorName);
+    $location.url("/patient/seeDoctorSchedule/" + doctorID);
   }
 
 }]);
 
-medconnect.controller('seeDoctorSchedule', ['$http', '$location', '$scope', function($http, $location, $scope){
+medconnect.controller('seeDoctorSchedule', ['$http', '$location', '$uibModal', '$scope', '$routeParams', function($http, $location, $uibModal, $scope, $routeParams){
 
-  var doctorID = $location.search().id;
-  var doctorName = $location.search().name;
+  var doctorID = $routeParams.doctor_id
 
-  $http({
-    method:'POST',
-    url:'/doctor/specific-doctor',
-    data: {
-      'id' : doctorID
-    }
-  }).success(function(data){
-    doctor = data;
-    $scope.lastName = doctorName.split(" ")[1];
-    $scope.availability = JSON.parse(doctor.availability);
-
+  $http.post('/patient/specific-doctor', {
+    'id' : doctorID
+  }).success(function(doctor){
+    $scope.lastName = doctor.last
+    $scope.availability = JSON.parse(doctor.availability)
   }).error(function(err){
-    console.log('Server error: ' + err);
+    console.log('Server error: ' + err)
   })
 
   $scope.submit = function(){
+    var date = $scope.date.getDate();
+    $scope.time.setDate(date);
     $http({
       method: 'POST',
       url: '/patient/requestAppointment',
       data: {
-        id : doctorID,
-        date : $scope.date + " " + $scope.time
+        doctorID : doctorID,
+        reqDate : $scope.time
       }
     }).success(function (data) {
       $scope.open(false)
@@ -220,6 +206,26 @@ medconnect.controller('seeDoctorSchedule', ['$http', '$location', '$scope', func
       $scope.open(true)
     })
   }
+
+  $scope.open = function (error, size) {
+
+    if(error){
+      $scope.item = "Missing/Incorrect fields, please try again.";
+    }else{
+      $scope.item = "You have successfully requested an appointment!";
+    }
+    var modalInstance = $uibModal.open({
+      animation: true,
+      templateUrl: '../views/modal.html',
+      controller: 'ModalInstanceCtrl',
+      size: size,
+      resolve: {
+        item : function(){
+          return $scope.item;
+        }
+      }
+    });
+  };
 
   var d = new Date();
   d.setHours( 0 );
@@ -322,6 +328,160 @@ medconnect.controller('seeDoctorSchedule', ['$http', '$location', '$scope', func
 
     return '';
   }
+}]);
+
+medconnect.controller('appointments', ['$http', '$location', '$scope', '$uibModal',function($http, $location, $scope, $uibModal){
+
+  $scope.req = true;
+  $scope.acc = true;
+  $scope.rej = true;
+  $scope.details = false;
+  $scope.images = [];
+  $scope.imgNames = [];
+
+  $http.get('/patient/getCurrentAppointments').success(function(info){
+
+    if(info.requested.length > 0){
+      $scope.requested = info.requested;
+    }else{
+      $scope.req = false;
+    }
+    if(info.accepted.length > 0){
+      $scope.accepted = info.accepted;
+    }else{
+      $scope.acc = false;
+    }
+    if(info.rejected.length > 0){
+      $scope.rejected = info.rejected;
+    }else{
+      $scope.rej = false;
+    }
+  }).catch(function(error){
+    console.log("Error is : " + error);
+  });
+
+  $scope.appointmentDetails = function(id){
+    $http({
+      method: 'POST',
+      url: '/patient/getAppointmentDetail',
+      data: {
+        visitID : id
+      }
+    }).success(function (data) {
+      $scope.details = true;
+      $scope.editMode = false;
+      console.log(data)
+      $scope.name = data.visit.firstName + " " + data.visit.lastName;
+      $scope.date = data.visit.visitDate;
+      $scope.diagnosis = data.visit.diagnosis;
+      $scope.symptoms = data.visit.symptoms;
+      $scope.prescriptions = data.prescriptions;
+      $scope.notes = data.notes;
+      $scope.images = data.images;
+
+    }).error(function (err) {
+      console.log("error")
+    })
+  }
+
+  $scope.addPre = function(arr){
+    $scope.prescriptions.push($scope.pre);
+    $scope.pre = "";
+  }
+
+  $scope.addNote = function(arr){
+    $scope.notes.push($scope.note);
+    $scope.note = "";
+  }
+
+  $scope.open = function (arr, index, error, size) {
+
+
+    if(error){
+      $scope.item = "Missing/Incorrect fields, please try again.";
+    }else{
+      $scope.item = [arr[index], index]
+    }
+    var modalInstance = $uibModal.open({
+      animation: true,
+      templateUrl: '../views/appointmentModal.html',
+      controller: 'appointmentModal',
+      size: size,
+      resolve: {
+        item : function(){
+          return $scope.item;
+        }
+      }
+    });
+    modalInstance.result.then(function (item) {
+      $scope.i = item[1];
+      arr.splice($scope.i, 1);
+    });
+  }
+
+  $scope.openImage = function (arr, index, error, size) {
+
+
+    if(error){
+      $scope.item = "Missing/Incorrect fields, please try again.";
+    }else if(arr){
+      $scope.item = [arr[index], index];
+    }else{
+      $scope.item = "Successfully updated";
+    }
+    var modalInstance = $uibModal.open({
+      animation: true,
+      templateUrl: '../views/appointmentModal.html',
+      controller: 'imgModal',
+      size: size,
+      resolve: {
+        item : function(){
+          return $scope.item;
+        }
+      }
+    });
+    modalInstance.result.then(function (item) {
+      $scope.i = item[1];
+      arr.splice($scope.i, 1);
+      if($scope.imgNames.length > 0){
+        $scope.imgNames.splice($scope.i, 1);
+      }
+    });
+  }
+
+  // $scope.save = function(){
+  //   $http({
+  //     method: 'POST',
+  //     url: '/patient/editAppointmentDetails',
+  //     data: {
+  //       visitID : id,
+  //       diagnosis : $scope.diagnosis,
+  //       symptoms : $scope.symptoms,
+  //       prescriptions : $scope.prescriptions,
+  //       notes : $scope.notes,
+  //       images : $scope.images
+  //     }
+  //   }).success(function (data) {
+  //     $scope.openImage();
+  //   }).error(function (err) {
+  //     $scope.openImage(true);
+  //     console.log("error")
+  //   })
+  // }
+
+    $scope.imageUpload = function(element){
+        var short = element.files[0].name.slice(0, 5) + "..." + element.files[0].name.slice(-3);
+        $scope.imgNames.push(short);
+        var reader = new FileReader();
+        reader.onload = $scope.imageIsLoaded;
+        reader.readAsDataURL(element.files[0]);
+    }
+
+    $scope.imageIsLoaded = function(e){
+        $scope.$apply(function() {
+          $scope.images.push(e.target.result);
+        });
+    }
 
 }]);
 

@@ -153,7 +153,7 @@ router.post('/doctor/addImage', auth, function (req, res){
 })
 
 router.post('/doctor/addPrescription', auth, function (req, res){
-	doc.addPrescription(req.body, req.user.id).then(function (result){
+	doc.addPrescription(req.body, req.user.id, req.user.first + ' ' + req.user.last).then(function (result){
 		res.sendStatus(result ? 200 : 400)
 	})
 })

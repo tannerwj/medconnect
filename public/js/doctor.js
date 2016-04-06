@@ -232,20 +232,25 @@
 
 	medconnect.controller('DoctorAvaliable', function ($scope, $filter, $http, $uibModal) {
 
+		var d = new Date();
+		d.setHours( 0 );
+		d.setMinutes( 0 );
+
 		$scope.checkboxModel = {
-		 monday : true,
-		 tuesday : true,
-		 wednesday : true,
-		 thursday : true,
-		 friday : true,
-		 saturday : true,
-		 sunday : true
-	 	};
+		 monday : false,
+		 tuesday : false,
+		 wednesday : false,
+		 thursday : false,
+		 friday : false,
+		 saturday : false,
+		 sunday : false
+	 };
 
 		$http.get('/doctor/info').success(function (info) {
 			if(info.availability){
 
 				var a = JSON.parse(info.availability);
+
 				$scope.ms = a[0][1];
 				$scope.me = a[0][2];
 				$scope.tus = a[1][1];
@@ -260,10 +265,44 @@
 				$scope.sae = a[5][2];
 				$scope.sus = a[6][1];
 				$scope.sue = a[6][2];
+
+				if(a[0][1] === "unavaliable"){
+					$scope.checkboxModel.monday = true;
+					$scope.ms = d;
+					$scope.me = d;
+				}
+				if(a[1][1] === "unavaliable"){
+					$scope.checkboxModel.tuesday = true;
+					$scope.tus = d;
+					$scope.tue = d;
+				}
+				if(a[2][1] === "unavaliable"){
+					$scope.checkboxModel.wednesday = true;
+					$scope.ws = d;
+					$scope.we = d;
+				}
+				if(a[3][1] === "unavaliable"){
+					$scope.checkboxModel.thursday = true;
+					$scope.ths = d;
+					$scope.the = d;
+				}
+				if(a[4][1] === "unavaliable"){
+					$scope.checkboxModel.friday = true;
+					$scope.fs = d;
+					$scope.fe = d;
+				}
+				if(a[5][1] === "unavaliable"){
+					$scope.checkboxModel.saturday = true;
+					$scope.sas = d;
+					$scope.sae = d;
+				}
+				if(a[6][1] === "unavaliable"){
+					$scope.checkboxModel.sunday = true;
+					$scope.sus = d;
+					$scope.sue = d;
+				}
+
 			}else{
-				var d = new Date();
-				d.setHours( 0 );
-				d.setMinutes( 0 );
 
 				$scope.ms = d;
 				$scope.me = d;
@@ -289,6 +328,28 @@
 
 			$scope.submit = function(){
 
+				if($scope.checkboxModel.monday){
+					$scope.ms = "unavaliable", $scope.me = "unavaliable";
+				}
+				if($scope.checkboxModel.tuesday){
+					$scope.tus = "unavaliable", $scope.tue = "unavaliable";
+				}
+				if($scope.checkboxModel.wednesday){
+					$scope.ws = "unavaliable", $scope.we = "unavaliable";
+				}
+				if($scope.checkboxModel.thursday){
+					$scope.ths = "unavaliable", $scope.the = "unavaliable";
+				}
+				if($scope.checkboxModel.friday){
+					$scope.fs = "unavaliable", $scope.fe = "unavaliable";
+				}
+				if($scope.checkboxModel.saturday){
+					$scope.sas = "unavaliable", $scope.sae = "unavaliable";
+				}
+				if($scope.checkboxModel.sunday){
+					$scope.sus = "unavaliable", $scope.sue = "unavaliable";
+				}
+
 				$scope.scheduleArr = [
 					['Monday', $scope.ms,  $scope.me],
 					['Tuesday', $scope.tus, $scope.tue],
@@ -298,16 +359,6 @@
 					['Saturday', $scope.sas, $scope.sae],
 					['Sunday', $scope.sus, $scope.sue]
 				]
-
-				// $scope.scheduleArr = [
-				// 	['Monday', $scope.ms,  $scope.me, $scope.checkboxMode.monday],
-				// 	['Tuesday', $scope.tus, $scope.tue, $scope.checkboxMode.tuesday],
-				// 	['Wednesday', $scope.ws, $scope.we, $scope.checkboxMode.wednesday],
-				// 	['Thursday', $scope.ths, $scope.the, $scope.checkboxMode.thursday],
-				// 	['Friday', $scope.fs, $scope.fe, $scope.checkboxMode.friday],
-				// 	['Saturday', $scope.sas, $scope.sae, $scope.checkboxMode.saturday,
-				// 	['Sunday', $scope.sus, $scope.sue, $scope.checkboxMode.sunday]
-				// ]
 
 				$http({
 					method: 'POST',

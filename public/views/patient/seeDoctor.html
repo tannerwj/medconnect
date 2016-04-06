@@ -1,33 +1,24 @@
-<div ng-controller = "seeDoctor as doctor" class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad">
-  <div class="panel panel-info">
-    <div class="panel-heading">
-      <h3 class="panel-title">{{doctor.name}}
-        <span class="pull-right">Verified:
-          <i ng-show="doctor.verified" class="fa fa-check-circle-o fa-fw"></i>
-          <i ng-show="!doctor.verified" class="fa fa-question fa-fw"></i>
+<div ng-controller='seeDoctor as doctor' class='main'>
+  <div class='panel panel-info'>
+    <div class='panel-heading'>
+      <h3 class='panel-title'>{{doctor.name}}
+        <span class='pull-right'>Verified:
+          <i ng-show='doctor.verified' class='fa fa-check-circle-o fa-fw'></i>
+          <i ng-show='!doctor.verified' class='fa fa-times-circle fa-fw'></i>
         </span>
       </h3>
     </div>
-    <div class="panel-body">
-      <div class="row">
-        <div class="col-md-3 col-lg-3 " align="center">
-          Picture
-          <!-- <img alt="User Pic" src="http://babyinfoforyou.com/wp-content/uploads/2014/10/avatar-300x300.png" class="img-circle img-responsive">  -->
-        </div>
-        <div class=" col-md-9 col-lg-9 ">
-          <table class="table table-user-information">
-            <tbody>
-              <tr><td>Location:</td><td>{{doctor.location}}</td></tr>
-              <tr><td>Specialties:</td><td>{{doctor.specialties}}</td></tr>
-              <tr><td>Experience:</td><td>{{doctor.experience}}</td></tr>
-              <tr><td>Notes:</td><td>{{doctor.notes}}</td></tr>
-              <tr><td>Volunteer Experience:</td><td>{{doctor.volunteerNotes}}</td></tr>
-              <tr><td>Verified:</td><td>{{doctor.verified}}</td></tr>
-            </tbody>
-          </table>
-          <button ng-click="doctor.next()" class="btn btn-default btn-warning">View Schedule</button>
-        </div>
-      </div>
-    </div> <!-- panelbody -->
+    <div class='panel-body'>
+      <table class='table'>
+        <tbody>
+          <tr><td>Location:</td><td>{{doctor.location}}</td></tr>
+          <tr><td>Specialties:</td><td>{{doctor.specialties}}</td></tr>
+          <tr><td>Experience:</td><td>{{doctor.experience}}</td></tr>
+          <tr><td>Notes:</td><td>{{doctor.notes}}</td></tr>
+          <tr><td>Volunteer Experience:</td><td>{{doctor.volunteerNotes}}</td></tr>
+        </tbody>
+      </table>
+      <button ng-click='doctor.next()' class='btn btn-default btn-warning'>View Schedule</button>
+    </div>
   </div>
 </div>

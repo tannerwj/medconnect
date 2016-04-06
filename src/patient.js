@@ -125,6 +125,36 @@ var getDoctor = function (id){
   })
 }
 
+var getDoctorDetails = function (id){
+  return Promise.all([
+    db.query('SELECT firstName, lastName FROM Users WHERE userID =? LIMIT 1;', [id]),
+    db.query('SELECT address, phone, verified, experience, volunteerNotes, otherNotes, availability FROM DoctorProfile WHERE userID = ? LIMIT 1;', [id]),
+    db.query('SELECT name FROM Specialties, SpecialtyDoctor WHERE Specialties._id = SpecialtyDoctor.specialtyID AND SpecialtyDoctor.doctorID = ?;', [id])
+  ]).then(function (results){
+    if(!results[0][0]){ return false }
+
+    var doctor = results[0][0][0]
+    var profile = results[1][0][0]
+    var specialties = results[2][0]
+
+    return {
+      first: doctor.firstName,
+      last: doctor.lastName,
+      loc: profile.address,
+      phone: profile.phone,
+      ver: profile.verified,
+      exp : profile.experience,
+      vol: profile.volunteerNotes,
+      notes: profile.otherNotes,
+      availability: profile.availability,
+      specialties: specialties
+    }
+  }).catch(function (err){
+    console.log(err)
+    return false
+  })
+}
+
 var getPatient = function (userId){
   return Promise.all([
     db.query('SELECT * FROM Users where userID = ? order by lastName, firstName;', [userId])
@@ -238,20 +268,59 @@ var editAppointmentDetails = function (visitID, diagnosis, symptoms, patientID){
   })
 }
 
+var hadVisitWithDoctor = function (doctorID, patientID, visitID){
+  if(visitID === ''){ return true }
+  return db.query('SELECT 1 FROM Visits WHERE doctorID =? AND patientID =? AND visitID =? LIMIT 1;', [doctorID, patientID, visitID]).then(function (result){
+    return result[0][0] !== undefined
+  })
+}
+
 var addVitals = function (vitals, patientID){
-  
+  //patients do not have to attach vitals to visit
+  //but if there is a visit, make sure patient had visit with doctor
+  if(!v.visitID){ v.visitID = '' }
+  return hadVisitWithDoctor(v.doctorID, patientID, v.visitID).then(function (result){
+    if(!result){ return false }
+    return db.query('INSERT INTO Vitals (userID, visitID, vitalsDate, height, weight, BMI, temperature, pulse, respiratoryRate, bloodPressure, bloodOxygenSat) VALUES (?,?,?,?,?,?,?,?,?,?,?);', [v.patientID, v.visitID, v.vitalsDate, v.height, v.weight, v.BMI, v.temperature, v.pulse, v.respiratoryRate, v.bloodPressure, v.bloodOxygenSat])
+    .then(function (result){
+      return result[0].affectedRows === 1
+    })
+  })
 }
 
 var addNote = function (note, patientID){
-
+  if(!vitals.visitID){ vitals.visitID = '' }
+  return hadVisitWithPatient(v.doctorID, patientID, v.visitID).then(function (result){
+    if(!result){ return false }
+    return db.query('INSERT INTO Notes (userID, visitID, note) VALUES (?,?,?);', [patientID, n.visitID, n.note])
+    .then(function (result){
+      return result[0].affectedRows === 1
+    })
+  })
 }
 
 var addImage = function (image, patientID){
-
+  if(!vitals.visitID){ vitals.visitID = '' }
+  return hadVisitWithPatient(v.doctorID, patientID, v.visitID).then(function (result){
+    if(!result){ return false }
+    //save image here
+    var filePath = ''
+    return db.query('INSERT INTO ExternalData (userID, visitID, dataTypeID, filePath, dataName) VALUES (?,?,?,?,?);', [patientID, i.visitID, i.dataTypeID, filePath, i.dataName])
+    .then(function (result){
+      return result[0].affectedRows === 1
+    })
+  })
 }
 
 var addPrescription = function (prescription, patientID){
-
+  if(!vitals.visitID){ vitals.visitID = '' }
+  return hadVisitWithPatient(v.doctorID, patientID, v.visitID).then(function (result){
+    if(!result){ return false }
+    return db.query('INSERT INTO MedicationPatient (userID, visitID, dosage, startDate, stopDate, notes, doctorID, doctorName) VALUES (?,?,?,?,?,?,?,?);', [patientID, p.visitID, p.dosage, p.startDate, p.stopDate, p.notes, p.doctorID, p.doctorName])
+    .then(function (result){
+      return result[0].affectedRows === 1
+    })
+  })
 }
 
 module.exports = {
@@ -261,6 +330,7 @@ module.exports = {
   info: info,
   getDoctors: getDoctors,
   getDoctor: getDoctor,
+  getDoctorDetails: getDoctorDetails,
   getPatient: getPatient,
   requestAppointment: requestAppointment,
   getCurrentAppointments: getCurrentAppointments,

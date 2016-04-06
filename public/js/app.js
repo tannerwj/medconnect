@@ -100,22 +100,22 @@ medconnect.config(['$routeProvider', '$locationProvider',
           isPatient: isPatient
         }
       })
-      .when('/patient/seeDoctor', {
+      .when('/patient/seeDoctor/:doctor_id', {
         templateUrl: '/views/patient/seeDoctor.html',
         reloadOnSearch: false,
         resolve:{
           isPatient: isPatient
         }
       })
-      .when('/patient/seeDoctorSchedule', {
+      .when('/patient/seeDoctorSchedule/:doctor_id', {
         templateUrl: '/views/patient/seeDoctorSchedule.html',
         reloadOnSearch: false,
         resolve:{
           isPatient: isPatient
         }
       })
-      .when('/patient/requestAppointment', {
-        templateUrl: '/views/patient/requestAppointment.html',
+      .when('/patient/viewAppointments', {
+        templateUrl: '/views/patient/viewAppointments.html',
         resolve:{
           isPatient: isPatient
         }

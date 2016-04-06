@@ -57,6 +57,13 @@ router.get('/patient/getDoctors', auth, function (req, res){
 	})
 })
 
+router.post('/patient/specific-doctor', auth, function (req, res){
+  pat.getDoctorDetails(req.body.id).then(function (doctor){
+    if(doctor){ return res.json(doctor) }
+    res.sendStatus(400)
+  })
+})
+
 router.post('/patient/getPatient', auth, function (req, res){
 	pat.getPatient(req.user.id).then(function (result){
 		if(result){ return res.json(result) }
