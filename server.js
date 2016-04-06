@@ -1,4 +1,4 @@
-//medconnect
+//eMED
 //using node 4.2.5 LTS
 
 require('dotenv').config()

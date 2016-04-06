@@ -250,20 +250,58 @@ var editAppointmentDetails = function (visitID, diagnosis, symptoms, doctorID){
   })
 }
 
-var addVitals = function (vitals, doctorID){
-
+var hadVisitWithPatient = function (doctorID, patientID, visitID){
+  return db.query('SELECT 1 FROM Visits WHERE doctorID =? AND patientID =? AND visitID =? LIMIT 1;', [doctorID, patientID, visitID]).then(function (result){
+    return result[0][0] !== undefined
+  })
 }
 
-var addNote = function (note, doctorID){
-
+var addVitals = function (v, doctorID){
+  //doctors have to attach vitals to visit
+  if(!v.visitID){ return false }
+  //make sure doctor had visit with patient
+  return hadVisitWithPatient(doctorID, v.patientID, v.visitID).then(function (result){
+    if(!result){ return false }
+    return db.query('INSERT INTO Vitals (userID, visitID, vitalsDate, height, weight, BMI, temperature, pulse, respiratoryRate, bloodPressure, bloodOxygenSat) VALUES (?,?,?,?,?,?,?,?,?,?,?);', [v.patientID, v.visitID, v.vitalsDate, v.height, v.weight, v.BMI, v.temperature, v.pulse, v.respiratoryRate, v.bloodPressure, v.bloodOxygenSat])
+    .then(function (result){
+      return result[0].affectedRows === 1
+    })
+  })
 }
 
-var addImage = function (image, doctorID){
-
+var addNote = function (n, doctorID){
+  if(!n.visitID){ return false }
+  return hadVisitWithPatient(doctorID, n.patientID, n.visitID).then(function (result){
+    if(!result){ return false }
+    return db.query('INSERT INTO Notes (userID, visitID, note) VALUES (?,?,?);', [n.patientID, n.visitID, n.note])
+    .then(function (result){
+      return result[0].affectedRows === 1
+    })
+  })
 }
 
-var addPrescription = function (prescription, doctorID){
+var addImage = function (i, doctorID){
+  if(!i.visitID){ return false }
+  return hadVisitWithPatient(doctorID, i.patientID, i.visitID).then(function (result){
+    if(!result){ return false }
+    //save image here
+    var filePath = ''
+    return db.query('INSERT INTO ExternalData (userID, visitID, dataTypeID, filePath, dataName) VALUES (?,?,?,?,?);', [i.patientID, i.visitID, i.dataTypeID, filePath, i.dataName])
+    .then(function (result){
+      return result[0].affectedRows === 1
+    })
+  })
+}
 
+var addPrescription = function (p, doctorID, doctorName){
+  if(!p.visitID){ return false }
+  return hadVisitWithPatient(doctorID, p.patientID, p.visitID).then(function (result){
+    if(!result){ return false }
+    return db.query('INSERT INTO MedicationPatient (userID, visitID, dosage, startDate, stopDate, notes, doctorID, doctorName) VALUES (?,?,?,?,?,?,?,?);', [p.patientID, p.visitID, p.dosage, p.startDate, p.stopDate, p.notes, doctorID, doctorName])
+    .then(function (result){
+      return result[0].affectedRows === 1
+    })
+  })
 }
 
 module.exports = {
