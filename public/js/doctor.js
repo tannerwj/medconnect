@@ -182,6 +182,16 @@
 
 	medconnect.controller('DoctorAvaliable', function ($scope, $filter, $http, $uibModal) {
 
+		$scope.checkboxModel = {
+		 monday : true,
+		 tuesday : true,
+		 wednesday : true,
+		 thursday : true,
+		 friday : true,
+		 saturday : true,
+		 sunday : true
+	 };
+
 		$http.get('/doctor/info').success(function (info) {
 			if(info.availability){
 
@@ -238,6 +248,16 @@
 					['Saturday', $scope.sas, $scope.sae],
 					['Sunday', $scope.sus, $scope.sue]
 				]
+
+				// $scope.scheduleArr = [
+				// 	['Monday', $scope.ms,  $scope.me, $scope.checkboxMode.monday],
+				// 	['Tuesday', $scope.tus, $scope.tue, $scope.checkboxMode.tuesday],
+				// 	['Wednesday', $scope.ws, $scope.we, $scope.checkboxMode.wednesday],
+				// 	['Thursday', $scope.ths, $scope.the, $scope.checkboxMode.thursday],
+				// 	['Friday', $scope.fs, $scope.fe, $scope.checkboxMode.friday],
+				// 	['Saturday', $scope.sas, $scope.sae, $scope.checkboxMode.saturday,
+				// 	['Sunday', $scope.sus, $scope.sue, $scope.checkboxMode.sunday]
+				// ]
 
 				$http({
 					method: 'POST',

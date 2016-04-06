@@ -6,7 +6,7 @@
     {{item}}
    </p>
    <table class="table table-striped table-bordered" ng-hide="{{!schedule}}">
-     <tr ng-repeat="s in schedule"><td>{{s[0]}}</td><td>{{s[1] | date : 'shortTime'}} to {{s[2] | date : 'shortTime'}}</td></tr>
+     <tr ng-repeat="s in schedule" ng-show="s[3]"><td>{{s[0]}}</td><td>{{s[1] | date : 'shortTime'}} to {{s[2] | date : 'shortTime'}}</td></tr>
    </table>
 </div>
 <div class="modal-footer">

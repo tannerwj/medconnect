@@ -1,4 +1,4 @@
-var medconnect = angular.module('medconnect', ['mcPatient', 'mcDoctor', 'mcAdmin','mcModal', 'mcService', 'ngRoute', 'ngMessages', 'ui.bootstrap']);
+var medconnect = angular.module('medconnect', ['mcPatient', 'mcDoctor', 'mcAdmin','mcModal', 'ngRoute', 'ngMessages', 'ui.bootstrap']);
 
 medconnect.config(['$routeProvider', '$locationProvider',
   function($routeProvider, $locationProvider) {
@@ -72,12 +72,14 @@ medconnect.config(['$routeProvider', '$locationProvider',
       })
       .when('/patient/seeDoctor', {
         templateUrl: '/views/patient/seeDoctor.html',
+        reloadOnSearch: false,
         resolve:{
           isPatient: isPatient
         }
       })
       .when('/patient/seeDoctorSchedule', {
         templateUrl: '/views/patient/seeDoctorSchedule.html',
+        reloadOnSearch: false,
         resolve:{
           isPatient: isPatient
         }

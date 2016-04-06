@@ -75,6 +75,7 @@ var getDoctorDetails = function (id){
       loc: profile.address,
       phone: profile.phone,
       ver: profile.verified,
+      exp : profile.experience,
       vol: profile.volunteerNotes,
       notes: profile.otherNotes,
       availability: profile.availability,
