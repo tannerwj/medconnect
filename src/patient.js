@@ -7,11 +7,12 @@ const fs = require('fs-extra')
 
 var register = function (user){
   return acc.register(user).then(function (result){
-    if(result){
-      return db.query('INSERT INTO PatientProfile (userID, gender, bloodType, address, phone) VALUES (?,?,"",?,?);', [result.id, user.gender, user.address, user.phone]).then(function (result){
-        return result[0].affectedRows === 1
-      })
-    }
+    if(!result){ return false }
+    return db.query('INSERT INTO PatientProfile (userID, gender, bloodType, address, phone) VALUES (?,?,"",?,?);', [result.id, user.gender, user.address, user.phone]).then(function (result){
+      return result[0].affectedRows === 1
+    })
+  }).catch(function (err){
+    console.log(err)
     return false
   })
 }
@@ -159,11 +160,10 @@ var getDoctorDetails = function (id){
 }
 
 var getPatient = function (userId){
-  return Promise.all([
-    db.query('SELECT * FROM Users where userID = ? order by lastName, firstName;', [userId])
-  ]).then(function (result){
+  return db.query('SELECT * FROM Users where userID =? ORDER BY lastName, firstName;', [userId])
+  .then(function (result){
     return {
-      currentPatient: result[0][0][0]
+      currentPatient: result[0][0]
     }
   }).catch(function (err){
     console.log(err)
@@ -223,7 +223,7 @@ var getAppointmentDetail = function (visitID, patientID){
 }
 
 var getPastAppointments = function (patientID){
-  return db.query('SELECT Visits.visitID, Visits.visitDate, Users.firstName, Users.lastName FROM Visits, Users WHERE Users.userID = Visits.doctorID AND Visits.visitStatus =? AND Visits.patientID =?;', [db.COMPLETED_VISIT,patientID])
+  return db.query('SELECT Visits.visitID, Visits.visitDate, Users.firstName, Users.lastName FROM Visits, Users WHERE Users.userID = Visits.doctorID AND Visits.visitStatus =? AND Visits.patientID =?;', [db.COMPLETED_VISIT, patientID])
   .then(function (results){
     return results[0]
   }).catch(function (err){
@@ -237,7 +237,7 @@ var completeAppointment = function (visitID, patientID){
   .then(function (result){
     if(!result[0][0]){ return false }
     return db.query('UPDATE Visits SET visitStatus =? WHERE visitID =?;', [db.COMPLETED_VISIT, visitID]).then(function (result){
-      return results[0][0].changedRows === 1
+      return results[0].changedRows === 1
     })
   }).catch(function (err){
     console.log(err)
@@ -250,7 +250,20 @@ var deleteRejectedAppointment = function (visitID, patientID){
   .then(function (result){
     if(!result[0][0]){ return false }
     return db.query('DELETE FROM Visits WHERE visitID =?;', [visitID]).then(function (result){
-      return results[0][0].affectedRows === 1
+      return results[0].affectedRows === 1
+    })
+  }).catch(function (err){
+    console.log(err)
+    return false
+  })
+}
+
+var updateRejectedAppointment = function (visitDate, visitID, patientID){
+  return db.query('SELECT 1 FROM Visits WHERE Visits.visitID =? AND Visits.patientID =? AND Visits.visitStatus =? LIMIT 1;', [visitID, patientID, db.REJECTED_VISIT])
+  .then(function (result){
+    if(!result[0][0]){ return false }
+    return db.query('UPDATE Visits SET visitDate =?, SET visitStatus =? WHERE visitID =?;', [visitDate, db.ACCEPTED_VISIT, visitID]).then(function (result){
+      return results[0].affectedRows === 1
     })
   }).catch(function (err){
     console.log(err)
@@ -260,7 +273,7 @@ var deleteRejectedAppointment = function (visitID, patientID){
 
 var editAppointmentDetails = function (visitID, diagnosis, symptoms, patientID){
   return db.query('UPDATE Visits SET diagnosis =?, symptoms =? WHERE visitID =? and patientID =?;', [diagnosis, symptoms, visitID, patientID]).then(function (result){
-    return results[0][0].affectedRows === 1
+    return results[0].affectedRows === 1
   }).catch(function (err){
     console.log(err)
     return false
@@ -340,10 +353,9 @@ var addFile = function (i, patientID, f){
     //path accessible by url
     var filePath = '/uploads/' + dest + f.filename
 
-    return Promise.all([
-      db.query('INSERT INTO ExternalData (patientID, doctorID, visitID, dataTypeID, filePath, fileName, dataName) VALUES (?,?,?,?,?,?,?);',
+    return db.query('INSERT INTO ExternalData (patientID, doctorID, visitID, dataTypeID, filePath, fileName, dataName) VALUES (?,?,?,?,?,?,?);',
         [patientID, doctorID, i.visitID, i.dataTypeID, filePath, f.filename, i.dataName])
-    ]).then(function (result){
+    .then(function (result){
       return result[0].affectedRows === 1
     }).catch(function (err){
       console.log(err)
@@ -390,6 +402,7 @@ module.exports = {
   getPastAppointments: getPastAppointments,
   completeAppointment: completeAppointment,
   deleteRejectedAppointment: deleteRejectedAppointment,
+  updateRejectedAppointment: updateRejectedAppointment,
   editAppointmentDetails: editAppointmentDetails,
   addVitals: addVitals,
   addNote: addNote,

@@ -117,6 +117,12 @@ router.post('/patient/deleteRejectedAppointment', auth, function (req, res){
 	})
 })
 
+router.post('/patient/updateRejectedAppointment', auth, function (req, res){
+	pat.updateRejectedAppointment(req.body.visitDate, req.body.visitID, req.user.id).then(function (result){
+		res.sendStatus(result ? 200 : 400)
+	})
+})
+
 router.post('/patient/editAppointmentDetails', auth, function (req, res){
 	pat.editAppointmentDetails(req.body.visitID, req.body.diagnosis, req.body.symptoms, req.user.id).then(function (result){
 		res.sendStatus(result ? 200 : 400)
