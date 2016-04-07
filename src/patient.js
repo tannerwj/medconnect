@@ -1,6 +1,9 @@
 const Promise = require('bluebird')
 const db = require('../config/db')
 const acc = require('./account')
+const multer  = require('multer')
+const path = require('path')
+const fs = require('fs-extra')
 
 var register = function (user){
   return acc.register(user).then(function (result){
@@ -197,7 +200,7 @@ var getCurrentAppointments = function (patientID){
 
 var getAppointmentDetail = function (visitID, patientID){
  return Promise.all([
-   db.query('SELECT Visits.visitStatus, Visits.visitDate, Visits.diagnosis, Visits.symptoms, Users.firstName, Users.lastName FROM Visits, Users WHERE Users.userID = Visits.doctorID AND Visits.visitID =? AND Visits.patientID =? LIMIT 1;', [visitID, patientID]),
+   db.query('SELECT Visits.visitID, Visits.visitStatus, Visits.visitDate, Visits.diagnosis, Visits.symptoms, Users.firstName, Users.lastName FROM Visits, Users WHERE Users.userID = Visits.doctorID AND Visits.visitID =? AND Visits.patientID =? LIMIT 1;', [visitID, patientID]),
    db.query('SELECT noteID, note FROM Notes WHERE visitID =?;', [visitID]),
    db.query('SELECT * FROM Vitals WHERE visitID =? LIMIT 1;', [visitID]),
    db.query('SELECT * FROM MedicationPatient, Medications WHERE MedicationPatient.medicationID = Medications._id AND MedicationPatient.visitID =?;', [visitID]),
@@ -268,18 +271,19 @@ var editAppointmentDetails = function (visitID, diagnosis, symptoms, patientID){
   })
 }
 
-var hadVisitWithDoctor = function (doctorID, patientID, visitID){
-  if(visitID === ''){ return true }
-  return db.query('SELECT 1 FROM Visits WHERE doctorID =? AND patientID =? AND visitID =? LIMIT 1;', [doctorID, patientID, visitID]).then(function (result){
-    return result[0][0] !== undefined
+var hadVisitWithPatient = function (patientID, visitID){
+  if(visitID === 0){ return Promise.resolve({}) }
+  return db.query('SELECT doctorID FROM Visits WHERE patientID =? AND visitID =? LIMIT 1;', [patientID, visitID]).then(function (result){
+    if(result[0][0]){ return { doctorID: result[0][0].doctorID } }
+    return false
   })
 }
 
-var addVitals = function (vitals, patientID){
+var addVitals = function (v, patientID){
   //patients do not have to attach vitals to visit
   //but if there is a visit, make sure patient had visit with doctor
   if(!v.visitID){ v.visitID = '' }
-  return hadVisitWithDoctor(v.doctorID, patientID, v.visitID).then(function (result){
+  return hadVisitWithDoctor(patientID, v.visitID).then(function (result){
     if(!result){ return false }
     return db.query('INSERT INTO Vitals (userID, visitID, vitalsDate, height, weight, BMI, temperature, pulse, respiratoryRate, bloodPressure, bloodOxygenSat) VALUES (?,?,?,?,?,?,?,?,?,?,?);', [v.patientID, v.visitID, v.vitalsDate, v.height, v.weight, v.BMI, v.temperature, v.pulse, v.respiratoryRate, v.bloodPressure, v.bloodOxygenSat])
     .then(function (result){
@@ -288,9 +292,9 @@ var addVitals = function (vitals, patientID){
   })
 }
 
-var addNote = function (note, patientID){
-  if(!vitals.visitID){ vitals.visitID = '' }
-  return hadVisitWithPatient(v.doctorID, patientID, v.visitID).then(function (result){
+var addNote = function (n, patientID){
+  if(!n.visitID){ n.visitID = 0 }
+  return hadVisitWithPatient(patientID, n.visitID).then(function (result){
     if(!result){ return false }
     return db.query('INSERT INTO Notes (userID, visitID, note) VALUES (?,?,?);', [patientID, n.visitID, n.note])
     .then(function (result){
@@ -299,24 +303,45 @@ var addNote = function (note, patientID){
   })
 }
 
-var addImage = function (image, patientID){
-  if(!vitals.visitID){ vitals.visitID = '' }
-  return hadVisitWithPatient(v.doctorID, patientID, v.visitID).then(function (result){
+var addFile = function (i, patientID, f){
+  var dest = ''
+  if(!i.visitID){
+    i.visitID = 0
+    dest = 'patient/'
+  }else{
+    dest = 'visit/'
+  }
+  return hadVisitWithPatient(patientID, i.visitID).then(function (result){
     if(!result){ return false }
-    //save image here
-    var filePath = ''
-    return db.query('INSERT INTO ExternalData (userID, visitID, dataTypeID, filePath, dataName) VALUES (?,?,?,?,?);', [patientID, i.visitID, i.dataTypeID, filePath, i.dataName])
-    .then(function (result){
+    var doctorID = result.doctorID || 0
+
+    var from = path.join(__dirname, '../data/tmp/') + f.filename
+    var to = path.join(__dirname, '../data/' + dest + '/') + f.filename
+
+    fs.move(from, to, function (err){
+      if(err){ console.log('move err', err) }
+    })
+
+    //path accessible by url
+    var filePath = '/uploads/' + dest + f.filename
+
+    return Promise.all([
+      db.query('INSERT INTO ExternalData (patientID, doctorID, visitID, dataTypeID, filePath, fileName, dataName) VALUES (?,?,?,?,?,?,?);',
+        [patientID, doctorID, i.visitID, i.dataTypeID, filePath, f.filename, i.dataName])
+    ]).then(function (result){
       return result[0].affectedRows === 1
+    }).catch(function (err){
+      console.log(err)
+      return false
     })
   })
 }
 
-var addPrescription = function (prescription, patientID){
-  if(!vitals.visitID){ vitals.visitID = '' }
-  return hadVisitWithPatient(v.doctorID, patientID, v.visitID).then(function (result){
+var addPrescription = function (p, patientID){
+  if(!p.visitID){ p.visitID = 0 }
+  return hadVisitWithPatient(patientID, p.visitID).then(function (result){
     if(!result){ return false }
-    return db.query('INSERT INTO MedicationPatient (userID, visitID, dosage, startDate, stopDate, notes, doctorID, doctorName) VALUES (?,?,?,?,?,?,?,?);', [patientID, p.visitID, p.dosage, p.startDate, p.stopDate, p.notes, p.doctorID, p.doctorName])
+    return db.query('INSERT INTO MedicationPatient (userID, visitID, dosage, startDate, stopDate, notes, doctorID, doctorName) VALUES (?,?,?,?,?,?,0,?);', [patientID, p.visitID, p.dosage, p.startDate, p.stopDate, p.notes, p.doctorName])
     .then(function (result){
       return result[0].affectedRows === 1
     })
@@ -341,6 +366,6 @@ module.exports = {
   editAppointmentDetails: editAppointmentDetails,
   addVitals: addVitals,
   addNote: addNote,
-  addImage: addImage,
+  addFile: addFile,
   addPrescription: addPrescription
 }

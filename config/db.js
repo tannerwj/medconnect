@@ -16,6 +16,8 @@ database.DOCTOR = 0
 database.PATIENT = 1
 database.ADMIN = 2
 
+database.MAX_FILE_SIZE = 5000000 //bytes
+
 database.escape = function (str) {
 	return str.replace(/[\0\x08\x09\x1a\n\r"'\\\%]/g, function (char) {
 		switch (char) {

@@ -200,11 +200,11 @@ create procedure create_data()
 			(32, 997, 906, '20 mG', '2015-01-31 00:00:00', '2015-02-13 00:00:00', 'twice daily', 993, 'Doctor Test3'),
 			(14, 998, 136, '13 mL', '2016-02-28 00:00:00', '2016-04-28 00:00:00', 'once daily with food', 992, 'Doctor Test2');
 
-		insert into ExternalData(dataID, userID, visitID, dataTypeID, filePath, dataName, uploadDate)
-		values(1, 991, 905, 10, '/path/to/file', 'Visit Record', '2016-03-20 15:15:00'),
-			(2, 992, 903, 11, '/path/to/file', 'Full workup', '2015-12-01 08:00:00'),
-			(3, 991, 911, 13, '/path/to/file', 'Visit Document', '2015-03-03 16:45:00'),
-			(4, 993, 915, 10, '/path/to/file', 'Vitals doc', '2016-01-26 13:00:00');
+		insert into ExternalData(dataID, patientID, doctorID, visitID, dataTypeID, filePath, fileName, dataName, uploadDate)
+		values(1, 991, 905, 0, 10, '/path/to/file1', 'file1', 'Visit Record', '2016-03-20 15:15:00'),
+			(2, 992, 903, 0, 11, '/path/to/file2', 'file2', 'Full workup', '2015-12-01 08:00:00'),
+			(3, 991, 911, 0, 13, '/path/to/file3', 'file3', 'Visit Document', '2015-03-03 16:45:00'),
+			(4, 993, 915, 0, 10, '/path/to/file4', 'file4', 'Vitals doc', '2016-01-26 13:00:00');
 
 		END//
 

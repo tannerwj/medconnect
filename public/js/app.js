@@ -151,6 +151,12 @@ medconnect.config(['$routeProvider', '$locationProvider',
 					isPatient: isPatient
 				}
       })
+      .when('/patient/settings', {
+        templateUrl: '/views/patient/settings.html',
+				resolve:{
+					isPatient: isPatient
+				}
+      })
       // Doctor Routes
       $routeProvider
       .when('/register-doctor', {

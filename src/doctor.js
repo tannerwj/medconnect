@@ -182,7 +182,7 @@ var handleRequestedAppointment = function (visitID, acceptVisit, doctorID){
 
 var getAppointmentDetail = function (visitID, doctorID){
  return Promise.all([
-   db.query('SELECT Visits.visitStatus, Visits.visitDate, Visits.diagnosis, Visits.symptoms, Users.firstName, Users.lastName FROM Visits, Users WHERE Users.userID = Visits.patientID AND Visits.visitID =? AND Visits.doctorID =? LIMIT 1;', [visitID, doctorID]),
+   db.query('SELECT Visits.visitID, Visits.visitStatus, Visits.visitDate, Visits.diagnosis, Visits.symptoms, Users.firstName, Users.lastName FROM Visits, Users WHERE Users.userID = Visits.patientID AND Visits.visitID =? AND Visits.doctorID =? LIMIT 1;', [visitID, doctorID]),
    db.query('SELECT noteID, note FROM Notes WHERE visitID =?;', [visitID]),
    db.query('SELECT * FROM Vitals WHERE visitID =? LIMIT 1;', [visitID]),
    db.query('SELECT * FROM MedicationPatient, Medications WHERE MedicationPatient.medicationID = Medications._id AND MedicationPatient.visitID =?;', [visitID]),
@@ -280,15 +280,29 @@ var addNote = function (n, doctorID){
   })
 }
 
-var addImage = function (i, doctorID){
+var addFile = function (i, doctorID, f){
   if(!i.visitID){ return false }
   return hadVisitWithPatient(doctorID, i.patientID, i.visitID).then(function (result){
     if(!result){ return false }
-    //save image here
-    var filePath = ''
-    return db.query('INSERT INTO ExternalData (userID, visitID, dataTypeID, filePath, dataName) VALUES (?,?,?,?,?);', [i.patientID, i.visitID, i.dataTypeID, filePath, i.dataName])
-    .then(function (result){
+
+    var from = path.join(__dirname, '../data/tmp/') + f.filename
+    var to = path.join(__dirname, '../data/visit/') + f.filename
+
+    fs.move(from, to, function (err){
+      if(err){ console.log('move err', err) }
+    })
+
+    //path accessible by url
+    var filePath = '/uploads/visit/' + f.filename
+
+    return Promise.all([
+      db.query('INSERT INTO ExternalData (patientID, doctorID, visitID, dataTypeID, filePath, fileName, dataName) VALUES (?,?,?,?,?,?,?);',
+        [i.patientID, doctorID, i.visitID, i.dataTypeID, filePath, f.filename, i.dataName])
+    ]).then(function (result){
       return result[0].affectedRows === 1
+    }).catch(function (err){
+      console.log(err)
+      return false
     })
   })
 }
@@ -321,6 +335,6 @@ module.exports = {
   editAppointmentDetails: editAppointmentDetails,
   addVitals: addVitals,
   addNote: addNote,
-  addImage: addImage,
+  addFile: addFile,
   addPrescription: addPrescription
 }

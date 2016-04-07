@@ -1,6 +1,6 @@
 (function(){
 
-var medconnect = angular.module("mcPatient", []);
+var medconnect = angular.module("mcPatient", ['ngFileUpload']);
 
 medconnect.controller('PatientHome', ['$http', '$scope', '$location', function($http, $scope, $location){
   $scope.logout = function(){
@@ -486,5 +486,34 @@ medconnect.controller('appointmentDetails', ['$http', '$location', '$scope', '$u
     }
 
 }]);
+
+medconnect.controller('Upload', ['$http', 'Upload', '$window', function ($http, Upload, $window){
+  //demo of file uploading
+  var vm = this;
+  vm.submit = function(){
+    if (vm.upload_form.file.$valid && vm.file) {
+       vm.upload(vm.file)
+    }
+  }
+
+  vm.upload = function (file){
+    Upload.upload({
+      url:'/patient/addFile',
+      data:{
+        file: file,
+        dataTypeID: 10,
+        dataName: 'work'
+      }
+    }).then(function (resp) {
+        if(resp.data.error_code === 0){
+            console.log('Success ' + resp.config.data.file.name + ' uploaded')
+        } else{
+          console.log('an error occured')
+        }
+    }, function (resp) {
+        console.log('Error status: ' + resp.status)
+    })
+  }
+}])
 
 }());

@@ -1,5 +1,6 @@
 const express = require('express')
-const path = require('path')
+const multer  = require('multer')
+const mime = require('mime')
 const router = express.Router()
 
 const db = require('../config/db')
@@ -134,10 +135,37 @@ router.post('/patient/addNote', auth, function (req, res){
 	})
 })
 
-router.post('/patient/addImage', auth, function (req, res){
-	pat.addImage(req.body, req.user.id).then(function (result){
-		res.sendStatus(result ? 200 : 400)
-	})
+var allowedTypes = ['image/png', 'image/jpeg', 'image/gif']
+var storage = multer.diskStorage({
+  destination: function (req, file, cb){
+    cb(null, './data/tmp/')
+  },
+  filename: function (req, file, cb){
+		cb(null, req.user.id + '-' + Date.now() + '.' + mime.extension(file.mimetype))
+  }
+})
+var upload = multer({
+		storage: storage,
+		limits: {
+			fileSize: db.MAX_FILE_SIZE
+		},
+		fileFilter: function (req, file, cb){
+			//only allow allowed mime types
+			if(!!~allowedTypes.indexOf(file.mimetype)){
+				cb(null, true)
+			}else{
+				cb('mime type not allowed')
+			}
+		}
+}).single('file')
+
+router.post('/patient/addFile', auth, function(req, res) {
+  upload(req, res, function(err){
+      if(err){ return res.status(400).end(err) }
+			pat.addFile(req.body, req.user.id, req.file).then(function (result){
+				res.sendStatus(result ? 200 : 400)
+			})
+  })
 })
 
 router.post('/patient/addPrescription', auth, function (req, res){

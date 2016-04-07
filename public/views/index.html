@@ -15,20 +15,22 @@
 	<body>
 		<nav class="navbar navbar-default btn-sm" role="navigation" ng-controller="nav">
 			<a href="" class="navbar-brand" ng-click="goHome()">e-MED</a>
-		    <ul class="nav navbar-nav navbar-left" ng-show="!home">
-					<li>
-	        	<button type="button" class="btn btn-default" ng-click="goBack();">
-	          	<i class="fa fa-chevron-left"></i> Back
-	        	</button>
-          </li>
-		    </ul>
+			<ul class="nav navbar-nav navbar-left" ng-show="!home">
+				<li>
+					<button type="button" class="btn btn-default" ng-click="goBack();">
+						<i class="fa fa-chevron-left"></i> Back
+					</button>
+				</li>
+			</ul>
 		</nav>
 	  <div ng-view></div>
 		<script src="/js/libraries/angular.js"></script>
+		<script src='/js/libraries/ng-file-upload-shim.min.js'></script>
+		<script src='/js/libraries/ng-file-upload.min.js'></script>
 		<script src="/js/libraries/angular-route.min.js"></script>
 		<script src="/js/libraries/angular-messages.min.js"></script>
 		<script src="/js/libraries/ui-bootstrap-tpls-1.2.4.min.js"></script>
-    <script src="/js/app.js"></script>
+		<script src="/js/app.js"></script>
 		<script src="/js/patient.js"></script>
 		<script src="/js/doctor.js"></script>
 		<script src="/js/admin.js"></script>
