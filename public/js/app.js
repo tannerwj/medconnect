@@ -139,12 +139,6 @@ medconnect.config(['$routeProvider', '$locationProvider',
 				},
         controller: 'ChangePassword'
       })
-      .when('/patient/records/feedback', {
-        templateUrl: '/views/patient/feedback.html',
-				resolve:{
-					isPatient: isPatient
-				}
-      })
       .when('/patient/records/prescription', {
         templateUrl: '/views/patient/prescription.html',
 				resolve:{
@@ -156,6 +150,12 @@ medconnect.config(['$routeProvider', '$locationProvider',
 				resolve:{
 					isPatient: isPatient
 				}
+      })
+      .when('/patient/rejectedAppt/:visitID', {
+        templateUrl: '/views/patient/rejectedAppointment.html',
+        resolve:{
+          isPatient: isPatient
+        }
       })
       .when('/patient/records/visitHistory', {
         templateUrl: '/views/patient/records/visitHistory.html',
