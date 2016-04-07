@@ -233,7 +233,7 @@ var getPastAppointments = function (patientID){
 }
 
 var completeAppointment = function (visitID, patientID){
-  return db.query('SELECT 1 FROM Visits WHERE Visits.visitID =? AND Visits.patientID =? LIMIT 1;', [visitID, patientID])
+  return db.query('SELECT 1 FROM Visits WHERE visitID =? AND visitStatus =? AND patientID =? LIMIT 1;', [visitID, db.ACCEPTED_VISIT, patientID])
   .then(function (result){
     if(!result[0][0]){ return false }
     return db.query('UPDATE Visits SET visitStatus =? WHERE visitID =?;', [db.COMPLETED_VISIT, visitID]).then(function (result){
@@ -259,12 +259,8 @@ var deleteRejectedAppointment = function (visitID, patientID){
 }
 
 var editAppointmentDetails = function (visitID, diagnosis, symptoms, patientID){
-  return db.query('SELECT 1 FROM Visits WHERE Visits.visitID =? AND Visits.patientID =? LIMIT 1;', [visitID, doctorID])
-  .then(function (result){
-    if(!result[0][0]){ return false }
-    return db.query('UPDATE Visits SET diagnosis =?, symptoms =? WHERE visitID =?;', [diagnosis, symptoms, visitID]).then(function (result){
-      return results[0][0].affectedRows === 1
-    })
+  return db.query('UPDATE Visits SET diagnosis =?, symptoms =? WHERE visitID =? and patientID =?;', [diagnosis, symptoms, visitID, patientID]).then(function (result){
+    return results[0][0].affectedRows === 1
   }).catch(function (err){
     console.log(err)
     return false
@@ -282,10 +278,22 @@ var hadVisitWithPatient = function (patientID, visitID){
 var addVitals = function (v, patientID){
   //patients do not have to attach vitals to visit
   //but if there is a visit, make sure patient had visit with doctor
-  if(!v.visitID){ v.visitID = '' }
+  if(!v.visitID){ v.visitID = 0 }
   return hadVisitWithDoctor(patientID, v.visitID).then(function (result){
     if(!result){ return false }
     return db.query('INSERT INTO Vitals (userID, visitID, vitalsDate, height, weight, BMI, temperature, pulse, respiratoryRate, bloodPressure, bloodOxygenSat) VALUES (?,?,?,?,?,?,?,?,?,?,?);', [v.patientID, v.visitID, v.vitalsDate, v.height, v.weight, v.BMI, v.temperature, v.pulse, v.respiratoryRate, v.bloodPressure, v.bloodOxygenSat])
+    .then(function (result){
+      return result[0].affectedRows === 1
+    })
+  })
+}
+
+var editVitals = function (v, patientID){
+  if(!v.visitID){ v.visitID = 0 }
+  return hadVisitWithPatient(patientID, v.visitID).then(function (result){
+    if(!result){ return false }
+    return db.query('UPDATE Vitals SET height =?, SET weight =?, SET BMI =?, SET temperature =?, SET pulse =?, SET respiratoryRate =?, SET bloodPressure =?, SET bloodOxygenSat =?, WHERE visitID =?;',
+      [v.height, v.weight, v.BMI, v.temperature, v.pulse, v.respiratoryRate, v.bloodPressure, v.bloodOxygenSat, v.visitID])
     .then(function (result){
       return result[0].affectedRows === 1
     })
@@ -300,6 +308,13 @@ var addNote = function (n, patientID){
     .then(function (result){
       return result[0].affectedRows === 1
     })
+  })
+}
+
+var removeNote = function (noteID, patientID){
+  return db.query('DELETE FROM Notes WHERE noteID =? AND userID =?;',  [noteID, patientID])
+  .then(function (result){
+    return result[0].affectedRows === 1
   })
 }
 
@@ -341,7 +356,19 @@ var addPrescription = function (p, patientID){
   if(!p.visitID){ p.visitID = 0 }
   return hadVisitWithPatient(patientID, p.visitID).then(function (result){
     if(!result){ return false }
-    return db.query('INSERT INTO MedicationPatient (userID, visitID, dosage, startDate, stopDate, notes, doctorID, doctorName) VALUES (?,?,?,?,?,?,0,?);', [patientID, p.visitID, p.dosage, p.startDate, p.stopDate, p.notes, p.doctorName])
+    return db.query('INSERT INTO MedicationPatient (medicationID, userID, visitID, dosage, startDate, stopDate, notes, doctorID, doctorName) VALUES (?,?,?,?,?,?,?,0,?);',
+      [p.medicationID, patientID, p.visitID, p.dosage, p.startDate, p.stopDate, p.notes, p.doctorName])
+    .then(function (result){
+      return result[0].affectedRows === 1
+    })
+  })
+}
+
+var removePrescription = function (medicationID, patientID, visitID){
+  if(!p.visitID){ p.visitID = 0 }
+  return hadVisitWithPatient(patientID, p.visitID).then(function (result){
+    if(!result){ return false }
+    return db.query('DELETE FROM MedicationPatient WHERE medicationID =? AND patientID =? AND visitID =?;',  [medicationID, patientID, visitID])
     .then(function (result){
       return result[0].affectedRows === 1
     })
@@ -366,6 +393,8 @@ module.exports = {
   editAppointmentDetails: editAppointmentDetails,
   addVitals: addVitals,
   addNote: addNote,
+  removeNote: removeNote,
   addFile: addFile,
-  addPrescription: addPrescription
+  addPrescription: addPrescription,
+  removePrescription: removePrescription
 }
