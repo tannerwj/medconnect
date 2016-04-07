@@ -157,6 +157,36 @@ medconnect.config(['$routeProvider', '$locationProvider',
 					isPatient: isPatient
 				}
       })
+      .when('/patient/records/visitHistory', {
+        templateUrl: '/views/patient/records/visitHistory.html',
+				resolve:{
+					isPatient: isPatient
+				}
+      })
+      .when('/patient/records/viewVitals', {
+        templateUrl: '/views/patient/records/viewVitals.html',
+				resolve:{
+					isPatient: isPatient
+				}
+      })
+      .when('/patient/records/viewNotes', {
+        templateUrl: '/views/patient/records/viewNotes.html',
+				resolve:{
+					isPatient: isPatient
+				}
+      })
+      .when('/patient/records/viewPrescriptions', {
+        templateUrl: '/views/patient/records/viewPrescriptions.html',
+				resolve:{
+					isPatient: isPatient
+				}
+      })
+      .when('/patient/records/viewUploads', {
+        templateUrl: '/views/patient/records/viewUploads.html',
+				resolve:{
+					isPatient: isPatient
+				}
+      })
       // Doctor Routes
       $routeProvider
       .when('/register-doctor', {
