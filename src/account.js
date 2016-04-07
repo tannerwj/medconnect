@@ -33,7 +33,7 @@ var changePassword = function(newPass, currentPass, userId){
             bcrypt.hash(newPass, salt, null, function (err, hash) {
               if (err){ return resolve(false) }
               return db.query('UPDATE Users SET password = ? WHERE userID =?;', [hash, userId]).then( function (result){
-                return resolve(result[0].affectedRows === 1)
+                return resolve(result[0].changedRows === 1)
               })
             })
           })

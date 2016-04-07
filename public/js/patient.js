@@ -545,11 +545,7 @@ medconnect.controller('Upload', ['$http', 'Upload', '$window', function ($http, 
         dataName: 'work'
       }
     }).then(function (resp) {
-        if(resp.data.error_code === 0){
-            console.log('Success ' + resp.config.data.file.name + ' uploaded')
-        } else{
-          console.log('an error occured')
-        }
+        console.log('Success ' + resp.config.data.file.name + ' uploaded')
     }, function (resp) {
         console.log('Error status: ' + resp.status)
     })
