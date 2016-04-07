@@ -315,10 +315,9 @@ medconnect.controller('appointments', ['$http', '$location', '$scope', function(
   $scope.req = true;
   $scope.acc = true;
   $scope.rej = true;
-  $scope.details = false;
 
   $http.get('/patient/getCurrentAppointments').success(function(info){
-
+    console.log(info)
     if(info.requested.length > 0){
       $scope.requested = info.requested;
     }else{
@@ -339,57 +338,152 @@ medconnect.controller('appointments', ['$http', '$location', '$scope', function(
   });
 
   $scope.appointmentDetails = function(id){
+    var visitID = id;
+    $location.url("/patient/appointmentDetails/" + visitID);
+  }
+
+}]);
+
+medconnect.controller('appointmentDetails', ['$http', '$location', '$scope', '$uibModal', '$routeParams', function($http, $location, $scope, $uibModal, $routeParams){
+
+  var visitID = $routeParams.visit_id;
+  $scope.images = [];
+  $scope.imgNames = [];
+
     $http({
       method: 'POST',
       url: '/patient/getAppointmentDetail',
       data: {
-        visitID : id
+        visitID : visitID
       }
     }).success(function (data) {
-      $scope.details = true;
-      $scope.editMode = false;
       console.log(data)
       $scope.name = data.visit.firstName + " " + data.visit.lastName;
       $scope.date = data.visit.visitDate;
       $scope.diagnosis = data.visit.diagnosis;
       $scope.symptoms = data.visit.symptoms;
-
-      data.prescriptions.forEach(function(pre, index){
-        if(data.prescriptions.length-1 === (index)){
-          $scope.prescriptions += pre;
-        }else{
-          $scope.prescriptions += pre + ", ";
-        }
-      });
-
-      data.notes.forEach(function(note, index){
-        if(data.notes.length-1 === (index)){
-          $scope.prescriptions += note;
-        }else{
-          $scope.prescriptions += note + ", ";
-        }
-      });
+      //$scope.prescriptions = data.prescriptions;
+      $scope.notes = data.notes;
+      $scope.images = data.images;
+      //$scope.medications = data.medications;
 
     }).error(function (err) {
       console.log("error")
     })
+
+    $scope.prescriptions = [{name:"gg"}];
+    $scope.prescriptions.push({name:'hello'});
+
+  $scope.open = function () {
+
+    $scope.item = {
+      doctorName : $scope.name
+      // visitID : $scope.visitID
+    }
+
+    var modalInstance = $uibModal.open({
+      animation: true,
+      templateUrl: '/views/addPrescription.html',
+      controller: 'prescriptions',
+      resolve: {
+           item : function(){
+             return $scope.item;
+           }
+         }
+    });
+    modalInstance.result.then(function (fields) {
+      $scope.prescriptions.push(fields);
+    });
   }
 
-  $scope.edit = function(){
-    $scope.editMode = !$scope.editMode;
+  $scope.view = function (arr, index, error, size) {
+
+
+    if(error){
+      $scope.item = "Missing/Incorrect fields, please try again.";
+    }else{
+      $scope.item = [arr[index], index]
+    }
+    var modalInstance = $uibModal.open({
+      animation: true,
+      templateUrl: '/views/viewPrescriptions.html',
+      controller: 'viewPrescriptions',
+      size: size,
+      resolve: {
+        item : function(){
+          return $scope.item;
+        }
+      }
+    });
+    modalInstance.result.then(function (item) {
+      $scope.i = item[1];
+      arr.splice($scope.i, 1);
+    });
   }
 
-  //   var r = new FileReader();
-  //
-  //   r.onloadend = function(e){
-  //     var data = e.target.result;
-  //  }
-  //  console.log(r.readAsArrayBuffer(f));
+  $scope.openImage = function (arr, index, error, size) {
 
-  $scope.save = function(){
-    var imgList = document.getElementById('file').files;
 
+    if(error){
+      $scope.item = "Missing/Incorrect fields, please try again.";
+    }else if(arr){
+      $scope.item = [arr[index], index];
+    }else{
+      $scope.item = "Successfully updated";
+    }
+    var modalInstance = $uibModal.open({
+      animation: true,
+      templateUrl: '/views/appointmentModal.html',
+      controller: 'imgModal',
+      size: size,
+      resolve: {
+        item : function(){
+          return $scope.item;
+        }
+      }
+    });
+    modalInstance.result.then(function (item) {
+      $scope.i = item[1];
+      arr.splice($scope.i, 1);
+      if($scope.imgNames.length > 0){
+        $scope.imgNames.splice($scope.i, 1);
+      }
+    });
   }
+
+  // $scope.save = function(){
+  //   $http({
+  //     method: 'POST',
+  //     url: '/patient/editAppointmentDetails',
+  //     data: {
+  //       visitID : id,
+  //       diagnosis : $scope.diagnosis,
+  //       symptoms : $scope.symptoms,
+  //       prescriptions : $scope.prescriptions,
+  //       notes : $scope.notes,
+  //       images : $scope.images
+  //     }
+  //   }).success(function (data) {
+  //     $scope.openImage();
+  //   }).error(function (err) {
+  //     $scope.openImage(true);
+  //     console.log("error")
+  //   })
+  // }
+
+    $scope.imageUpload = function(element){
+        var short = element.files[0].name.slice(0, 5) + "..." + element.files[0].name.slice(-3);
+        $scope.imgNames.push(short);
+        var reader = new FileReader();
+        reader.onload = $scope.imageIsLoaded;
+        reader.readAsDataURL(element.files[0]);
+    }
+
+    $scope.imageIsLoaded = function(e){
+        $scope.$apply(function() {
+          $scope.images.push(e.target.result);
+        });
+    }
 
 }]);
 

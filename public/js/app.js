@@ -42,6 +42,18 @@ medconnect.config(['$routeProvider', '$locationProvider',
       return deferred.promise
     }
 
+    var isLoggedIn = function($q, $http, $location){
+      var deferred = $q.defer()
+      $http.get('/loggedin').success(function(userType){
+        if (userType === '0' || userType === '1' || userType === '2' ){
+          deferred.resolve()
+        }else{
+          deferred.reject()
+          $location.url('/')
+        }
+      })
+    }
+
     var isUser = function($q, $http, $location){
       var deferred = $q.defer()
       $http.get('/loggedin').success(function (userType){
@@ -104,6 +116,12 @@ medconnect.config(['$routeProvider', '$locationProvider',
       })
       .when('/patient/viewAppointments', {
         templateUrl: '/views/patient/viewAppointments.html',
+        resolve:{
+          isPatient: isPatient
+        }
+      })
+      .when('/patient/appointmentDetails/:visit_id', {
+        templateUrl: '/views/patient/appointmentDetails.html',
         resolve:{
           isPatient: isPatient
         }
@@ -349,7 +367,6 @@ medconnect.controller('VerifyDoctor', ['$http', '$scope', function($http, $scope
       $scope.denied = data.denied
     })
   }
-
 }])
 
 medconnect.controller('AdminManage', ['$http', '$scope', function($http, $scope){

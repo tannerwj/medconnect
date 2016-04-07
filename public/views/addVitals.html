@@ -1,0 +1,131 @@
+<div ng-controller="addVitals">
+<h1>Add Vitals</h1>
+<form class="form-horizontal" name="vitalsForm" ng-submit="addVitals()" novalidate>
+  <div class="form-group required">
+    <label for="date" class="col-sm-4 control-label">Date of measurements</label>
+    <div class="col-sm-4">
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-calendar-o fa-fw"></i></span>
+        <input type="date" name="date" class="form-control" id="date" ng-model="vitals.vitalsDate" required>
+      </div>
+        <div class="help-block" ng-messages="vitalsForm.date.$error" ng-show="vitalsForm.date.$touched">
+          <div ng-messages-include="my-custom-messages"></div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group ">
+    <label for="height" class="col-sm-2 control-label">Height</label>
+    <div class="col-sm-2">
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-arrows-v fa-fw"></i></span>
+        <input type="number" name="height" class="form-control" id="height" ng-model="vitals.height" min="0" max="3">
+        <span class="input-group-addon">meters</span>
+      </div>
+        <div class="help-block" ng-messages="vitalsForm.height.$error" ng-show="vitalsForm.height.$touched">
+          <div ng-messages-include="my-custom-messages"></div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group ">
+    <label for="weight" class="col-sm-2 control-label">Weight</label>
+    <div class="col-sm-2">
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-balance-scale fa-fw"></i></span>
+        <input type="number" name="weight" class="form-control" id="weight" ng-model="vitals.weight">
+        <span class="input-group-addon">kilograms</span>
+      </div>
+        <div class="help-block" ng-messages="vitalsForm.weight.$error" ng-show="vitalsForm.weight.$touched">
+          <div ng-messages-include="my-custom-messages"></div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group ">
+    <label for="bmi" class="col-sm-2 control-label">BMI</label>
+    <div class="col-sm-2">
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-child fa-fw"></i></span>
+        <input type="number" name="bmi" class="form-control" id="bmi" ng-model="vitals.BMI">
+        <span class="input-group-addon">kg/m<sup>2</sup></span>
+      </div>
+        <div class="help-block" ng-messages="vitalsForm.bmi.$error" ng-show="vitalsForm.bmi.$touched">
+          <div ng-messages-include="my-custom-messages"></div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group ">
+    <label for="temp" class="col-sm-2 control-label">Temperature</label>
+    <div class="col-sm-2">
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-fire fa-fw"></i></span>
+        <input type="number" name="temp" class="form-control" id="temp" ng-model="vitals.temperature">
+        <span class="input-group-addon">&deg;C</span>
+      </div>
+        <div class="help-block" ng-messages="vitalsForm.temp.$error" ng-show="vitalsForm.temp.$touched">
+          <div ng-messages-include="my-custom-messages"></div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group ">
+    <label for="pulse" class="col-sm-2 control-label">Pulse</label>
+    <div class="col-sm-2">
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-heartbeat fa-fw"></i></span>
+        <input type="number" name="pulse" class="form-control" id="pulse" ng-model="vitals.pulse">
+        <span class="input-group-addon">beats/min</span>
+      </div>
+        <div class="help-block" ng-messages="vitalsForm.pulse.$error" ng-show="vitalsForm.pulse.$touched">
+          <div ng-messages-include="my-custom-messages"></div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group ">
+    <label for="resRate" class="col-sm-2 control-label">Respiratory rate</label>
+    <div class="col-sm-2">
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-bar-chart fa-fw"></i></span>
+        <input type="number" name="resRate" class="form-control" id="pulse" ng-model="vitals.respiratoryRate">
+        <span class="input-group-addon">breaths/min</span>
+      </div>
+        <div class="help-block" ng-messages="vitalsForm.resRate.$error" ng-show="vitalsForm.resRate.$touched">
+          <div ng-messages-include="my-custom-messages"></div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group ">
+    <label for="bloodPres" class="col-sm-2 control-label">Blood pressure</label>
+    <div class="col-sm-2">
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-heart fa-fw"></i></span>
+        <input type="number" name="bloodPres" class="form-control" id="pulse" ng-model="vitals.bloodPressure">
+        <span class="input-group-addon">mmHg</span>
+      </div>
+        <div class="help-block" ng-messages="vitalsForm.bloodPres.$error" ng-show="vitalsForm.bloodPres.$touched">
+          <div ng-messages-include="my-custom-messages"></div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group ">
+    <label for="oxySat" class="col-sm-2 control-label">Blood oxygen saturation</label>
+    <div class="col-sm-2">
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-heart fa-fw"></i></span>
+        <input type="number" name="oxySat" class="form-control" id="pulse" ng-model="vitals.bloodOxygenSat">
+        <span class="input-group-addon">SO<sub>2</sub></span>
+      </div>
+        <div class="help-block" ng-messages="vitalsForm.oxySat.$error" ng-show="vitalsForm.oxySat.$touched">
+          <div ng-messages-include="my-custom-messages"></div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-4 col-sm-2">
+      <button type="submit" class="btn btn-primary">Add Vitals</button>
+    </div>
+  </div>
+</form>
+
+<script type="text/ng-template" id="my-custom-messages">
+  <p ng-message="maxlength">There has to be less characters.</p>
+  <p ng-message="required">This field is required.</p>
+  <p ng-message="email">This needs to be a valid email</p>
+</script>

@@ -1,0 +1,15 @@
+<div class="modal-header">
+    <h3 class="modal-title">Medconnect Alert</h3>
+</div>
+<div class="modal-body">
+  <table class="table table-striped table-bordered">
+    <tr ng-repeat="i in arr">
+      <td>{{i[0]}}</td>
+      <td>{{i[1] | date : 'shortTime'}}</td>
+    </tr>
+  </table>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-danger" type="button" ng-click="delete()">Delete</button>
+    <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+</div>
