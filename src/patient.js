@@ -2,6 +2,8 @@ const Promise = require('bluebird')
 const db = require('../config/db')
 const acc = require('./account')
 
+const fs = require('fs')
+
 var register = function (user){
   return acc.register(user).then(function (result){
     if(result){
@@ -268,8 +270,8 @@ var editAppointmentDetails = function (visitID, diagnosis, symptoms, patientID){
   })
 }
 
-var hadVisitWithDoctor = function (doctorID, patientID, visitID){
-  if(visitID === ''){ return true }
+var hadVisitWithPatient = function (doctorID, patientID, visitID){
+  if(visitID === 0){ return Promise.resolve(true) }
   return db.query('SELECT 1 FROM Visits WHERE doctorID =? AND patientID =? AND visitID =? LIMIT 1;', [doctorID, patientID, visitID]).then(function (result){
     return result[0][0] !== undefined
   })
@@ -289,7 +291,7 @@ var addVitals = function (vitals, patientID){
 }
 
 var addNote = function (note, patientID){
-  if(!vitals.visitID){ vitals.visitID = '' }
+  if(!v.visitID){ v.visitID = '' }
   return hadVisitWithPatient(v.doctorID, patientID, v.visitID).then(function (result){
     if(!result){ return false }
     return db.query('INSERT INTO Notes (userID, visitID, note) VALUES (?,?,?);', [patientID, n.visitID, n.note])
@@ -299,21 +301,27 @@ var addNote = function (note, patientID){
   })
 }
 
-var addImage = function (image, patientID){
-  if(!vitals.visitID){ vitals.visitID = '' }
-  return hadVisitWithPatient(v.doctorID, patientID, v.visitID).then(function (result){
+var addImage = function (i, patientID){
+  if(!i.visitID){ i.visitID = 0 }
+  return hadVisitWithPatient(i.doctorID, patientID, i.visitID).then(function (result){
     if(!result){ return false }
     //save image here
-    var filePath = ''
+    var filePath = i.dataName.replace(/\s/, '') + '#' + new Date().getTime()
     return db.query('INSERT INTO ExternalData (userID, visitID, dataTypeID, filePath, dataName) VALUES (?,?,?,?,?);', [patientID, i.visitID, i.dataTypeID, filePath, i.dataName])
     .then(function (result){
+      fs.writeFile((i.visitID === 0 ? 'data/' : 'data/visit/') + filePath, i.upload, function (err){
+        console.log('write file err', err)
+      })
       return result[0].affectedRows === 1
+    }).catch(function (err){
+      console.log(err)
+      return false
     })
   })
 }
 
 var addPrescription = function (prescription, patientID){
-  if(!vitals.visitID){ vitals.visitID = '' }
+  if(!v.visitID){ v.visitID = '' }
   return hadVisitWithPatient(v.doctorID, patientID, v.visitID).then(function (result){
     if(!result){ return false }
     return db.query('INSERT INTO MedicationPatient (userID, visitID, dosage, startDate, stopDate, notes, doctorID, doctorName) VALUES (?,?,?,?,?,?,?,?);', [patientID, p.visitID, p.dosage, p.startDate, p.stopDate, p.notes, p.doctorID, p.doctorName])

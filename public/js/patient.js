@@ -413,4 +413,20 @@ medconnect.controller('appointments', ['$http', '$location', '$scope', function(
 
 }]);
 
+medconnect.controller('Upload', ['$http', '$scope', function ($http, $scope){
+
+  $scope.uploadFile = function (){
+    $http.post('/patient/addImage', {
+      file: $scope.upload,
+      dataTypeID: 10,
+      dataName: 'test data'
+    }).success(function (){
+      console.log('sucess')
+    }).error(function (err){
+      console.log('failuer', err)
+    })
+  }
+
+}])
+
 }());
