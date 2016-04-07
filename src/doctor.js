@@ -307,10 +307,9 @@ var addFile = function (i, doctorID, f){
     //path accessible by url
     var filePath = '/uploads/visit/' + f.filename
 
-    return Promise.all([
-      db.query('INSERT INTO ExternalData (patientID, doctorID, visitID, dataTypeID, filePath, fileName, dataName) VALUES (?,?,?,?,?,?,?);',
+    return db.query('INSERT INTO ExternalData (patientID, doctorID, visitID, dataTypeID, filePath, fileName, dataName) VALUES (?,?,?,?,?,?,?);',
         [i.patientID, doctorID, i.visitID, i.dataTypeID, filePath, f.filename, i.dataName])
-    ]).then(function (result){
+    .then(function (result){
       return result[0].affectedRows === 1
     }).catch(function (err){
       console.log(err)
