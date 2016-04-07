@@ -237,7 +237,7 @@ var completeAppointment = function (visitID, patientID){
   .then(function (result){
     if(!result[0][0]){ return false }
     return db.query('UPDATE Visits SET visitStatus =? WHERE visitID =?;', [db.COMPLETED_VISIT, visitID]).then(function (result){
-      return results[0].changedRows === 1
+      return result[0][0].changedRows === 1
     })
   }).catch(function (err){
     console.log(err)
@@ -250,7 +250,7 @@ var deleteRejectedAppointment = function (visitID, patientID){
   .then(function (result){
     if(!result[0][0]){ return false }
     return db.query('DELETE FROM Visits WHERE visitID =?;', [visitID]).then(function (result){
-      return results[0].affectedRows === 1
+      return result[0].affectedRows === 1
     })
   }).catch(function (err){
     console.log(err)
@@ -259,11 +259,12 @@ var deleteRejectedAppointment = function (visitID, patientID){
 }
 
 var updateRejectedAppointment = function (visitDate, visitID, patientID){
+  var date = new Date(visitDate).toISOString().replace(/T/, ' ').replace(/\..+/, '')
   return db.query('SELECT 1 FROM Visits WHERE Visits.visitID =? AND Visits.patientID =? AND Visits.visitStatus =? LIMIT 1;', [visitID, patientID, db.REJECTED_VISIT])
   .then(function (result){
     if(!result[0][0]){ return false }
-    return db.query('UPDATE Visits SET visitDate =?, SET visitStatus =? WHERE visitID =?;', [visitDate, db.ACCEPTED_VISIT, visitID]).then(function (result){
-      return results[0].affectedRows === 1
+    return db.query('UPDATE Visits SET visitDate =?, visitStatus =? WHERE visitID =?;', [date, db.REQUESTED_VISIT, visitID]).then(function (result){
+      return result[0].affectedRows === 1
     })
   }).catch(function (err){
     console.log(err)
