@@ -15,13 +15,14 @@
     <label for="date">Visit Date</label>
     <input type="text" class="form-control" id="date" value = "{{visit.visitDate | date : 'short' }}" readonly>
   </div>
-    <div class="form-group" ng-show="editable">
-    <label for="date">Visit Date</label>
-    <input type="date" class="form-control" id="date" ng-mogel="newDate">
-  </div>
-  <div class="form-group" ng-show="editable">
-    <label for="date">Visit Time</label>
-    <input type="time" class="form-control" id="date" ng-model="newTime">
+  <div class="timePicker main" ng-show="editable">
+    <uib-datepicker ng-model="newDate" class="well well-sm" datepicker-options="inlineOptions"></uib-datepicker>
+    <hr />
+    <h4>Select time</h4>
+    <uib-timepicker ng-model='newTime' hour-step="1" minute-step="30" show-meridian="true"></uib-timepicker>
+
+    <pre>Date is: <em>{{newDate | date:'fullDate' }} </em></pre>
+    <pre>Time is: <em>{{newTime | date:'shortTime'}} </em></pre>
   </div>
   <button ng-click="request()" class="btn btn-lg btn-primary btn-block" ng-hide="editable">Request new time</button>
   <button ng-click="submit()" class="btn btn-lg btn-primary btn-block" ng-show="editable">Submit</button>
