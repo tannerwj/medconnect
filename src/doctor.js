@@ -205,7 +205,7 @@ var getAppointmentDetail = function (visitID, doctorID){
 }
 
 var getPastPatients = function (doctorID){
-  return db.query('SELECT DISTINCT(Users.userID), Users.firstName, Users.lastName FROM Visits, Users WHERE Users.userID = Visits.patientID AND Visits.visitStatus =? AND Visits.doctorID =? LIMIT 1;', [db.COMPLETED_VISIT, doctorID])
+  return db.query('SELECT DISTINCT(Users.userID), Users.firstName, Users.lastName FROM Visits, Users WHERE Users.userID = Visits.patientID AND Visits.visitStatus =? AND Visits.doctorID =?;', [db.COMPLETED_VISIT, doctorID])
   .then(function (result){
     return result[0]
   }).catch(function (err){
