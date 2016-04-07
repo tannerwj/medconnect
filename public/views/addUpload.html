@@ -1,0 +1,53 @@
+<div ng-controller="addUpload">
+<h1>Add upload</h1>
+<form class="form-horizontal" name="uploadForm" ng-submit="addUpload()" novalidate>
+  <div class="form-group required">
+    <label for="name" class="col-sm-4 control-label">Title</label>
+    <div class="col-sm-4">
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-tags fa-fw"></i></span>
+        <input type="text" name="name" class="form-control" id="name" ng-model="upload.name" required>
+      </div>
+        <div class="help-block" ng-messages="uploadForm.name.$error" ng-show="uploadForm.name.$touched">
+          <div ng-messages-include="my-custom-messages"></div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group required">
+    <label for="type" class="col-sm-4 control-label">Upload type</label>
+    <div class="col-sm-4">
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-info fa-fw"></i></span>
+        <select name="type" id="type" ng-model="upload.type" class="form-control">
+          <option ng-repeat="type in datatypes" value="type._id">{{type.name}}</option>
+        </select>
+      </div>
+        <div class="help-block" ng-messages="uploadForm.type.$error" ng-show="uploadForm.type.$touched">
+          <div ng-messages-include="my-custom-messages"></div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group required">
+    <label for="file" class="col-sm-4 control-label">File</label>
+    <div class="col-sm-4">
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-file fa-fw"></i></span>
+        <input id="file" name="file" type="file" class="form-control">
+      </div>
+        <div class="help-block" ng-messages="uploadForm.file.$error" ng-show="uploadForm.file.$touched">
+          <div ng-messages-include="my-custom-messages"></div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-4 col-sm-2">
+      <button type="submit" class="btn btn-primary">Upload</button>
+    </div>
+  </div>
+</form>
+
+<script type="text/ng-template" id="my-custom-messages">
+  <p ng-message="maxlength">There has to be less characters.</p>
+  <p ng-message="required">This field is required.</p>
+  <p ng-message="email">This needs to be a valid email</p>
+</script>
