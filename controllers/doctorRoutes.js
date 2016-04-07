@@ -141,12 +141,23 @@ router.post('/doctor/addVitals', auth, function (req, res){
 	})
 })
 
+router.post('/doctor/editVitals', auth, function (req, res){
+	doc.editVitals(req.body, req.user.id).then(function (result){
+		res.sendStatus(result ? 200 : 400)
+	})
+})
+
 router.post('/doctor/addNote', auth, function (req, res){
 	doc.addNote(req.body, req.user.id).then(function (result){
 		res.sendStatus(result ? 200 : 400)
 	})
 })
 
+router.post('/doctor/removeNote', auth, function (req, res){
+	doc.removeNote(req.body.noteID, req.user.id).then(function (result){
+		res.sendStatus(result ? 200 : 400)
+	})
+})
 
 var allowedTypes = ['image/png', 'image/jpeg', 'image/gif']
 var storage = multer.diskStorage({
@@ -183,6 +194,12 @@ router.post('/doctor/addFile', auth, function (req, res){
 
 router.post('/doctor/addPrescription', auth, function (req, res){
 	doc.addPrescription(req.body, req.user.id, req.user.first + ' ' + req.user.last).then(function (result){
+		res.sendStatus(result ? 200 : 400)
+	})
+})
+
+router.post('/doctor/removePrescription', auth, function (req, res){
+	doc.removePrescription(req.body.medicationID, req.user.id, req.body.visitID).then(function (result){
 		res.sendStatus(result ? 200 : 400)
 	})
 })

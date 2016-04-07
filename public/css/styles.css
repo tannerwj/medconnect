@@ -3,8 +3,12 @@ body {
   /*padding-top:15px;*/
 }
 
-.navbar-brand
-{
+h1{
+  text-align: center;
+  line-height: 125%;
+}
+
+.navbar-brand{
     position: absolute;
     width: 100%;
     left: 0;
@@ -20,7 +24,7 @@ body {
 
 /*login*/
 .main {
-  max-width: 320px;
+  max-width: 350px;
   margin: 0 auto;
 }
 .login-or {
@@ -47,10 +51,6 @@ body {
   height: 1px;
   margin-top: 0px !important;
   margin-bottom: 0px !important;
-}
-h1 {
-  text-align: center;
-  line-height: 300%;
 }
 h3{
   text-align: center;

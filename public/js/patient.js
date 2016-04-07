@@ -180,6 +180,7 @@ medconnect.controller('seeDoctor', ['$http', '$location', '$routeParams', functi
 medconnect.controller('seeDoctorSchedule', ['$http', '$location', '$uibModal', '$scope', '$routeParams', function($http, $location, $uibModal, $scope, $routeParams){
 
   var doctorID = $routeParams.doctor_id
+  $scope.visit
 
   $http.post('/patient/specific-doctor', {
     'id' : doctorID
@@ -201,7 +202,7 @@ medconnect.controller('seeDoctorSchedule', ['$http', '$location', '$uibModal', '
         reqDate : $scope.time
       }
     }).success(function (data) {
-      $scope.open(false)
+      $location.url('/patient/viewAppointments')
     }).error(function (err) {
       $scope.open(true)
     })
@@ -317,7 +318,6 @@ medconnect.controller('appointments', ['$http', '$location', '$scope', function(
   $scope.rej = true;
 
   $http.get('/patient/getCurrentAppointments').success(function(info){
-    console.log(info)
     if(info.requested.length > 0){
       $scope.requested = info.requested;
     }else{
@@ -342,6 +342,123 @@ medconnect.controller('appointments', ['$http', '$location', '$scope', function(
     $location.url("/patient/appointmentDetails/" + visitID);
   }
 
+}]);
+
+medconnect.controller('patientRejectedAppts', ['$http', '$scope', '$routeParams', '$location', function($http, $scope, $routeParams, $location){
+  $scope.editable = false
+  $scope.visit = {}
+  $scope.error = null
+  $scope.init = function(){
+    getData();
+  }
+
+  $scope.delete = function(){
+    $http.post('/patient/deleteRejectedAppointment', {
+      visitID: $scope.visit.visitID
+    }).success(function(result){
+      $location.url('/patient/viewAppointments')
+    })
+  }
+
+  $scope.request = function(){
+    $scope.editable = true
+  }
+
+  $scope.submit = function(){
+    var date = $scope.newDate.getDate();
+    $scope.newTime.setDate(date);
+    $http.post('/patient/updateRejectedAppointment', {
+      visitID: $scope.visit.visitID,
+      visitDate: $scope.newTime 
+    }).success(function(){
+      $location.url('/patient/viewAppointments')
+    })
+  }
+
+  var getData = function(){
+    $http.post('/patient/getAppointmentDetail',{
+      visitID: $routeParams.visitID
+    }).success(function(result){
+      $scope.visit = result.visit
+    }).error(function(err){
+      $scope.error = 'This appointment no longer exists.'
+    })
+  }
+
+  // Datepicker
+  $scope.inlineOptions = {
+    customClass: getDayClass,
+    minDate: new Date(),
+    showWeeks: true
+  };
+
+  $scope.dateOptions = {
+    dateDisabled: disabled,
+    formatYear: 'yy',
+    maxDate: new Date(2020, 5, 22),
+    minDate: new Date(),
+    startingDay: 1
+  };
+
+  // Disable weekend selection
+  function disabled(data) {
+    var date = data.date,
+      mode = data.mode;
+    return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+  }
+
+  $scope.open1 = function() {
+    $scope.popup1.opened = true;
+  };
+
+  $scope.open2 = function() {
+    $scope.popup2.opened = true;
+  };
+
+  $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+  $scope.format = $scope.formats[0];
+  $scope.altInputFormats = ['M!/d!/yyyy'];
+
+  $scope.popup1 = {
+    opened: false
+  };
+
+  $scope.popup2 = {
+    opened: false
+  };
+
+  var tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  var afterTomorrow = new Date();
+  afterTomorrow.setDate(tomorrow.getDate() + 1);
+  $scope.events = [
+    {
+      date: tomorrow,
+      status: 'full'
+    },
+    {
+      date: afterTomorrow,
+      status: 'partially'
+    }
+  ];
+
+  function getDayClass(data) {
+    var date = data.date,
+      mode = data.mode;
+    if (mode === 'day') {
+      var dayToCheck = new Date(date).setHours(0,0,0,0);
+
+      for (var i = 0; i < $scope.events.length; i++) {
+        var currentDay = new Date($scope.events[i].date).setHours(0,0,0,0);
+
+        if (dayToCheck === currentDay) {
+          return $scope.events[i].status;
+        }
+      }
+    }
+
+    return '';
+  }
 }]);
 
 medconnect.controller('appointmentDetails', ['$http', '$location', '$scope', '$uibModal', '$routeParams', function($http, $location, $scope, $uibModal, $routeParams){
@@ -587,11 +704,7 @@ medconnect.controller('Upload', ['$http', 'Upload', '$window', function ($http, 
         dataName: 'work'
       }
     }).then(function (resp) {
-        if(resp.data.error_code === 0){
-            console.log('Success ' + resp.config.data.file.name + ' uploaded')
-        } else{
-          console.log('an error occured')
-        }
+        console.log('Success ' + resp.config.data.file.name + ' uploaded')
     }, function (resp) {
         console.log('Error status: ' + resp.status)
     })
