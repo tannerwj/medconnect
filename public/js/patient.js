@@ -475,28 +475,47 @@ medconnect.controller('appointmentDetails', ['$http', '$location', '$scope', '$u
       }
     }).success(function (data) {
       console.log(data)
+      $scope.visitID = data.visitID;
       $scope.name = data.visit.firstName + " " + data.visit.lastName;
       $scope.date = data.visit.visitDate;
       $scope.diagnosis = data.visit.diagnosis;
       $scope.symptoms = data.visit.symptoms;
-      //$scope.prescriptions = data.prescriptions;
-      $scope.notes = data.notes;
-      $scope.images = data.images;
-      //$scope.medications = data.medications;
+      // $scope.notes = data.notes;
+      // $scope.prescriptions = data.prescriptions;
+      // $scope.images = data.images;
+      // $scope.vitals = data.vitals;
 
     }).error(function (err) {
       console.log("error")
     })
 
+    $scope.vitals = [{name:"gg"}];
+
+    $scope.addVital = function () {
+
+      $scope.item = visitID;
+
+      var modalInstance = $uibModal.open({
+        animation: true,
+        templateUrl: '/views/addVitals.html',
+        controller: 'vitals',
+        resolve: {
+             item : function(){
+               return $scope.item;
+             }
+           }
+      });
+      modalInstance.result.then(function (fields) {
+        $scope.vitals.push(fields);
+      });
+    }
+
     $scope.prescriptions = [{name:"gg"}];
     $scope.prescriptions.push({name:'hello'});
 
-  $scope.open = function () {
+  $scope.addPre = function () {
 
-    $scope.item = {
-      doctorName : $scope.name
-      // visitID : $scope.visitID
-    }
+    $scope.item = visitID;
 
     var modalInstance = $uibModal.open({
       animation: true,
@@ -513,28 +532,110 @@ medconnect.controller('appointmentDetails', ['$http', '$location', '$scope', '$u
     });
   }
 
-  $scope.view = function (arr, index, error, size) {
-
-
-    if(error){
-      $scope.item = "Missing/Incorrect fields, please try again.";
-    }else{
-      $scope.item = [arr[index], index]
+  $scope.notes = [
+    {
+      visitID : 222,
+      note : 'asjdflkjwlef'
     }
+  ];
+
+  $scope.addNote = function () {
+
+    $scope.item = visitID;
+
     var modalInstance = $uibModal.open({
       animation: true,
-      templateUrl: '/views/viewPrescriptions.html',
-      controller: 'viewPrescriptions',
-      size: size,
+      templateUrl: '/views/addNote.html',
+      controller: 'Note',
+      resolve: {
+           item : function(){
+             return $scope.item;
+           }
+         }
+    });
+    modalInstance.result.then(function (fields) {
+      fields.note = fields.note.slice(0, 5); // display first 6 letters
+      $scope.notes.push(fields);
+    });
+  }
+
+  $scope.viewVital = function (arr, index) {
+
+    $scope.item = [arr[index], index, visitID];
+
+    var modalInstance = $uibModal.open({
+      animation: true,
+      templateUrl: '/views/viewVitals.html',
+      controller: 'viewVitals',
       resolve: {
         item : function(){
           return $scope.item;
         }
       }
     });
-    modalInstance.result.then(function (item) {
-      $scope.i = item[1];
-      arr.splice($scope.i, 1);
+    modalInstance.result.then(function (index) {
+      vitals.splice(index, 1);
+    });
+  }
+
+  $scope.viewPre = function (arr, index) {
+
+    $scope.item = [arr[index], index];
+
+    var modalInstance = $uibModal.open({
+      animation: true,
+      templateUrl: '/views/viewPrescriptions.html',
+      controller: 'viewPrescriptions',
+      resolve: {
+        item : function(){
+          return $scope.item;
+        }
+      }
+    });
+    modalInstance.result.then(function (index) {
+      prescriptions.splice(index, 1);
+    });
+  }
+
+  $scope.images = [{
+    name:"asdfg"
+  }]
+
+  $scope.addImage = function () {
+
+    $scope.item = visitID;
+
+    var modalInstance = $uibModal.open({
+      animation: true,
+      templateUrl: '/views/addUpload.html',
+      controller: 'upload',
+      resolve: {
+           item : function(){
+             return $scope.item;
+           }
+         }
+    });
+    modalInstance.result.then(function (fields) {
+      fields.name = fields.name.slice(0, 5); // display first 6 letters
+      $scope.images.push(fields);
+    });
+  }
+
+  $scope.viewNote = function (arr, index) {
+    $scope.item = [arr[index], index];
+
+    var modalInstance = $uibModal.open({
+      animation: true,
+      templateUrl: '/views/viewNote.html',
+      controller: 'viewNote',
+      resolve: {
+        item : function(){
+          return $scope.item;
+        }
+      }
+    });
+    modalInstance.result.then(function (index) {
+      prescriptions.splice(index, 1);
     });
   }
 
@@ -568,25 +669,6 @@ medconnect.controller('appointmentDetails', ['$http', '$location', '$scope', '$u
     });
   }
 
-  // $scope.save = function(){
-  //   $http({
-  //     method: 'POST',
-  //     url: '/patient/editAppointmentDetails',
-  //     data: {
-  //       visitID : id,
-  //       diagnosis : $scope.diagnosis,
-  //       symptoms : $scope.symptoms,
-  //       prescriptions : $scope.prescriptions,
-  //       notes : $scope.notes,
-  //       images : $scope.images
-  //     }
-  //   }).success(function (data) {
-  //     $scope.openImage();
-  //   }).error(function (err) {
-  //     $scope.openImage(true);
-  //     console.log("error")
-  //   })
-  // }
 
     $scope.imageUpload = function(element){
         var short = element.files[0].name.slice(0, 5) + "..." + element.files[0].name.slice(-3);
@@ -627,6 +709,7 @@ medconnect.controller('Upload', ['$http', 'Upload', '$window', function ($http, 
         console.log('Error status: ' + resp.status)
     })
   }
+
 }])
 
 }());
