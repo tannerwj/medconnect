@@ -237,7 +237,7 @@ var completeAppointment = function (visitID, patientID){
   .then(function (result){
     if(!result[0][0]){ return false }
     return db.query('UPDATE Visits SET visitStatus =? WHERE visitID =?;', [db.COMPLETED_VISIT, visitID]).then(function (result){
-      return results[0][0].changedRows === 1
+      return result[0][0].changedRows === 1
     })
   }).catch(function (err){
     console.log(err)
@@ -250,7 +250,7 @@ var deleteRejectedAppointment = function (visitID, patientID){
   .then(function (result){
     if(!result[0][0]){ return false }
     return db.query('DELETE FROM Visits WHERE visitID =?;', [visitID]).then(function (result){
-      return results[0][0].affectedRows === 1
+      return result[0].affectedRows === 1
     })
   }).catch(function (err){
     console.log(err)

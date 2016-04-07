@@ -180,6 +180,7 @@ medconnect.controller('seeDoctor', ['$http', '$location', '$routeParams', functi
 medconnect.controller('seeDoctorSchedule', ['$http', '$location', '$uibModal', '$scope', '$routeParams', function($http, $location, $uibModal, $scope, $routeParams){
 
   var doctorID = $routeParams.doctor_id
+  $scope.visit
 
   $http.post('/patient/specific-doctor', {
     'id' : doctorID
@@ -317,7 +318,6 @@ medconnect.controller('appointments', ['$http', '$location', '$scope', function(
   $scope.rej = true;
 
   $http.get('/patient/getCurrentAppointments').success(function(info){
-    console.log(info)
     if(info.requested.length > 0){
       $scope.requested = info.requested;
     }else{
@@ -342,6 +342,37 @@ medconnect.controller('appointments', ['$http', '$location', '$scope', function(
     $location.url("/patient/appointmentDetails/" + visitID);
   }
 
+}]);
+
+medconnect.controller('patientRejectedAppts', ['$http', '$scope', '$routeParams', '$location', function($http, $scope, $routeParams, $location){
+  $scope.editable = false
+  $scope.visit = {}
+  $scope.error = null
+  $scope.init = function(){
+    getData();
+  }
+
+  $scope.delete = function(){
+    $http.post('/patient/deleteRejectedAppointment', {
+      visitID: $scope.visit.visitID
+    }).success(function(result){
+      $location.url('/patient/viewAppointments')
+    })
+  }
+
+  $scope.request = function(){
+    
+  }
+
+  var getData = function(){
+    $http.post('/patient/getAppointmentDetail',{
+      visitID: $routeParams.visitID
+    }).success(function(result){
+      $scope.visit = result.visit
+    }).error(function(err){
+      $scope.error = 'This appointment no longer exists.'
+    })
+  }
 }]);
 
 medconnect.controller('appointmentDetails', ['$http', '$location', '$scope', '$uibModal', '$routeParams', function($http, $location, $scope, $uibModal, $routeParams){

@@ -157,6 +157,12 @@ medconnect.config(['$routeProvider', '$locationProvider',
 					isPatient: isPatient
 				}
       })
+      .when('/patient/rejectedAppt/:visitID', {
+        templateUrl: '/views/patient/rejectedAppointment.html',
+        resolve:{
+          isPatient: isPatient
+        }
+      })
       // Doctor Routes
       $routeProvider
       .when('/register-doctor', {
