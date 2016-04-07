@@ -192,6 +192,15 @@ router.post('/patient/addPrescription', auth, function (req, res){
 	})
 })
 
+router.get('/patient/getPrescriptions', auth, function(req, res){
+	pat.getPrescriptions(req.user.id).then(function(results){
+		if(results){
+			return res.json(results)
+		}
+		return res.sendStatus(400)
+	})
+})
+
 router.post('/patient/removePrescription', auth, function (req, res){
 	pat.removePrescription(req.body.medicationID, req.user.id, req.body.visitID).then(function (result){
 		res.sendStatus(result ? 200 : 400)

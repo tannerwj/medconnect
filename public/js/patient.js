@@ -712,4 +712,22 @@ medconnect.controller('Upload', ['$http', 'Upload', '$window', function ($http, 
 
 }])
 
+medconnect.controller('patientPrescriptions', ['$http', '$scope', function($http, $scope){
+  $scope.prescriptions = []
+  $scope.init = function(){
+    getData()
+  }
+
+  $scope.viewPrescription = function(script){
+
+  }
+
+  var getData = function(){
+    $http.get('/patient/getPrescriptions')
+      .success(function(result){
+        $scope.prescriptions = result
+      })
+  }
+}])
+
 }());
