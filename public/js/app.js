@@ -187,14 +187,6 @@ medconnect.config(['$routeProvider', '$locationProvider',
         },
         controller: 'ChangePassword'
       })
-    // Shared routes
-    $routeProvider
-      .when('/addVitals/:visitID', {
-        templateUrl: '/views/addVitals.html',
-        resolve:{
-          isLoggedIn: isLoggedIn
-        }
-      })
     // Admin Routes
     $routeProvider
       .when('/admin', {
@@ -299,20 +291,6 @@ medconnect.controller('Login', ['$http', '$location', function($http, $location)
       })
   }
 }}]);
-
-medconnect.controller('addVitals', ['$http', '$scope', '$routeParams', function($http, $scope, $routeParams){
-  $scope.vitals = {}
-  $scope.init = function(){
-    if($routeParams.visitID !== 'new'){
-      getData()
-    }
-  }
-
-  var getData = function(){
-    $http.post('')
-  }
-
-}])
 
 medconnect.controller('VerifyDoctor', ['$http', '$scope', function($http, $scope){
   $scope.success = false
