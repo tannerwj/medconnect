@@ -216,7 +216,7 @@ medconnect.controller('seeDoctorSchedule', ['$http', '$location', '$uibModal', '
     }
     var modalInstance = $uibModal.open({
       animation: true,
-      templateUrl: '../views/modal.html',
+      templateUrl: '/views/modal.html',
       controller: 'ModalInstanceCtrl',
       size: size,
       resolve: {
@@ -232,26 +232,6 @@ medconnect.controller('seeDoctorSchedule', ['$http', '$location', '$uibModal', '
   d.setMinutes( 0 );
   $scope.time = d;
   $scope.date = new Date();
-
-  $scope.open = function (error, size) {
-
-    if(error){
-      $scope.item = "Server Error, try back again later please";
-    }else{
-      $scope.item = "You have successfully requested an appointment!";
-    }
-    var modalInstance = $uibModal.open({
-      animation: true,
-      templateUrl: '../views/modal.html',
-      controller: 'ModalInstanceCtrl',
-      size: size,
-      resolve: {
-        item : function(){
-          return $scope.item
-        }
-      }
-    });
-  };
 
   // Datepicker
   $scope.inlineOptions = {
@@ -330,17 +310,14 @@ medconnect.controller('seeDoctorSchedule', ['$http', '$location', '$uibModal', '
   }
 }]);
 
-medconnect.controller('appointments', ['$http', '$location', '$scope', '$uibModal',function($http, $location, $scope, $uibModal){
+medconnect.controller('appointments', ['$http', '$location', '$scope', function($http, $location, $scope){
 
   $scope.req = true;
   $scope.acc = true;
   $scope.rej = true;
-  $scope.details = false;
-  $scope.images = [];
-  $scope.imgNames = [];
 
   $http.get('/patient/getCurrentAppointments').success(function(info){
-
+    console.log(info)
     if(info.requested.length > 0){
       $scope.requested = info.requested;
     }else{
@@ -361,40 +338,65 @@ medconnect.controller('appointments', ['$http', '$location', '$scope', '$uibModa
   });
 
   $scope.appointmentDetails = function(id){
+    var visitID = id;
+    $location.url("/patient/appointmentDetails/" + visitID);
+  }
+
+}]);
+
+medconnect.controller('appointmentDetails', ['$http', '$location', '$scope', '$uibModal', '$routeParams', function($http, $location, $scope, $uibModal, $routeParams){
+
+  var visitID = $routeParams.visit_id;
+  $scope.images = [];
+  $scope.imgNames = [];
+
     $http({
       method: 'POST',
       url: '/patient/getAppointmentDetail',
       data: {
-        visitID : id
+        visitID : visitID
       }
     }).success(function (data) {
-      $scope.details = true;
-      $scope.editMode = false;
       console.log(data)
       $scope.name = data.visit.firstName + " " + data.visit.lastName;
       $scope.date = data.visit.visitDate;
       $scope.diagnosis = data.visit.diagnosis;
       $scope.symptoms = data.visit.symptoms;
-      $scope.prescriptions = data.prescriptions;
+      //$scope.prescriptions = data.prescriptions;
       $scope.notes = data.notes;
       $scope.images = data.images;
+      //$scope.medications = data.medications;
 
     }).error(function (err) {
       console.log("error")
     })
+
+    $scope.prescriptions = [{name:"gg"}];
+    $scope.prescriptions.push({name:'hello'});
+
+  $scope.open = function () {
+
+    $scope.item = {
+      doctorName : $scope.name
+      // visitID : $scope.visitID
+    }
+
+    var modalInstance = $uibModal.open({
+      animation: true,
+      templateUrl: '/views/addPrescription.html',
+      controller: 'prescriptions',
+      resolve: {
+           item : function(){
+             return $scope.item;
+           }
+         }
+    });
+    modalInstance.result.then(function (fields) {
+      $scope.prescriptions.push(fields);
+    });
   }
 
-  $scope.addPre = function(arr){
-    $scope.prescriptions.push($scope.pre);
-    $scope.pre = "";
-  }
-
-  $scope.addNote = function(arr){
-    $scope.notes.push($scope.note);
-    $scope.note = "";
-  }
-
-  $scope.open = function (arr, index, error, size) {
+  $scope.view = function (arr, index, error, size) {
 
 
     if(error){
@@ -404,8 +406,8 @@ medconnect.controller('appointments', ['$http', '$location', '$scope', '$uibModa
     }
     var modalInstance = $uibModal.open({
       animation: true,
-      templateUrl: '../views/appointmentModal.html',
-      controller: 'appointmentModal',
+      templateUrl: '/views/viewPrescriptions.html',
+      controller: 'viewPrescriptions',
       size: size,
       resolve: {
         item : function(){
@@ -431,7 +433,7 @@ medconnect.controller('appointments', ['$http', '$location', '$scope', '$uibModa
     }
     var modalInstance = $uibModal.open({
       animation: true,
-      templateUrl: '../views/appointmentModal.html',
+      templateUrl: '/views/appointmentModal.html',
       controller: 'imgModal',
       size: size,
       resolve: {

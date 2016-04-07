@@ -165,3 +165,12 @@ h3{
 .timePicker .panel-body .uib-timepicker:nth-child(1){
   margin-bottom: 10px;
 }
+
+.apptDetails h3{
+  display:inline-block;
+}
+
+.apptDetails .down{
+  margin-top:20px;
+  marign-bottom: 10px;
+}
