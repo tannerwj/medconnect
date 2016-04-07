@@ -129,8 +129,20 @@ router.post('/patient/addVitals', auth, function (req, res){
 	})
 })
 
+router.post('/patient/editVitals', auth, function (req, res){
+	pat.editVitals(req.body, req.user.id).then(function (result){
+		res.sendStatus(result ? 200 : 400)
+	})
+})
+
 router.post('/patient/addNote', auth, function (req, res){
 	pat.addNote(req.body, req.user.id).then(function (result){
+		res.sendStatus(result ? 200 : 400)
+	})
+})
+
+router.post('/patient/removeNote', auth, function (req, res){
+	pat.removeNote(req.body.noteID, req.user.id).then(function (result){
 		res.sendStatus(result ? 200 : 400)
 	})
 })
@@ -170,6 +182,12 @@ router.post('/patient/addFile', auth, function(req, res) {
 
 router.post('/patient/addPrescription', auth, function (req, res){
 	pat.addPrescription(req.body, req.user.id).then(function (result){
+		res.sendStatus(result ? 200 : 400)
+	})
+})
+
+router.post('/patient/removePrescription', auth, function (req, res){
+	pat.removePrescription(req.body.medicationID, req.user.id, req.body.visitID).then(function (result){
 		res.sendStatus(result ? 200 : 400)
 	})
 })
