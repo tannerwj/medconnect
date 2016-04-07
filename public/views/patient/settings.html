@@ -1,11 +1,20 @@
-<div class="main" ng-controller="Upload">
-  <form ng-submit='uploadFile()' enctype='multipart/form-data'>
+<!-- demo of file uploading -->
+<div class="main">
+  <form ng-controller="Upload as up" name='up.upload_form'>
     <div class="form-group">
       <span class="btn btn-default btn-file">
-        Browse <input type="file" ng-model='upload' required>
+        Browse <input
+                 type="file"
+                 ngf-select
+                 ng-model="up.file"
+                 name="file"
+                 ngf-pattern="'image/*'"
+                 accept="image/*"
+                 ngf-max-size="5MB"
+               />
       </span>
     </div>
-    <input type='submit' value='Save' class="btn btn-lg btn-primary btn-block">
+    <input type='submit' ng-click='up.submit()' value='Save' class="btn btn-lg btn-primary btn-block">
   </form>
 </div>
 

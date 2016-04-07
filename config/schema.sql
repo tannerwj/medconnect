@@ -16,6 +16,7 @@ CREATE TABLE `Notes` (
 	`userID` int(15) NOT NULL,
 	`visitID` int(15) NOT NULL,
 	`note` varchar(1000) NOT NULL,
+	`noteDate` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`noteID`)
 );
 
@@ -123,7 +124,8 @@ CREATE TABLE `Specialties` (
 
 CREATE TABLE `ExternalData` (
 	`dataID` int(15) NOT NULL AUTO_INCREMENT,
-	`userID` int(15) NOT NULL,
+	`patientID` int(15) NOT NULL,
+	`doctorID` int(15) NOT NULL,
 	`visitID` int(15) NOT NULL,
 	`dataTypeID` int(5) NOT NULL,
 	`filePath` varchar(255) NOT NULL UNIQUE,
@@ -169,6 +171,4 @@ ALTER TABLE `SpecialtyDoctor` ADD CONSTRAINT `SpecialtyDoctor_fk0` FOREIGN KEY (
 
 ALTER TABLE `SpecialtyDoctor` ADD CONSTRAINT `SpecialtyDoctor_fk1` FOREIGN KEY (`doctorID`) REFERENCES `Users`(`userID`);
 
-ALTER TABLE `ExternalData` ADD CONSTRAINT `ExternalData_fk0` FOREIGN KEY (`userID`) REFERENCES `Users`(`userID`);
-
-ALTER TABLE `ExternalData` ADD CONSTRAINT `ExternalData_fk2` FOREIGN KEY (`dataTypeID`) REFERENCES `DataType`(`_id`);
+ALTER TABLE `ExternalData` ADD CONSTRAINT `ExternalData_fk1` FOREIGN KEY (`dataTypeID`) REFERENCES `DataType`(`_id`);

@@ -1,6 +1,6 @@
 (function(){
 
-var medconnect = angular.module("mcPatient", []);
+var medconnect = angular.module("mcPatient", ['ngFileUpload']);
 
 medconnect.controller('PatientHome', ['$http', '$scope', '$location', function($http, $scope, $location){
   $scope.logout = function(){
@@ -216,7 +216,7 @@ medconnect.controller('seeDoctorSchedule', ['$http', '$location', '$uibModal', '
     }
     var modalInstance = $uibModal.open({
       animation: true,
-      templateUrl: '../views/modal.html',
+      templateUrl: '/views/modal.html',
       controller: 'ModalInstanceCtrl',
       size: size,
       resolve: {
@@ -232,26 +232,6 @@ medconnect.controller('seeDoctorSchedule', ['$http', '$location', '$uibModal', '
   d.setMinutes( 0 );
   $scope.time = d;
   $scope.date = new Date();
-
-  $scope.open = function (error, size) {
-
-    if(error){
-      $scope.item = "Server Error, try back again later please";
-    }else{
-      $scope.item = "You have successfully requested an appointment!";
-    }
-    var modalInstance = $uibModal.open({
-      animation: true,
-      templateUrl: '../views/modal.html',
-      controller: 'ModalInstanceCtrl',
-      size: size,
-      resolve: {
-        item : function(){
-          return $scope.item
-        }
-      }
-    });
-  };
 
   // Datepicker
   $scope.inlineOptions = {
@@ -413,20 +393,33 @@ medconnect.controller('appointments', ['$http', '$location', '$scope', function(
 
 }]);
 
-medconnect.controller('Upload', ['$http', '$scope', function ($http, $scope){
-
-  $scope.uploadFile = function (){
-    $http.post('/patient/addImage', {
-      file: $scope.upload,
-      dataTypeID: 10,
-      dataName: 'test data'
-    }).success(function (){
-      console.log('sucess')
-    }).error(function (err){
-      console.log('failuer', err)
-    })
+medconnect.controller('Upload', ['$http', 'Upload', '$window', function ($http, Upload, $window){
+  //demo of file uploading
+  var vm = this;
+  vm.submit = function(){
+    if (vm.upload_form.file.$valid && vm.file) {
+       vm.upload(vm.file)
+    }
   }
 
+  vm.upload = function (file){
+    Upload.upload({
+      url:'/patient/addFile',
+      data:{
+        file: file,
+        dataTypeID: 10,
+        dataName: 'work'
+      }
+    }).then(function (resp) {
+        if(resp.data.error_code === 0){
+            console.log('Success ' + resp.config.data.file.name + ' uploaded')
+        } else{
+          console.log('an error occured')
+        }
+    }, function (resp) {
+        console.log('Error status: ' + resp.status)
+    })
+  }
 }])
 
 }());
