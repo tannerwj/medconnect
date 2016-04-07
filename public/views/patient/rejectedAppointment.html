@@ -11,11 +11,20 @@
     <label for="name">Name</label>
     <input type="text" class="form-control" id="name" value = "Dr. {{visit.firstName}} {{visit.lastName}}" readonly>
   </div>
-  <div class="form-group">
+  <div class="form-group" ng-hide="editable">
     <label for="date">Visit Date</label>
     <input type="text" class="form-control" id="date" value = "{{visit.visitDate | date : 'short' }}" readonly>
   </div>
-  <button ng-click="request()" class="btn btn-lg btn-primary btn-block">Request new time</button>
-  <button ng-click="delete()" class="btn btn-lg btn-danger btn-block">Delete Appointment</button>
+    <div class="form-group" ng-show="editable">
+    <label for="date">Visit Date</label>
+    <input type="date" class="form-control" id="date" ng-mogel="newDate">
+  </div>
+  <div class="form-group" ng-show="editable">
+    <label for="date">Visit Time</label>
+    <input type="time" class="form-control" id="date" ng-model="newTime">
+  </div>
+  <button ng-click="request()" class="btn btn-lg btn-primary btn-block" ng-hide="editable">Request new time</button>
+  <button ng-click="submit()" class="btn btn-lg btn-primary btn-block" ng-show="editable">Submit</button>
+  <button ng-click="delete()" class="btn btn-lg btn-danger btn-block" ng-hide="editable">Delete Appointment</button>
 </form>
 </div>

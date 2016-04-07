@@ -361,7 +361,16 @@ medconnect.controller('patientRejectedAppts', ['$http', '$scope', '$routeParams'
   }
 
   $scope.request = function(){
-    
+    $scope.editable = true
+  }
+
+  $scope.submit = function(){
+    $http.post('/patient/updateRejectedAppointment', {
+      visitID: $scope.visit.visitID,
+      visitDate: $scope.newDate + " " + $scope.newTime
+    }).success(function(){
+      $location.url('/patient/viewAppointments')
+    })
   }
 
   var getData = function(){
