@@ -1,19 +1,26 @@
 body {
   font-size: 12px;
-  /*padding-top:15px;*/
 }
 h1{
   text-align: center;
   line-height: 125%;
 }
 .navbar-brand{
-    position: absolute;
-    width: 100%;
-    left: 0;
-    text-align: center;
-    margin: auto;
-    padding : 10px 15px;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  z-index: 5;
+  text-align: center;
+  margin:0 auto;
 }
+.back-button{
+  position: absolute;
+  left: 0;
+  z-index: 10;
+  margin-top: 7px
+}
+
+
 .form-group.required .control-label:after {
   content:"*";
   color:red;
