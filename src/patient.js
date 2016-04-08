@@ -325,6 +325,13 @@ var addNote = function (n, patientID){
   })
 }
 
+var getNotes = function(patientID){
+  return db.query('SELECT * from Notes where userID =?', [patientID])
+    .then(function(results){
+      return results[0]
+    })
+}
+
 var removeNote = function (noteID, patientID){
   return db.query('DELETE FROM Notes WHERE noteID =? AND userID =?;',  [noteID, patientID])
   .then(function (result){
@@ -413,6 +420,7 @@ module.exports = {
   editAppointmentDetails: editAppointmentDetails,
   addVitals: addVitals,
   addNote: addNote,
+  getNotes: getNotes,
   removeNote: removeNote,
   addFile: addFile,
   addPrescription: addPrescription,

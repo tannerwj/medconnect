@@ -1,0 +1,19 @@
+<div class = "main" ng-controller="patientNotes" ng-init="init()">
+	<div class="text-center">
+	    <h1>Notes</h1>
+		<button ng-click="add()" class="btn btn-sm btn-primary btn-block" ng-hide="editable">Add Note</button>
+	    <br/>
+	    <form class="form-horizontal">
+			<div class="form-group">
+				<div class="input-group">
+					<span class="input-group-addon"><i class="fa fa-search fa-fw"></i></span>
+					<input type="text" id="search" class="form-control" ng-model="query">
+				</div>
+			</div>
+		</form>
+	    <div class="list-group">
+			<a class="list-group-item" ng-hide="notes.length">You have no notes</a>
+			<a ng-repeat="note in notes | filter:query | orderBy:'-startDate'" ng-click="viewNote(note)" class="list-group-item list-group-item-info"><strong>{{ note.note | limitTo: 100 }}{{note.note.length > 100 ? '...' : ''}}</strong><br/><em>{{note.noteDate | date : 'MM/dd/yyyy'}}</em><i class="fa fa-chevron-right fa-fw fa-pull-right"></i></a>
+	    </div>
+	</div>
+</div>
