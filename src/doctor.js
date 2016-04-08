@@ -370,6 +370,7 @@ module.exports = {
   setAvailability: setAvailability,
   getCurrentAppointments: getCurrentAppointments,
   getRequestedAppointment: getRequestedAppointment,
+  handleRequestedAppointment: handleRequestedAppointment,
   getAppointmentDetail: getAppointmentDetail,
   getPastPatients: getPastPatients,
   getPastAppointments: getPastAppointments,
