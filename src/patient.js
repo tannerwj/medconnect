@@ -403,13 +403,9 @@ var addPrescription = function (p, patientID){
 }
 
 var removePrescription = function (medicationID, patientID, visitID){
-  if(!visitID){ visitID = 0 }
-  return hadVisitWithDoctor(patientID, visitID).then(function (result){
-    if(!result){ return false }
-    return db.query('DELETE FROM MedicationPatient WHERE medicationID =? AND userID =? AND visitID =?;',  [medicationID, patientID, visitID])
-    .then(function (result){
-      return result[0].affectedRows === 1
-    })
+  return db.query('DELETE FROM MedicationPatient WHERE medicationID =? AND userID =? AND visitID =?;',  [medicationID, patientID, visitID])
+  .then(function (result){
+    return result[0].affectedRows === 1
   }).catch(function (err){
     console.log(err)
     return false
@@ -449,7 +445,7 @@ module.exports = {
   getNotes: getNotes,
   removeNote: removeNote,
   addFile: addFile,
-  addPrescription: addPrescription, 
+  addPrescription: addPrescription,
   getPrescriptions: getPrescriptions,
   removePrescription: removePrescription
 }
