@@ -673,4 +673,51 @@ medconnect.controller('patientPrescriptions', ['$http', '$scope', '$uibModal', f
   }
 }])
 
+medconnect.controller('patientNotes', ['$http', '$scope', '$uibModal', function($http, $scope, $uibModal){
+  $scope.notes = []
+  $scope.init = function(){
+    getData()
+  }
+
+  $scope.add = function(){
+    $scope.item = null
+    var modalInstance = $uibModal.open({
+      animation: true,
+      templateUrl: '/views/addNote.html',
+      controller: 'Note',
+      resolve: {
+        item : function(){
+          return $scope.item
+        }
+      }
+    })
+    modalInstance.result.then(function(fields){
+      $scope.notes.push(fields)
+    })
+  }
+
+  $scope.viewNote = function (note) {
+    var modalInstance = $uibModal.open({
+      animation: true,
+      templateUrl: '/views/viewNote.html',
+      controller: 'viewNote',
+      resolve: {
+        item : function(){
+          return note;
+        }
+      }
+    });
+    modalInstance.result.then(function (index) {
+      $scope.notes.splice(index, 1);
+    });
+  }
+
+  var getData = function(){
+    $http.get('/patient/getNotes')
+      .success(function(result){
+        $scope.notes = result
+      })
+  }
+}])
+
 }());
