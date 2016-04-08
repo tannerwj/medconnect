@@ -91,24 +91,30 @@
           visitID : $scope.visitID,
           dosage : $scope.dosage,
           startDate : $scope.startDate,
-          endDate : $scope.endDate,
+          stopDate : $scope.stopDate,
           notes : $scope.notes,
           doctorName : $scope.doctorName,
-          medicationID : $scope.name
+          medicationID : $scope.medication._id,
+          name : $scope.medication.name,
+          doctorName: $scope.docName
         }
+        console.log($scope.medication._id)
 
-        $http({
-          method: 'POST',
-          url: '/patient/addPrescription',
-          data: fields
+        $http.post('/patient/addPrescription', {
+          visitID : $scope.visitID,
+          dosage : $scope.dosage,
+          startDate : $scope.startDate,
+          stopDate : $scope.stopDate,
+          notes : $scope.notes,
+          doctorName : $scope.doctorName,
+          medicationID : $scope.medication._id,
+          doctorName: $scope.docName
         }).success(function (data) {
           console.log(data)
 
         }).error(function (err) {
           console.log("error")
         })
-
-        fields.name = $scope.med.name;
         $uibModalInstance.close(fields);
       };
 
@@ -118,7 +124,7 @@
 
   })
 
-  medconnect.controller('Note', function ($http, $scope, $location, $filter, $uibModalInstance, item){
+medconnect.controller('Note', function ($http, $scope, $location, $filter, $uibModalInstance, item){
 
     $scope.visitID = item;
     var fields = {
@@ -262,6 +268,7 @@ medconnect.controller('viewVitals', function ($http, $scope, $location, $filter,
   medconnect.controller('viewPrescriptions', function ($http, $scope, $location, $filter, $uibModalInstance, item){
 
     var item = item[0];
+    $scope.name = item.name
     var name = ['Prescription Name', item.name];
     var dosage = ['Dosage', item.dosage];
     var startDate = ['Start Date', item.startDate];
@@ -269,7 +276,7 @@ medconnect.controller('viewVitals', function ($http, $scope, $location, $filter,
     var notes = ['Notes', item.notes];
     var arrIndex = item[1]; // index
 
-    $scope.arr = [name, dosage, startDate, endDate, notes];
+    $scope.arr = [dosage, startDate, endDate, notes];
 
     $scope.medications = item.medications; // To populate dropdown
     $scope.visitID = item.visitID;

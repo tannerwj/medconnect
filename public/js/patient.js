@@ -735,6 +735,26 @@ medconnect.controller('patientPrescriptions', ['$http', '$scope', '$uibModal', f
     });
   }
 
+  $scope.add = function(){
+    $scope.item = {
+      visitID: null
+    }
+
+    var modalInstance = $uibModal.open({
+      animation: true,
+      templateUrl: '/views/addPrescription.html',
+      controller: 'prescriptions',
+      resolve: {
+           item : function(){
+             return $scope.item;
+           }
+         }
+    })
+    modalInstance.result.then(function (fields) {
+      $scope.prescriptions.push(fields)
+    });
+  }
+
   var getData = function(){
     $http.get('/patient/getPrescriptions')
       .success(function(result){

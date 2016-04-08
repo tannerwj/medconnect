@@ -367,10 +367,13 @@ var addFile = function (i, patientID, f){
 
 var addPrescription = function (p, patientID){
   if(!p.visitID){ p.visitID = 0 }
+  if(!p.doctorID){p.doctorID = 0}
   return hadVisitWithPatient(patientID, p.visitID).then(function (result){
     if(!result){ return false }
+    var start = new Date(p.startDate).toISOString().replace(/T/, ' ').replace(/\..+/, '')
+    var end = new Date(p.stopDate).toISOString().replace(/T/, ' ').replace(/\..+/, '')
     return db.query('INSERT INTO MedicationPatient (medicationID, userID, visitID, dosage, startDate, stopDate, notes, doctorID, doctorName) VALUES (?,?,?,?,?,?,?,0,?);',
-      [p.medicationID, patientID, p.visitID, p.dosage, p.startDate, p.stopDate, p.notes, p.doctorName])
+      [p.medicationID, patientID, p.visitID, p.dosage, start, end, p.notes, p.doctorID, p.doctorName])
     .then(function (result){
       return result[0].affectedRows === 1
     })
