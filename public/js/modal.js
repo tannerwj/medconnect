@@ -10,12 +10,10 @@
       $scope.item = item[0];
 
       if(item[1] === "patient"){
-        console.log("patient")
         $scope.ok = function(){
           $uibModalInstance.close($location.url('/patient'));
         }
       }else if(item[1] === "doctor"){
-        console.log("doctor")
         $scope.ok = function(){
           $uibModalInstance.close($location.url('/doctor'));
         }
@@ -109,7 +107,6 @@
       }).error(function (err) {
         console.log("error")
       })
-      console.log('before', fields)
       $uibModalInstance.close(fields);
     };
 
@@ -294,7 +291,6 @@
     $scope.note = item
 
     $scope.delete = function () {
-      console.log('id', $scope.note.noteID)
       $http({
         method: 'POST',
         url: '/patient/removeNote',
@@ -302,8 +298,6 @@
           noteID: $scope.note.noteID
         }
       }).success(function (data) {
-        console.log(data)
-
       }).error(function (err) {
         console.log("error")
       })

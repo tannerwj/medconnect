@@ -60,7 +60,6 @@
 					}
 				}).success(function (data) {
 					$scope.open();
-					console.log(data);
 				}).error(function (err) {
 					$scope.open(true);
 					console.log('Server error: ' + err);
@@ -192,7 +191,6 @@
 		  $scope.acc = true;
 
 		  $http.get('/doctor/getCurrentAppointments').success(function(info){
-				console.log(info)
 		    if(info.requested.length > 0){
 		      $scope.requested = info.requested;
 		    }else{
@@ -433,12 +431,11 @@
 	    $scope.prescriptions = data.prescriptions;
 	    $scope.images = data.images;
 	    $scope.vitals = data.vitals
-			$scope.status = data.visitStatus;
-			if(data.visitStatus === 1){
-				console.log("pending appointment");
-				$scope.status = false;
+
+			if(data.visit.visitStatus === 1){
+				$scope.requested = true
 			}else{
-				$scope.status = true;
+				$scope.requested = false
 			}
 	  }).error(function (err) {
 	    console.log("error")

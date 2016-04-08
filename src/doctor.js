@@ -176,7 +176,7 @@ var handleRequestedAppointment = function (visitID, acceptVisit, doctorID){
     if(!result[0][0]){ return false }
     var status = acceptVisit ? db.ACCEPTED_VISIT : db.REJECTED_VISIT
     return db.query('UPDATE Visits SET visitStatus =? WHERE visitID =?;', [status, visitID]).then(function (result){
-      return results[0][0].changedRows === 1
+      return result[0].changedRows === 1
     })
   }).catch(function (err){
     console.log(err)

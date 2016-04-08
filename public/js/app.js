@@ -288,11 +288,11 @@ medconnect.controller('nav', ['$http', '$location', '$scope', '$rootScope', '$wi
     $scope.home = p === '/' || p === '/admin' || p === '/patient' || p === '/doctor'
   })
 
-  $scope.goBack = function(){
+  $scope.goBack = function (){
     $window.history.back();
   }
 
-  $scope.goHome = function(){
+  $scope.goHome = function (){
     $http.get('/loggedin').success(function (userType){
       if (userType === '0'){
       $location.url('/doctor');

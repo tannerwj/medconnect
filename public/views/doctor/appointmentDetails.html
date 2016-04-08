@@ -13,7 +13,7 @@
     <input type="text" class="form-control" id="date" value = "{{date | date : 'short' }}" readonly>
 </div>
 
-<div ng-hide="status">
+<div ng-hide="requested">
 <div class = "form-group">
   <label for="dia">Diagnosis</label>
     <div class="input-group">
@@ -24,7 +24,7 @@
     </div>
   </div>
 </div>
-<div class = "form-group">
+<div class="form-group">
   <label for="sy">Symptoms</label>
     <div class="input-group">
     <textarea type="text" class="form-control" id="sy" ng-model="symptoms" ng-readonly="!symEdit"></textarea>
@@ -70,7 +70,7 @@
 </div>
 <hr />
 </div>
-<div ng-show="status">
+<div ng-show="requested">
   <button class = "btn btn-success btn-lg halfWidth" ng-click="accept()">Accept</button>
   <button class = "btn btn-danger btn-lg halfWidth pull-right" ng-click="reject()">Reject</button>
 </div>

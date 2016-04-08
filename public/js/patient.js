@@ -76,7 +76,6 @@ medconnect.controller('PatientProfile', ['$http', '$location', '$uibModal', '$sc
   vm.editMode = false;
 
 	$http.get('/patient/info').success(function(info){
-		console.log(info);
 		vm.email = info.email;
 		vm.firstName = info.firstName;
 		vm.lastName = info.lastName;
@@ -122,7 +121,6 @@ medconnect.controller('PatientProfile', ['$http', '$location', '$uibModal', '$sc
         }
       }).success(function(data){
         $scope.open();
-        console.log(data);
       }).error(function(err){
         $scope.open(true);
         console.log('Server error: ', err);
@@ -597,31 +595,6 @@ medconnect.controller('appointmentDetails', ['$http', '$location', '$scope', '$u
 
 }]);
 
-medconnect.controller('Upload', ['$http', 'Upload', '$window', function ($http, Upload, $window){
-  //demo of file uploading
-  var vm = this;
-  vm.submit = function(){
-    if (vm.upload_form.file.$valid && vm.file) {
-       vm.upload(vm.file)
-    }
-  }
-
-  vm.upload = function (file){
-    Upload.upload({
-      url:'/patient/addFile',
-      data:{
-        file: file,
-        dataTypeID: 10,
-        dataName: 'work'
-      }
-    }).then(function (resp) {
-        console.log('Success ' + resp.config.data.file.name + ' uploaded')
-    }, function (resp) {
-        console.log('Error status: ' + resp.status)
-    })
-  }
-}])
-
 medconnect.controller('patientPrescriptions', ['$http', '$scope', '$uibModal', function($http, $scope, $uibModal){
   $scope.init = function(){
     getData()
@@ -762,17 +735,14 @@ medconnect.controller('patientVitals', ['$http', '$scope', '$uibModal', function
           return vitals;
         }
       }
-    });
-    modalInstance.result.then(function () {
-
-    });
+    })
   }
 
   var getData = function(){
     $http.get('/patient/getVitals')
-      .success(function(result){
-        $scope.vitals = result
-      })
+    .success(function(result){
+      $scope.vitals = result.filter(function (vital){ return vital.vitalsDate !== "0000-00-00 00:00:00" })
+    })
   }
 }])
 
