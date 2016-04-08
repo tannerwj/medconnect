@@ -94,8 +94,8 @@ CREATE TABLE `MedicationPatient` (
 	`userID` int(15) NOT NULL,
 	`visitID` int(15) NOT NULL,
 	`dosage` varchar(20) NOT NULL,
-	`startDate` DATETIME NOT NULL,
-	`stopDate` DATETIME NOT NULL,
+	`startDate` DATE NOT NULL,
+	`stopDate` DATE NOT NULL,
 	`notes` varchar(255) NOT NULL,
 	`doctorID` int(15) NOT NULL,
 	`doctorName` varchar(80) NOT NULL,
@@ -129,6 +129,7 @@ CREATE TABLE `ExternalData` (
 	`visitID` int(15) NOT NULL,
 	`dataTypeID` int(5) NOT NULL,
 	`filePath` varchar(255) NOT NULL UNIQUE,
+	`fileName` varchar(80) NOT NULL,
 	`dataName` varchar(80) NOT NULL,
 	`uploadDate` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`dataID`)
@@ -149,8 +150,6 @@ ALTER TABLE `Users` ADD CONSTRAINT `Users_fk0` FOREIGN KEY (`userType`) REFERENC
 
 ALTER TABLE `Vitals` ADD CONSTRAINT `Vitals_fk0` FOREIGN KEY (`userID`) REFERENCES `Users`(`userID`);
 
-ALTER TABLE `Vitals` ADD CONSTRAINT `Vitals_fk1` FOREIGN KEY (`visitID`) REFERENCES `Visits`(`visitID`);
-
 ALTER TABLE `PatientProfile` ADD CONSTRAINT `PatientProfile_fk0` FOREIGN KEY (`userID`) REFERENCES `Users`(`userID`);
 
 ALTER TABLE `DoctorProfile` ADD CONSTRAINT `DoctorProfile_fk0` FOREIGN KEY (`userID`) REFERENCES `Users`(`userID`);
@@ -162,10 +161,6 @@ ALTER TABLE `AllergyPatient` ADD CONSTRAINT `AllergyPatient_fk1` FOREIGN KEY (`u
 ALTER TABLE `MedicationPatient` ADD CONSTRAINT `MedicationPatient_fk0` FOREIGN KEY (`medicationID`) REFERENCES `Medications`(`_id`);
 
 ALTER TABLE `MedicationPatient` ADD CONSTRAINT `MedicationPatient_fk1` FOREIGN KEY (`userID`) REFERENCES `Users`(`userID`);
-
-ALTER TABLE `MedicationPatient` ADD CONSTRAINT `MedicationPatient_fk2` FOREIGN KEY (`visitID`) REFERENCES `Visits`(`visitID`);
-
-ALTER TABLE `MedicationPatient` ADD CONSTRAINT `MedicationPatient_fk3` FOREIGN KEY (`doctorID`) REFERENCES `Users`(`userID`);
 
 ALTER TABLE `SpecialtyDoctor` ADD CONSTRAINT `SpecialtyDoctor_fk0` FOREIGN KEY (`specialtyID`) REFERENCES `Specialties`(`_id`);
 
