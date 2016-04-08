@@ -712,14 +712,27 @@ medconnect.controller('Upload', ['$http', 'Upload', '$window', function ($http, 
 
 }])
 
-medconnect.controller('patientPrescriptions', ['$http', '$scope', function($http, $scope){
-  $scope.prescriptions = []
+medconnect.controller('patientPrescriptions', ['$http', '$scope', '$uibModal', function($http, $scope, $uibModal){
   $scope.init = function(){
     getData()
   }
 
   $scope.viewPrescription = function(script){
-
+    var props = [script]
+    var modalInstance = $uibModal.open({
+      animation: true,
+      templateUrl: '/views/viewPrescriptions.html',
+      controller: 'viewPrescriptions',
+      resolve: {
+        item : function(){
+          return props;
+        }
+      }
+    });
+    modalInstance.result.then(function() {
+      //when we get a prescriptionID, we should splice the prescriptions array on the index of the id
+      getData()
+    });
   }
 
   var getData = function(){

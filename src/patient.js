@@ -385,14 +385,10 @@ var getPrescriptions = function (patientID){
 }
 
 var removePrescription = function (medicationID, patientID, visitID){
-  if(!p.visitID){ p.visitID = 0 }
-  return hadVisitWithPatient(patientID, p.visitID).then(function (result){
-    if(!result){ return false }
-    return db.query('DELETE FROM MedicationPatient WHERE medicationID =? AND patientID =? AND visitID =?;',  [medicationID, patientID, visitID])
+  return db.query('DELETE FROM MedicationPatient WHERE medicationID =? AND userID =? AND visitID =?;',  [medicationID, patientID, visitID])
     .then(function (result){
       return result[0].affectedRows === 1
     })
-  })
 }
 
 module.exports = {
