@@ -380,6 +380,13 @@ var addFile = function (i, patientID, f){
   })
 }
 
+var getUploads = function(userID){
+  return db.query('SELECT dt.name, ed.* from ExternalData ed join DataType dt on dt._id = ed.dataTypeID where ed.patientID =?', [userID])
+    .then(function(results){
+      return results[0]
+    })
+}
+
 var addPrescription = function (p, patientID){
   if(!p.visitID){ p.visitID = 0 }
   if(!p.doctorID){p.doctorID = 0}
@@ -432,6 +439,7 @@ module.exports = {
   getNotes: getNotes,
   removeNote: removeNote,
   addFile: addFile,
+  getUploads: getUploads,
   addPrescription: addPrescription,
   getPrescriptions: getPrescriptions,
   removePrescription: removePrescription

@@ -196,6 +196,13 @@ router.post('/patient/addFile', auth, function(req, res) {
   })
 })
 
+router.get('/patient/getUploads', auth, function(req, res){
+	pat.getUploads(req.user.id).then(function(result){
+		if(result){return res.json(result)}
+		res.sendStatus(400)
+	})
+})
+
 router.post('/patient/addPrescription', auth, function (req, res){
 	pat.addPrescription(req.body, req.user.id).then(function (result){
 		res.sendStatus(result ? 200 : 400)

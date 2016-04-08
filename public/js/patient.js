@@ -779,4 +779,39 @@ medconnect.controller('patientVitals', ['$http', '$scope', '$uibModal', function
   }
 }])
 
+medconnect.controller('patientUploads', ['$http', '$scope', '$uibModal', function($http, $scope, $uibModal){
+  $scope.uploads = []
+  $scope.init = function(){
+    getData()
+  }
+
+  $scope.add = function(){
+    $scope.item = {}
+    var modalInstance = $uibModal.open({
+      animation: true,
+      templateUrl: '/views/addUpload.html',
+      controller: 'upload',
+      resolve: {
+        item : function(){
+          return $scope.item
+        }
+      }
+    })
+    modalInstance.result.then(function(fields){
+      $scope.uploads.push(fields)
+    })
+  }
+
+  $scope.viewUpload = function (upload) {
+
+  }
+
+  var getData = function(){
+    $http.get('/patient/getUploads')
+      .success(function(result){
+        $scope.uploads = result
+      })
+  }
+}])
+
 }());
