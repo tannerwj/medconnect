@@ -3,32 +3,43 @@
 
   medconnect.controller('ModalInstanceCtrl', function ($scope, $location, $filter, $uibModalInstance, item) {
 
-    if(typeof(item) === 'string'){
-      $scope.item = item;
-      if($scope.item[0] === "C"){ // registration pages
-        $scope.ok = function () {
-          $uibModalInstance.close($location.url('/'));
-        };
-      }else if($scope.item[0] === "A" || $scope.item[0] === "Y" || $scope.item[0] === "S"){
-        $scope.ok = function () {
-          $uibModalInstance.close($location.url('/patient'));
-        };
+      $scope.ok = function(){
+        $uibModalInstance.close($location.url('/'));
       }
-    }
-    else{
-      $scope.item = "Your data was successfully saved as below";
-      $scope.schedule = item;
-    }
 
-      $scope.ok = function () {
-        $uibModalInstance.close($location.url('/doctor'));
-      };
+      $scope.item = item[0];
+
+      if(item[1] === "patient"){
+        console.log("patient")
+        $scope.ok = function(){
+          $uibModalInstance.close($location.url('/patient'));
+        }
+      }else if(item[1] === "doctor"){
+        console.log("doctor")
+        $scope.ok = function(){
+          $uibModalInstance.close($location.url('/doctor'));
+        }
+      }
 
       $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
       };
 
-  });
+    });
+
+    medconnect.controller('scheduleTable', function ($scope, $location, $filter, $uibModalInstance, item) {
+
+      $scope.schedule = item;
+
+      $scope.ok = function(){
+        $uibModalInstance.close($location.url('/doctor'));
+      }
+
+      $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+      };
+
+    });
 
   medconnect.controller('prescriptions', function ($http, $scope, $location, $filter, $uibModalInstance, item){
 
@@ -72,12 +83,7 @@
         console.log("error")
       })
 
-      for(var i = 0, len = $scope.medications.length; i < len; i++){
-        if($scope.medications[i]._id == $scope.medID){
-          fields.name = $scope.medications[i].name
-          break
-        }
-      }
+      fields.name = $scope.medication.name
       $uibModalInstance.close(fields);
     };
 
@@ -92,8 +98,7 @@
     $scope.update = function () {
       var fields = {
         visitID : item,
-        note : $scope.note + '',
-        noteDate: new Date()
+        note : $scope.note
       }
 
       $http({
@@ -181,7 +186,7 @@
         url:'/patient/addFile',
         data: $scope.fields
       }).then(function (data) {
-          $uibModalInstance.close(data.data[0])
+          $uibModalInstance.close(data.data)
       }, function (resp) {
           console.log('Error status: ' + resp.status)
       })
@@ -247,19 +252,17 @@
     var et = new Date(item.stopDate)
     var end = et.getFullYear() + '-' + (et.getMonth() + 1) + '-' + et.getDate()
 
-    var item = item[0];
-    $scope.name = item.name
-
     var name = ['Prescription Name', item.name];
     var dosage = ['Dosage', item.dosage];
-    var startDate = ['Start Date', item.startDate];
-    var endDate = ['End Date', item.stopDate];
+    var startDate = ['Start Date', start];
+    var endDate = ['End Date', end];
     var notes = ['Notes', item.notes];
 
-    $scope.arr = [dosage, startDate, endDate, notes];
+    $scope.arr = [name, dosage, startDate, endDate, notes];
 
     $scope.medications = item.medications; // To populate dropdown
     $scope.visitID = item.visitID;
+
 
     $scope.delete = function () {
 
