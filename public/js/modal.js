@@ -186,6 +186,7 @@
         url:'/patient/addFile',
         data: $scope.fields
       }).then(function (data) {
+          data.data.uploadDate = new Date()
           $uibModalInstance.close(data.data)
       }, function (resp) {
           console.log('Error status: ' + resp.status)
