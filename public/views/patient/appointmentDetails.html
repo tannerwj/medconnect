@@ -1,4 +1,4 @@
-<div class = "main apptDetails" ng-controller="appointmentDetails">
+<div class="main apptDetails" ng-controller="appointmentDetails">
   <h1>Appointment Details</h1>
 
 <div class="form-group">
@@ -15,57 +15,57 @@
 <div class = "form-group">
   <label for="dia">Diagnosis</label>
     <div class="input-group">
-    <input type="text" class="form-control" id="dia" ng-model="diagnosis" ng-readonly="!diaEdit">
+    <textarea type="text" class="form-control" id="dia" ng-model="diagnosis" ng-readonly="!diaEdit"></textarea>
     <div class="input-group-btn">
       <button ng-show="!diaEdit" class="btn btn-default" type="button" ng-click="diaEdit = !diaEdit">Edit</button>
-      <button ng-show="diaEdit" class="btn btn-default" type="button" ng-click="diaEdit = !diaEdit">Save</button>
+      <button ng-show="diaEdit" class="btn btn-default" type="button" ng-click="diaEdit = !diaEdit; saveVisit()">Save</button>
     </div>
   </div>
 </div>
 <div class = "form-group">
   <label for="sy">Symptoms</label>
     <div class="input-group">
-    <input type="text" class="form-control" id="sy" ng-model="symptoms" ng-readonly="!symEdit">
+    <textarea type="text" class="form-control" id="sy" ng-model="symptoms" ng-readonly="!symEdit"></textarea>
     <div class="input-group-btn">
       <button ng-show="!symEdit" class="btn btn-default" type="button" ng-click="symEdit = !symEdit">Edit</button>
-      <button ng-show="symEdit" class="btn btn-default" type="button" ng-click="symEdit = !symEdit">Save</button>
+      <button ng-show="symEdit" class="btn btn-default" type="button" ng-click="symEdit = !symEdit; saveVisit()">Save</button>
     </div>
   </div>
 </div>
+
+<div class="form-group">
+  <h3>Vitals</h3>
+  <div class="list-group-item" ng-click="viewVital(vitals)">
+    view vitals
+  </div>
+</div>
+<hr />
 
 <div class="form-group">
   <h3>Prescriptions</h3>
-  <button class="btn btn-default pull-right down" ng-click="open()">+</button>
-  <div class="list-group-item" ng-repeat="pre in prescriptions" ng-click="view(prescriptions, $index)">
+  <button class="btn btn-default pull-right down" ng-click="addPre()">+</button>
+  <div class="list-group-item" ng-repeat="pre in prescriptions" ng-click="viewPre(pre)">
     {{pre.name}}
   </div>
 </div>
-
 <hr />
-<div class = "form-group">
-  <label for="notes">Notes</label>
-    <div class="list-group-item" ng-repeat="note in notes" ng-click="open(notes, $index)">
-      {{note}}
-    </div>
-    <br />
-    <div class="input-group">
-    <input type="text" class="form-control" id="notes" ng-model="note">
-    <div class="input-group-btn">
-      <button class="btn btn-default" type="button" ng-click="addNote()">Add</button>
-    </div>
+
+<div class="form-group">
+  <h3>Notes</h3>
+  <button class="btn btn-default pull-right down" ng-click="addNote()">+</button>
+  <div class="list-group-item" ng-repeat="note in notes" ng-click="viewNote(note)">
+    {{note.note.slice(0, 10) + '...'}}
   </div>
 </div>
 <hr />
-<div class="form-group">
-  <label for="imgs">Images</label>
-  <div class="list-group-item" ng-repeat="n in imgNames" ng-click="openImage(images, $index)">
-    {{n}}
-  </div><br />
 
-  <input type='file' id="file" name="file" ng-model-instant onchange="angular.element(this).scope().imageUpload(this)" accept="image/jpeg, image/png"  multiple/>
+<div class="form-group">
+  <h3>Uploads</h3>
+  <button class="btn btn-default pull-right down" ng-click="addImage()">+</button>
+  <div class="list-group-item" ng-repeat="img in images" ng-click="viewImage(img.filePath)">
+    {{img.dataName + ' ' + img.name}}
+  </div>
 </div>
 <hr />
-<button ng-click="save()" class="btn btn-lg btn-primary btn-block">
-  Update
-</button>
+
 </div>
