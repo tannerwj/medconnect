@@ -125,7 +125,6 @@
           startDate : $scope.startDate,
           stopDate : $scope.stopDate,
           notes : $scope.notes,
-          doctorName : $scope.doctorName,
           medicationID : $scope.medication._id,
           doctorName: $scope.docName
         }).success(function (data) {
@@ -273,8 +272,8 @@ medconnect.controller('Note', function ($http, $scope, $location, $filter, $uibM
 
     var name = ['Prescription Name', item.name];
     var dosage = ['Dosage', item.dosage];
-    var startDate = ['Start Date', start];
-    var endDate = ['End Date', end];
+    var startDate = ['Start Date', item.startDate];
+    var endDate = ['End Date', item.stopDate];
     var notes = ['Notes', item.notes];
 
     $scope.arr = [dosage, startDate, endDate, notes];
