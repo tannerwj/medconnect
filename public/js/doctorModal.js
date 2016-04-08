@@ -1,36 +1,7 @@
 (function(){
   var medconnect = angular.module("mcModal", []);
 
-  medconnect.controller('ModalInstanceCtrl', function ($scope, $location, $filter, $uibModalInstance, item) {
-
-    if(typeof(item) === 'string'){
-      $scope.item = item;
-      if($scope.item[0] === "C"){ // registration pages
-        $scope.ok = function () {
-          $uibModalInstance.close($location.url('/'));
-        };
-      }else if($scope.item[0] === "A" || $scope.item[0] === "Y" || $scope.item[0] === "S"){
-        $scope.ok = function () {
-          $uibModalInstance.close($location.url('/patient'));
-        };
-      }
-    }
-    else{
-      $scope.item = "Your data was successfully saved as below";
-      $scope.schedule = item;
-    }
-
-      $scope.ok = function () {
-        $uibModalInstance.close($location.url('/doctor'));
-      };
-
-      $scope.cancel = function () {
-        $uibModalInstance.dismiss('cancel');
-      };
-
-  });
-
-  medconnect.controller('prescriptions', function ($http, $scope, $location, $filter, $uibModalInstance, item){
+  medconnect.controller('DoctorPrescriptions', function ($http, $scope, $location, $filter, $uibModalInstance, item){
 
     var visitID = item;
 
@@ -47,25 +18,25 @@
     })
 
     $scope.update = function () {
-      var st = $scope.startDate
+      var st = new Date($scope.startDate)
       var start = st.getFullYear() + '-' + (st.getMonth() + 1) + '-' + st.getDate()
 
-      var et = $scope.endDate
+      var et = new Date($scope.stopDate)
       var end = et.getFullYear() + '-' + (et.getMonth() + 1) + '-' + et.getDate()
 
       var fields = {
         visitID : visitID,
         dosage : $scope.dosage,
         startDate : start,
-        endDate : end,
+        stopDate : end,
         notes : $scope.notes || '',
         doctorName : '',
-        medicationID : $scope.medID
+        medicationID : $scope.medication._id
       }
 
       $http({
         method: 'POST',
-        url: '/patient/addPrescription',
+        url: '/doctor/addPrescription',
         data: fields
       }).success(function () {
       }).error(function (err) {
@@ -82,7 +53,7 @@
 
   })
 
-  medconnect.controller('Note', function ($http, $scope, $location, $filter, $uibModalInstance, item){
+  medconnect.controller('DoctorNote', function ($http, $scope, $location, $filter, $uibModalInstance, item){
 
     $scope.update = function () {
       var fields = {
@@ -92,13 +63,12 @@
 
       $http({
         method: 'POST',
-        url: '/patient/addNote',
+        url: '/doctor/addNote',
         data: fields
       }).success(function (data) {
       }).error(function (err) {
         console.log("error")
       })
-      console.log('before', fields)
       $uibModalInstance.close(fields);
     };
 
@@ -107,7 +77,7 @@
     };
   })
 
-  medconnect.controller('upload', function ($http, Upload, $window, $scope, $uibModalInstance, item){
+  medconnect.controller('DoctorUpload', function ($http, Upload, $window, $scope, $uibModalInstance, item){
 
     var visitID = item;
 
@@ -139,7 +109,7 @@
       }
 
       Upload.upload({
-        url:'/patient/addFile',
+        url:'/doctor/addFile',
         data: $scope.fields
       }).then(function (data) {
           $uibModalInstance.close(data.data)
@@ -155,7 +125,7 @@
 
   })
 
-  medconnect.controller('viewVitals', function ($http, $scope, $location, $filter, $uibModalInstance, item){
+  medconnect.controller('DoctorViewVitals', function ($http, $scope, $location, $filter, $uibModalInstance, item){
 
     $scope.vitalsDate = new Date(item.vitalsDate);
     $scope.height = Number(item.height);
@@ -185,7 +155,7 @@
 
       $http({
         method: 'POST',
-        url: '/patient/editVitals',
+        url: '/doctor/editVitals',
         data: fields
       }).success(function (data) {
       }).error(function (err) {
@@ -201,7 +171,7 @@
 
   })
 
-  medconnect.controller('viewPrescriptions', function ($http, $scope, $location, $filter, $uibModalInstance, item){
+  medconnect.controller('DoctorViewPrescriptions', function ($http, $scope, $location, $filter, $uibModalInstance, item){
     var st = new Date(item.startDate)
     var start = st.getFullYear() + '-' + (st.getMonth() + 1) + '-' + st.getDate()
 
@@ -228,7 +198,7 @@
 
       $http({
         method: 'POST',
-        url: '/patient/removePrescription',
+        url: '/doctor/removePrescription',
         data: fields
       }).success(function (data) {
       }).error(function (err) {
@@ -243,20 +213,18 @@
     };
   })
 
-  medconnect.controller('viewNote', function ($http, $scope, $location, $filter, $uibModalInstance, item){
+  medconnect.controller('DoctorViewNote', function ($http, $scope, $location, $filter, $uibModalInstance, item){
 
     $scope.note = item
 
     $scope.delete = function () {
-      console.log('id', $scope.note.noteID)
       $http({
         method: 'POST',
-        url: '/patient/removeNote',
+        url: '/doctor/removeNote',
         data: {
           noteID: $scope.note.noteID
         }
       }).success(function (data) {
-        console.log(data)
 
       }).error(function (err) {
         console.log("error")

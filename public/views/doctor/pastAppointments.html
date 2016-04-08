@@ -14,7 +14,7 @@
     </form>
     <div class="col-sm-4 col-sm-offset-4">
 		<div class="list-group">
-			<a ng-repeat="appt in pastAppointments | filter:query | orderBy:'-visitDate'" ng-href="/doctor/appointmentDetail/{{appt.visitID}}" class="list-group-item">{{appt.visitDate | date:'yyyy-MM-dd h:mma'}}<i class="fa fa-chevron-right fa-fw fa-pull-right"></i></a>
+			<a ng-repeat="appt in pastAppointments | filter:query | orderBy:'-visitDate'" ng-href="/doctor/appointmentDetails/{{appt.visitID}}" class="list-group-item">{{appt.visitDate | date:'yyyy-MM-dd h:mma'}}<i class="fa fa-chevron-right fa-fw fa-pull-right"></i></a>
 		</div>
 	</div>
 </div>

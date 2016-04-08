@@ -187,7 +187,8 @@ router.post('/doctor/addFile', auth, function (req, res){
 	upload(req, res, function(err){
       if(err){ return res.status(400).end(err) }
 			doc.addFile(req.body, req.user.id, req.file).then(function (result){
-				res.sendStatus(result ? 200 : 400)
+				if(result){ return res.json(result) }
+				res.sendStatus(400)
 			})
   })
 })
