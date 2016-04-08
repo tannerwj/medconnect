@@ -85,9 +85,63 @@
       $uibModalInstance.dismiss('cancel');
     };
 
+})
+
+    medconnect.controller('prescriptions', function ($http, $scope, $location, $filter, $uibModalInstance, item){
+
+      $scope.visitID = item.visitID;
+
+      $http({
+        method: 'POST',
+        url: '/data/getStatic',
+        data: {
+          type : 'medications'
+        }
+      }).success(function (data) {
+        $scope.medications = data;
+
+      }).error(function (err) {
+        console.log("error")
+      })
+
+      $scope.update = function () {
+
+        var fields = {
+          visitID : $scope.visitID,
+          dosage : $scope.dosage,
+          startDate : $scope.startDate,
+          stopDate : $scope.stopDate,
+          notes : $scope.notes,
+          doctorName : $scope.doctorName,
+          medicationID : $scope.medication._id,
+          name : $scope.medication.name,
+          doctorName: $scope.docName
+        }
+        console.log($scope.medication._id)
+
+        $http.post('/patient/addPrescription', {
+          visitID : $scope.visitID,
+          dosage : $scope.dosage,
+          startDate : $scope.startDate,
+          stopDate : $scope.stopDate,
+          notes : $scope.notes,
+          medicationID : $scope.medication._id,
+          doctorName: $scope.docName
+        }).success(function (data) {
+          console.log(data)
+
+        }).error(function (err) {
+          console.log("error")
+        })
+        $uibModalInstance.close(fields);
+      };
+
+      $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+      };
   })
 
-  medconnect.controller('Note', function ($http, $scope, $location, $filter, $uibModalInstance, item){
+medconnect.controller('Note', function ($http, $scope, $location, $filter, $uibModalInstance, item){
 
     $scope.update = function () {
       var fields = {
@@ -213,13 +267,16 @@
     var et = new Date(item.stopDate)
     var end = et.getFullYear() + '-' + (et.getMonth() + 1) + '-' + et.getDate()
 
+    var item = item[0];
+    $scope.name = item.name
+
     var name = ['Prescription Name', item.name];
     var dosage = ['Dosage', item.dosage];
-    var startDate = ['Start Date', start];
-    var endDate = ['End Date', end];
+    var startDate = ['Start Date', item.startDate];
+    var endDate = ['End Date', item.stopDate];
     var notes = ['Notes', item.notes];
 
-    $scope.arr = [name, dosage, startDate, endDate, notes];
+    $scope.arr = [dosage, startDate, endDate, notes];
 
     $scope.medications = item.medications; // To populate dropdown
     $scope.visitID = item.visitID;
