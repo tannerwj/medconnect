@@ -1,5 +1,9 @@
 <div class="admin" ng-init=init()>
   <h1>Verify Doctors</h1>
+  <br/>
+  <p>
+  Doctors must provide their medical identification number in order to prove they are a doctor.  Once a code has been entered, an administrator must verify it. If a code is invalid, mark the doctor as Denied.  This will prevent the doctor from being displayed to patients until they have entered in a new code. Unverified doctors will appear in the doctor search, but will not have the green check mark next to their name.
+  </p>
   <div class="alert alert-success" role="alert" ng-show='success'>
 		<button type='button' class='close' aria-label='Close' ng-click='success = false'>
 			<span aria-hidden='true'>&times;</span>

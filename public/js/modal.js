@@ -3,30 +3,41 @@
 
   medconnect.controller('ModalInstanceCtrl', function ($scope, $location, $filter, $uibModalInstance, item) {
 
-    if(typeof(item) === 'string'){
-      $scope.item = item;
-      if($scope.item[0] === "C"){ // registration pages
-        $scope.ok = function () {
-          $uibModalInstance.close($location.url('/'));
-        };
-      }else if($scope.item[0] === "A" || $scope.item[0] === "Y" || $scope.item[0] === "S"){
-        $scope.ok = function () {
-          $uibModalInstance.close($location.url('/patient'));
-        };
+    $scope.ok = function(){
+      $uibModalInstance.close($location.url('/'));
+    }
+
+    $scope.item = item[0];
+
+    if(item[1] === "patient"){
+      console.log("patient")
+      $scope.ok = function(){
+        $uibModalInstance.close($location.url('/patient'));
+      }
+    }else if(item[1] === "doctor"){
+      console.log("doctor")
+      $scope.ok = function(){
+        $uibModalInstance.close($location.url('/doctor'));
       }
     }
-    else{
-      $scope.item = "Your data was successfully saved as below";
-      $scope.schedule = item;
+
+    $scope.cancel = function () {
+      $uibModalInstance.dismiss('cancel');
+    };
+
+  });
+
+  medconnect.controller('scheduleTable', function ($scope, $location, $filter, $uibModalInstance, item) {
+
+    $scope.schedule = item;
+
+    $scope.ok = function(){
+      $uibModalInstance.close($location.url('/doctor'));
     }
 
-      $scope.ok = function () {
-        $uibModalInstance.close($location.url('/doctor'));
-      };
-
-      $scope.cancel = function () {
-        $uibModalInstance.dismiss('cancel');
-      };
+    $scope.cancel = function () {
+      $uibModalInstance.dismiss('cancel');
+    };
 
   });
 
