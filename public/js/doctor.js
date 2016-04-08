@@ -24,18 +24,18 @@
 			return false;
 		}
 
-		$scope.open = function (error, size) {
+		$scope.open = function (error) {
 
 			if(error){
-				$scope.item = "Missing/Incorrect fields, please try again.";
-			}else{
-				$scope.item = "Congratulations, you have successfully registered!";
+	      $scope.item = ["Missing/Incorrect fields, please try again."];
+	    }else{
+				$scope.item = ["Congratulations, you have successfully registered as a doctor", "doctor"];
 			}
+
 			var modalInstance = $uibModal.open({
 				animation: true,
 				templateUrl: '../views/modal.html',
 				controller: 'ModalInstanceCtrl',
-				size: size,
 				resolve: {
 					item : function(){
 						return $scope.item;
@@ -59,7 +59,7 @@
 						'code': vm.code
 					}
 				}).success(function (data) {
-					$scope.open(false);
+					$scope.open();
 					console.log(data);
 				}).error(function (err) {
 					$scope.open(true);
@@ -150,26 +150,24 @@
 						'code': vm.code
 					}
 				}).success(function(data){
-	        $scope.open(false);
-	        console.log(data);
+	        $scope.open();
 	      }).error(function(err){
 	        $scope.open(true);
 	        console.log('Server error: ' + err);
 	      })
 		}
 		// Modal open
-		$scope.open = function (error, size) {
+		$scope.open = function (error) {
 
 	    if(error){
-	      $scope.item = "Missing/Incorrect fields, please try again";
+	      $scope.item = ["Missing/Incorrect fields, please try again"];
 	    }else{
-	      $scope.item = "You have successfully edited your profile";
+	      $scope.item = ["You have successfully edited your profile as a doctor", "doctor"];
 	    }
 	    var modalInstance = $uibModal.open({
 	      animation: true,
 	      templateUrl: '../views/modal.html',
 	      controller: 'ModalInstanceCtrl',
-	      size: size,
 	      resolve: {
 	        item : function(){
 	          return $scope.item;
@@ -367,25 +365,19 @@
 						data: JSON.stringify($scope.scheduleArr)
 					}
 				}).success(function (data) {
-					$scope.open(false)
+					$scope.open()
 				}).error(function (err) {
 					$scope.open(true)
 				})
 
 			}
 
-			$scope.open = function (error, size) {
+			$scope.open = function (error) {
 
-				if(error){
-					$scope.item = "Server Error, try back again later please";
-				}else{
-					$scope.item = "Congratulations, you have successfully registered!";
-				}
 				var modalInstance = $uibModal.open({
 					animation: true,
-					templateUrl: '../views/modal.html',
-					controller: 'ModalInstanceCtrl',
-					size: size,
+					templateUrl: '/views/modal.html',
+					controller: 'scheduleTable',
 					resolve: {
 						item : function(){
 							return $scope.scheduleArr
