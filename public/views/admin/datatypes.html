@@ -1,12 +1,16 @@
 <div class="admin" ng-init=init('datatype')>
-  <h1>Manage Datatypes</h1>
+  <h1>Manage Upload Types</h1>
+  <br/>
+  <p>
+  This is where you can manage the types of files available for users to upload. Deactivating a type will remove that item from the list of possible types when uploading a file to the system. If no uploads have are using a deactivated type, you can delete the type completely.
+  </p>
   <div class="login-or">
     <hr class="hr-or">
     <span class="span-or">Create new</span>
   </div>
   <form class="form-inline adminManage" ng-submit="add()">
     <div class="form-group">
-      <label class="sr-only" for="name">Datatype</label>
+      <label class="sr-only" for="name">Upload type</label>
       <div class="input-group">
         <input type="text" class="form-control" id="name" ng-model="name" placeholder="Datatype" required>
         <span class="input-group-btn">
