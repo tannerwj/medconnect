@@ -14,6 +14,7 @@ const async = require('async-q')
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const favicon = require('serve-favicon')
+const compress = require('compression')
 const app	= express()
 const acc = require('./src/account')
 
@@ -22,6 +23,7 @@ const port = process.env.PORT || 80
 const db = require('./config/db')
 
 app.disable('x-powered-by')
+app.use(compress())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser('byuITsecret'))

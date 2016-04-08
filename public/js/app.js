@@ -145,12 +145,6 @@ medconnect.config(['$routeProvider', '$locationProvider',
 					isPatient: isPatient
 				}
       })
-      .when('/patient/settings', {
-        templateUrl: '/views/patient/settings.html',
-				resolve:{
-					isPatient: isPatient
-				}
-      })
       .when('/patient/rejectedAppt/:visitID', {
         templateUrl: '/views/patient/rejectedAppointment.html',
         resolve:{
