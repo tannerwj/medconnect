@@ -147,6 +147,13 @@ router.post('/patient/addNote', auth, function (req, res){
 	})
 })
 
+router.get('/patient/getNotes', auth, function(req, res){
+	pat.getNotes(req.user.id).then(function(result){
+		if(result){return res.json(result)}
+		return res.sendStatus(400)
+	})
+})
+
 router.post('/patient/removeNote', auth, function (req, res){
 	pat.removeNote(req.body.noteID, req.user.id).then(function (result){
 		if(result){ return res.json(result) }
