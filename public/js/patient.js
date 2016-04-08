@@ -190,9 +190,15 @@ medconnect.controller('seeDoctorSchedule', ['$http', '$location', '$uibModal', '
   })
 
   $scope.submit = function(){
+
     var date = $scope.date.getDate();
-    $scope.time.setDate(date);
-    $http({
+    var month = $scope.date.getMonth();
+    var year = $scope.date.getFullYear();
+    $scope.time.setUTCDate(date);
+    $scope.time.setUTCMonth(month);
+    $scope.time.setUTCFullYear(year);
+
+      $http({
       method: 'POST',
       url: '/patient/requestAppointment',
       data: {
