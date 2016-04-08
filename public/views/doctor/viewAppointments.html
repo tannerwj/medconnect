@@ -1,0 +1,14 @@
+<div class = "main text-center" ng-controller="doctorAppointments">
+    <h1>Appointments</h1>
+      <h4>Scheduled Appointments</h4>
+  <div class="list-group">
+    <a class="list-group-item " ng-show="!acc">You have no scheduled appointments</a>
+    <a ng-repeat="pat in accepted" ng-click="appointmentDetails(pat.visitID)" class="list-group-item list-group-item-success"><strong>{{pat.firstName}} {{pat.lastName}}</strong>  <em>{{pat.visitDate | date : 'short'}}</em><i class="fa fa-chevron-right fa-fw fa-pull-right"></i></a>
+  </div>
+  <hr />
+  <h4>Pending Appointments</h4>
+  <div class="list-group">
+    <a class="list-group-item" ng-show="!req">You have no pending appointments</a>
+    <a ng-repeat="pat in requested" ng-click="appointmentDetails(pat.visitID)" class="list-group-item list-group-item-info"><strong>{{pat.firstName}} {{pat.lastName}}</strong>  <em>{{pat.visitDate | date : 'short'}}</em><i class="fa fa-chevron-right fa-fw fa-pull-right"></i></a>
+  </div>
+</div>
