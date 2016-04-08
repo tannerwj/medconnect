@@ -776,7 +776,7 @@ medconnect.controller('patientVitals', ['$http', '$scope', '$uibModal', function
   }
 }])
 
-medconnect.controller('patientUploads', ['$http', '$scope', '$uibModal', function($http, $scope, $uibModal){
+medconnect.controller('patientUploads', ['$http', '$scope', '$uibModal', '$window', function($http, $scope, $uibModal, $window){
   $scope.uploads = []
   $scope.init = function(){
     getData()
@@ -800,7 +800,7 @@ medconnect.controller('patientUploads', ['$http', '$scope', '$uibModal', functio
   }
 
   $scope.viewUpload = function (upload) {
-
+     $window.open(upload.filePath)
   }
 
   var getData = function(){
