@@ -12,6 +12,8 @@
   <label for="date">Visit Date</label>
     <input type="text" class="form-control" id="date" value = "{{date | date : 'short' }}" readonly>
 </div>
+
+<div ng-hide="status">
 <div class = "form-group">
   <label for="dia">Diagnosis</label>
     <div class="input-group">
@@ -67,5 +69,9 @@
   </div>
 </div>
 <hr />
-
+</div>
+<div ng-show="status">
+  <button class = "btn btn-success btn-lg halfWidth" ng-click="accept()">Accept</button>
+  <button class = "btn btn-danger btn-lg halfWidth pull-right" ng-click="reject()">Reject</button>
+</div>
 </div>

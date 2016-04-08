@@ -433,9 +433,32 @@
 	    $scope.prescriptions = data.prescriptions;
 	    $scope.images = data.images;
 	    $scope.vitals = data.vitals
+			$scope.status = data.visitStatus;
+			if(data.visitStatus === 1){
+				console.log("pending appointment");
+				$scope.status = false;
+			}else{
+				$scope.status = true;
+			}
 	  }).error(function (err) {
 	    console.log("error")
 	  })
+
+		$scope.accept = function(){
+			$http.post('/doctor/handleRequestedAppointment', {
+				visitID: visitID,
+				acceptVisit : 1
+			})
+			$location.path('/doctor/appointments')
+		}
+
+		$scope.reject = function(){
+			$http.post('/doctor/handleRequestedAppointment', {
+				visitID: visitID,
+				acceptVisit : 0
+			})
+			$location.path('/doctor/appointments')
+		}
 
 	  $scope.saveVisit = function (){
 	    $http.post('/doctor/editAppointmentDetails', {
