@@ -2,12 +2,10 @@ body {
   font-size: 12px;
   /*padding-top:15px;*/
 }
-
 h1{
   text-align: center;
   line-height: 125%;
 }
-
 .navbar-brand{
     position: absolute;
     width: 100%;
@@ -16,10 +14,12 @@ h1{
     margin: auto;
     padding : 10px 15px;
 }
-
 .form-group.required .control-label:after {
   content:"*";
   color:red;
+}
+.list-group-item{
+  cursor: pointer;
 }
 
 /*login*/

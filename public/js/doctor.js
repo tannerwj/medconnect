@@ -251,9 +251,7 @@
 
 			})
 		}
-
 	}]);
-
 
 	medconnect.controller('DoctorAvaliable', function ($scope, $filter, $http, $uibModal) {
 
@@ -412,7 +410,148 @@
 					}
 				});
 			};
-
 	});
+
+	medconnect.controller('DoctorAppointmentDetails', ['$http', '$location', '$scope', '$uibModal', '$routeParams', '$window', function($http, $location, $scope, $uibModal, $routeParams, $window){
+
+	  var visitID = $routeParams.visit_id;
+	  var diaEdit = false
+	  var symEdit = false
+
+	  $http({
+	    method: 'POST',
+	    url: '/doctor/getAppointmentDetail',
+	    data: {
+	      visitID : visitID
+	    }
+	  }).success(function (data) {
+	    $scope.name = data.visit.firstName + " " + data.visit.lastName;
+	    $scope.date = data.visit.visitDate;
+	    $scope.diagnosis = data.visit.diagnosis;
+	    $scope.symptoms = data.visit.symptoms;
+	    $scope.notes = data.notes;
+	    $scope.prescriptions = data.prescriptions;
+	    $scope.images = data.images;
+	    $scope.vitals = data.vitals
+	  }).error(function (err) {
+	    console.log("error")
+	  })
+
+	  $scope.saveVisit = function (){
+	    $http.post('/doctor/editAppointmentDetails', {
+	      visitID: visitID,
+	      diagnosis: $scope.diagnosis,
+	      symptoms: $scope.symptoms
+	    })
+	  }
+
+	  $scope.viewVital = function (vitals) {
+
+	    var modalInstance = $uibModal.open({
+	      animation: true,
+	      templateUrl: '/views/viewVitals.html',
+	      controller: 'DoctorViewVitals',
+	      resolve: {
+	        item : function(){
+	          return vitals
+	        }
+	      }
+	    });
+	    modalInstance.result.then(function (fields) {
+	      $scope.vitals = fields
+	    });
+	  }
+
+	  $scope.addPre = function () {
+
+	    $scope.item = visitID;
+
+	    var modalInstance = $uibModal.open({
+	      animation: true,
+	      templateUrl: '/views/addPrescription.html',
+	      controller: 'DoctorPrescriptions',
+	      resolve: {
+	           item : function(){
+	             return visitID;
+	           }
+	         }
+	    });
+	    modalInstance.result.then(function (fields) {
+	      $scope.prescriptions.push(fields)
+	    });
+	  }
+
+	  $scope.addNote = function () {
+	    var modalInstance = $uibModal.open({
+	      animation: true,
+	      templateUrl: '/views/addNote.html',
+	      controller: 'DoctorNote',
+	      resolve: {
+	           item : function(){
+	             return visitID
+	           }
+	         }
+	    });
+	    modalInstance.result.then(function (fields) {
+	      $scope.notes.push(fields);
+	    });
+	  }
+
+	  $scope.viewPre = function (pre) {
+	    var modalInstance = $uibModal.open({
+	      animation: true,
+	      templateUrl: '/views/viewPrescriptions.html',
+	      controller: 'DoctorViewPrescriptions',
+	      resolve: {
+	        item : function(){
+	          return pre;
+	        }
+	      }
+	    });
+	    modalInstance.result.then(function (index) {
+	      $scope.prescriptions.splice(index, 1);
+	    });
+	  }
+
+	  $scope.addImage = function () {
+
+	    $scope.item = visitID;
+
+	    var modalInstance = $uibModal.open({
+	      animation: true,
+	      templateUrl: '/views/addUpload.html',
+	      controller: 'DoctorUpload',
+	      resolve: {
+	           item : function(){
+	             return $scope.item;
+	           }
+	         }
+	    });
+	    modalInstance.result.then(function (fields) {
+	      $scope.images.push(fields)
+	    });
+	  }
+
+	  $scope.viewNote = function (note) {
+	    var modalInstance = $uibModal.open({
+	      animation: true,
+	      templateUrl: '/views/viewNote.html',
+	      controller: 'DoctorViewNote',
+	      resolve: {
+	        item : function(){
+	          return note;
+	        }
+	      }
+	    });
+	    modalInstance.result.then(function (index) {
+	      $scope.notes.splice(index, 1);
+	    });
+	  }
+
+	  $scope.viewImage = function (filePath) {
+	    $window.open(filePath)
+	  }
+
+	}]);
 
 }());
