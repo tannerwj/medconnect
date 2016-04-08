@@ -1,6 +1,6 @@
 (function(){
 
-var medconnect = angular.module("mcPatient", ['ngFileUpload']);
+var medconnect = angular.module("mcPatient", []);
 
 medconnect.controller('PatientHome', ['$http', '$scope', '$location', function($http, $scope, $location){
   $scope.logout = function(){
