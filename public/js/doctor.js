@@ -24,18 +24,18 @@
 			return false;
 		}
 
-		$scope.open = function (error, size) {
+		$scope.open = function (error) {
 
 			if(error){
-				$scope.item = "Missing/Incorrect fields, please try again.";
-			}else{
-				$scope.item = "Congratulations, you have successfully registered!";
+	      $scope.item = ["Missing/Incorrect fields, please try again."];
+	    }else{
+				$scope.item = ["Congratulations, you have successfully registered as a doctor", "doctor"];
 			}
+
 			var modalInstance = $uibModal.open({
 				animation: true,
 				templateUrl: '../views/modal.html',
 				controller: 'ModalInstanceCtrl',
-				size: size,
 				resolve: {
 					item : function(){
 						return $scope.item;
@@ -59,7 +59,7 @@
 						'code': vm.code
 					}
 				}).success(function (data) {
-					$scope.open(false);
+					$scope.open();
 					console.log(data);
 				}).error(function (err) {
 					$scope.open(true);
@@ -150,26 +150,24 @@
 						'code': vm.code
 					}
 				}).success(function(data){
-	        $scope.open(false);
-	        console.log(data);
+	        $scope.open();
 	      }).error(function(err){
 	        $scope.open(true);
 	        console.log('Server error: ' + err);
 	      })
 		}
 		// Modal open
-		$scope.open = function (error, size) {
+		$scope.open = function (error) {
 
 	    if(error){
-	      $scope.item = "Missing/Incorrect fields, please try again";
+	      $scope.item = ["Missing/Incorrect fields, please try again"];
 	    }else{
-	      $scope.item = "You have successfully edited your profile";
+	      $scope.item = ["You have successfully edited your profile as a doctor", "doctor"];
 	    }
 	    var modalInstance = $uibModal.open({
 	      animation: true,
 	      templateUrl: '../views/modal.html',
 	      controller: 'ModalInstanceCtrl',
-	      size: size,
 	      resolve: {
 	        item : function(){
 	          return $scope.item;
@@ -226,9 +224,7 @@
 
 			})
 		}
-
 	}]);
-
 
 	medconnect.controller('DoctorAvaliable', function ($scope, $filter, $http, $uibModal) {
 
@@ -367,25 +363,19 @@
 						data: JSON.stringify($scope.scheduleArr)
 					}
 				}).success(function (data) {
-					$scope.open(false)
+					$scope.open()
 				}).error(function (err) {
 					$scope.open(true)
 				})
 
 			}
 
-			$scope.open = function (error, size) {
+			$scope.open = function (error) {
 
-				if(error){
-					$scope.item = "Server Error, try back again later please";
-				}else{
-					$scope.item = "Congratulations, you have successfully registered!";
-				}
 				var modalInstance = $uibModal.open({
 					animation: true,
-					templateUrl: '../views/modal.html',
-					controller: 'ModalInstanceCtrl',
-					size: size,
+					templateUrl: '/views/modal.html',
+					controller: 'scheduleTable',
 					resolve: {
 						item : function(){
 							return $scope.scheduleArr
@@ -393,7 +383,148 @@
 					}
 				});
 			};
-
 	});
+
+	medconnect.controller('DoctorAppointmentDetails', ['$http', '$location', '$scope', '$uibModal', '$routeParams', '$window', function($http, $location, $scope, $uibModal, $routeParams, $window){
+
+	  var visitID = $routeParams.visit_id;
+	  var diaEdit = false
+	  var symEdit = false
+
+	  $http({
+	    method: 'POST',
+	    url: '/doctor/getAppointmentDetail',
+	    data: {
+	      visitID : visitID
+	    }
+	  }).success(function (data) {
+	    $scope.name = data.visit.firstName + " " + data.visit.lastName;
+	    $scope.date = data.visit.visitDate;
+	    $scope.diagnosis = data.visit.diagnosis;
+	    $scope.symptoms = data.visit.symptoms;
+	    $scope.notes = data.notes;
+	    $scope.prescriptions = data.prescriptions;
+	    $scope.images = data.images;
+	    $scope.vitals = data.vitals
+	  }).error(function (err) {
+	    console.log("error")
+	  })
+
+	  $scope.saveVisit = function (){
+	    $http.post('/doctor/editAppointmentDetails', {
+	      visitID: visitID,
+	      diagnosis: $scope.diagnosis,
+	      symptoms: $scope.symptoms
+	    })
+	  }
+
+	  $scope.viewVital = function (vitals) {
+
+	    var modalInstance = $uibModal.open({
+	      animation: true,
+	      templateUrl: '/views/viewVitals.html',
+	      controller: 'DoctorViewVitals',
+	      resolve: {
+	        item : function(){
+	          return vitals
+	        }
+	      }
+	    });
+	    modalInstance.result.then(function (fields) {
+	      $scope.vitals = fields
+	    });
+	  }
+
+	  $scope.addPre = function () {
+
+	    $scope.item = visitID;
+
+	    var modalInstance = $uibModal.open({
+	      animation: true,
+	      templateUrl: '/views/addPrescription.html',
+	      controller: 'DoctorPrescriptions',
+	      resolve: {
+	           item : function(){
+	             return visitID;
+	           }
+	         }
+	    });
+	    modalInstance.result.then(function (fields) {
+	      $scope.prescriptions.push(fields)
+	    });
+	  }
+
+	  $scope.addNote = function () {
+	    var modalInstance = $uibModal.open({
+	      animation: true,
+	      templateUrl: '/views/addNote.html',
+	      controller: 'DoctorNote',
+	      resolve: {
+	           item : function(){
+	             return visitID
+	           }
+	         }
+	    });
+	    modalInstance.result.then(function (fields) {
+	      $scope.notes.push(fields);
+	    });
+	  }
+
+	  $scope.viewPre = function (pre) {
+	    var modalInstance = $uibModal.open({
+	      animation: true,
+	      templateUrl: '/views/viewPrescriptions.html',
+	      controller: 'DoctorViewPrescriptions',
+	      resolve: {
+	        item : function(){
+	          return pre;
+	        }
+	      }
+	    });
+	    modalInstance.result.then(function (index) {
+	      $scope.prescriptions.splice(index, 1);
+	    });
+	  }
+
+	  $scope.addImage = function () {
+
+	    $scope.item = visitID;
+
+	    var modalInstance = $uibModal.open({
+	      animation: true,
+	      templateUrl: '/views/addUpload.html',
+	      controller: 'DoctorUpload',
+	      resolve: {
+	           item : function(){
+	             return $scope.item;
+	           }
+	         }
+	    });
+	    modalInstance.result.then(function (fields) {
+	      $scope.images.push(fields)
+	    });
+	  }
+
+	  $scope.viewNote = function (note) {
+	    var modalInstance = $uibModal.open({
+	      animation: true,
+	      templateUrl: '/views/viewNote.html',
+	      controller: 'DoctorViewNote',
+	      resolve: {
+	        item : function(){
+	          return note;
+	        }
+	      }
+	    });
+	    modalInstance.result.then(function (index) {
+	      $scope.notes.splice(index, 1);
+	    });
+	  }
+
+	  $scope.viewImage = function (filePath) {
+	    $window.open(filePath)
+	  }
+
+	}]);
 
 }());

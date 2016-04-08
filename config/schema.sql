@@ -90,6 +90,7 @@ CREATE TABLE `Allergies` (
 );
 
 CREATE TABLE `MedicationPatient` (
+	`prescriptionID` int(15) NOT NULL AUTO_INCREMENT,
 	`medicationID` int(5) NOT NULL,
 	`userID` int(15) NOT NULL,
 	`visitID` int(15) NOT NULL,
@@ -99,7 +100,7 @@ CREATE TABLE `MedicationPatient` (
 	`notes` varchar(255) NOT NULL,
 	`doctorID` int(15) NOT NULL,
 	`doctorName` varchar(80) NOT NULL,
-	 UNIQUE KEY `unique_medications` (`medicationID`,`userID`)
+	PRIMARY KEY (`prescriptionID`)
 );
 
 CREATE TABLE `Medications` (

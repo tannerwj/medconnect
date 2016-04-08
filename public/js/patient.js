@@ -24,18 +24,18 @@ medconnect.controller('PatientRegister', ['$http', '$location', '$uibModal', '$s
     return false;
   }
 
-  $scope.open = function (error, size) {
+  $scope.open = function (error) {
 
     if(error){
-      $scope.item = "Missing/Incorrect fields, please try again.";
-    }else{
-      $scope.item = "Congratulations, you have successfully registered!";
+      $scope.item = ["Missing/Incorrect fields, please try again."];
+    }
+    else{
+      $scope.item = ["Congratulations, you have successfully registered as a patient", "patient"];
     }
     var modalInstance = $uibModal.open({
       animation: true,
-      templateUrl: '../views/modal.html',
+      templateUrl: '/views/modal.html',
       controller: 'ModalInstanceCtrl',
-      size: size,
       resolve: {
         item : function(){
           return $scope.item;
@@ -59,8 +59,7 @@ medconnect.controller('PatientRegister', ['$http', '$location', '$uibModal', '$s
           'password': vm.password
         }
       }).success(function(data){
-        $scope.open(false);
-        console.log(data);
+        $scope.open();
       }).error(function(err){
         $scope.open(true);
         console.log('Server error: ' + err);
@@ -91,18 +90,17 @@ medconnect.controller('PatientProfile', ['$http', '$location', '$uibModal', '$sc
 	vm.edit = function(){
     vm.editMode = !vm.editMode;
   }
-  $scope.open = function (error, size) {
+  $scope.open = function (error) {
 
     if(error){
-      $scope.item = "Missing/Incorrect fields, please try again.";
+      $scope.item = ["Missing/Incorrect fields, please try again."];
     }else{
-      $scope.item = "Awesome, you have successfully Edited your profile!";
+      $scope.item = ["Congratulations, you have successfully edited your patient profile!", "patient"];
     }
     var modalInstance = $uibModal.open({
       animation: true,
-      templateUrl: '../views/modal.html',
+      templateUrl: '/views/modal.html',
       controller: 'ModalInstanceCtrl',
-      size: size,
       resolve: {
         item : function(){
           return $scope.item;
@@ -123,7 +121,7 @@ medconnect.controller('PatientProfile', ['$http', '$location', '$uibModal', '$sc
           'phone' : vm.phoneNumber
         }
       }).success(function(data){
-        $scope.open(false);
+        $scope.open();
         console.log(data);
       }).error(function(err){
         $scope.open(true);
@@ -204,22 +202,18 @@ medconnect.controller('seeDoctorSchedule', ['$http', '$location', '$uibModal', '
     }).success(function (data) {
       $location.url('/patient/viewAppointments')
     }).error(function (err) {
-      $scope.open(true)
+      $scope.open()
     })
   }
 
-  $scope.open = function (error, size) {
+  $scope.open = function () {
 
-    if(error){
-      $scope.item = "Missing/Incorrect fields, please try again.";
-    }else{
-      $scope.item = "You have successfully requested an appointment!";
-    }
+    $scope.item = ["You have successfully requested an appointment!"];
+
     var modalInstance = $uibModal.open({
       animation: true,
       templateUrl: '/views/modal.html',
       controller: 'ModalInstanceCtrl',
-      size: size,
       resolve: {
         item : function(){
           return $scope.item;
@@ -678,6 +672,18 @@ medconnect.controller('patientPrescriptions', ['$http', '$scope', '$uibModal', f
       })
   }
 }])
+
+  medconnect.controller('VisitHistory',  ['$http', '$scope', '$location', function($http, $scope, $location){
+
+    $http.get('/patient/getPastAppointments').success(function (data){
+      $scope.visits = data
+    })
+
+    $scope.appointmentDetails = function(visitID){
+      $location.url('/patient/appointmentDetails/' + visitID)
+    }
+
+  }])
 
 medconnect.controller('patientNotes', ['$http', '$scope', '$uibModal', function($http, $scope, $uibModal){
   $scope.notes = []
