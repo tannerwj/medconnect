@@ -187,6 +187,33 @@
 
   	}]);
 
+		medconnect.controller('doctorAppointments', ['$http', '$scope', '$location', function($http, $scope, $location){
+			$scope.req = true;
+		  $scope.acc = true;
+
+		  $http.get('/doctor/getCurrentAppointments').success(function(info){
+				console.log(info)
+		    if(info.requested.length > 0){
+		      $scope.requested = info.requested;
+		    }else{
+		      $scope.req = false;
+		    }
+		    if(info.accepted.length > 0){
+		      $scope.accepted = info.accepted;
+		    }else{
+		      $scope.acc = false;
+		    }
+		  }).catch(function(error){
+		    console.log("Error is : " + error);
+		  });
+
+		  $scope.appointmentDetails = function(id){
+		    var visitID = id;
+		    $location.url("/doctor/appointmentDetails/" + visitID);
+		  }
+
+		}]);
+
 	medconnect.controller('DoctorPastPatients', ['$http', '$scope', function($http, $scope){
 		$scope.pastPatients = []
 		$scope.init = function(){
