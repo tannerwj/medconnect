@@ -3,41 +3,30 @@
 
   medconnect.controller('ModalInstanceCtrl', function ($scope, $location, $filter, $uibModalInstance, item) {
 
-    $scope.ok = function(){
-      $uibModalInstance.close($location.url('/'));
+    if(typeof(item) === 'string'){
+      $scope.item = item;
+      if($scope.item[0] === "C"){ // registration pages
+        $scope.ok = function () {
+          $uibModalInstance.close($location.url('/'));
+        };
+      }else if($scope.item[0] === "A" || $scope.item[0] === "Y" || $scope.item[0] === "S"){
+        $scope.ok = function () {
+          $uibModalInstance.close($location.url('/patient'));
+        };
+      }
+    }
+    else{
+      $scope.item = "Your data was successfully saved as below";
+      $scope.schedule = item;
     }
 
-    $scope.item = item[0];
-
-    if(item[1] === "patient"){
-      console.log("patient")
-      $scope.ok = function(){
-        $uibModalInstance.close($location.url('/patient'));
-      }
-    }else if(item[1] === "doctor"){
-      console.log("doctor")
-      $scope.ok = function(){
+      $scope.ok = function () {
         $uibModalInstance.close($location.url('/doctor'));
-      }
-    }
+      };
 
-    $scope.cancel = function () {
-      $uibModalInstance.dismiss('cancel');
-    };
-
-  });
-
-  medconnect.controller('scheduleTable', function ($scope, $location, $filter, $uibModalInstance, item) {
-
-    $scope.schedule = item;
-
-    $scope.ok = function(){
-      $uibModalInstance.close($location.url('/doctor'));
-    }
-
-    $scope.cancel = function () {
-      $uibModalInstance.dismiss('cancel');
-    };
+      $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+      };
 
   });
 
@@ -83,7 +72,12 @@
         console.log("error")
       })
 
-      fields.name = $scope.medication.name
+      for(var i = 0, len = $scope.medications.length; i < len; i++){
+        if($scope.medications[i]._id == $scope.medID){
+          fields.name = $scope.medications[i].name
+          break
+        }
+      }
       $uibModalInstance.close(fields);
     };
 
@@ -98,7 +92,8 @@
     $scope.update = function () {
       var fields = {
         visitID : item,
-        note : $scope.note + ''
+        note : $scope.note + '',
+        noteDate: new Date()
       }
 
       $http({
@@ -110,6 +105,39 @@
         console.log("error")
       })
       console.log('before', fields)
+      $uibModalInstance.close(fields);
+    };
+
+    $scope.cancel = function () {
+      $uibModalInstance.dismiss('cancel');
+    };
+  })
+
+  medconnect.controller('Vitals', function ($http, $scope, $location, $filter, $uibModalInstance, item){
+
+    $scope.add = function () {
+      var fields = {
+        visitID : null,
+        vitalsDate : $scope.vitalsDate,
+        height : $scope.height,
+        weight : $scope.weight,
+        BMI : $scope.BMI,
+        temperature : $scope.temperature,
+        pulse : $scope.pulse,
+        respiratoryRate : $scope.respiratoryRate,
+        bloodPressure : $scope.bloodPressure,
+        bloodOxygenSat : $scope.bloodOxygenSat
+      }
+
+      $http({
+        method: 'POST',
+        url: '/patient/addVitals',
+        data: fields
+      }).success(function (data) {
+
+      }).error(function (err) {
+        console.log("error")
+      })
       $uibModalInstance.close(fields);
     };
 
@@ -153,7 +181,7 @@
         url:'/patient/addFile',
         data: $scope.fields
       }).then(function (data) {
-          $uibModalInstance.close(data.data)
+          $uibModalInstance.close(data.data[0])
       }, function (resp) {
           console.log('Error status: ' + resp.status)
       })
@@ -167,38 +195,38 @@
   })
 
   medconnect.controller('viewVitals', function ($http, $scope, $location, $filter, $uibModalInstance, item){
+    $scope.id = item.vitalID
+    $scope.vitalsDate = new Date(item.vitalsDate)
+    $scope.height = Number(item.height)
+    $scope.weight = Number(item.weight)
+    $scope.BMI = Number(item.BMI)
+    $scope.temperature = Number(item.temperature)
+    $scope.pulse = Number(item.pulse)
+    $scope.respiratoryRate = Number(item.respiratoryRate)
+    $scope.bloodPressure = item.bloodPressure
+    $scope.bloodOxygenSat = item.bloodOxygenSat
 
-    $scope.vitalsDate = new Date(item.vitalsDate);
-    $scope.height = Number(item.height);
-    $scope.weight = Number(item.weight);
-    $scope.BMI = Number(item.BMI);
-    $scope.temperature = Number(item.temperature);
-    $scope.pulse = Number(item.pulse);
-    $scope.respiratoryRate = Number(item.respiratoryRate);
-    $scope.bloodPressure = Number(item.bloodPressure);
-    $scope.bloodOxygenSat = Number(item.bloodOxygenSat);
-
-    $scope.update = function () {
+    $scope.add = function () {
 
       var fields = {
+        vitalID: -1,
         visitID : item.visitID,
-        vitalsDate : $scope.vitalsDate,
-        height : $scope.height,
-        weight : $scope.weight,
-        BMI : $scope.BMI,
-        temperature : $scope.temperature,
-        pulse : $scope.pulse,
-        respiratoryRate : $scope.respiratoryRate,
-        bloodPressure : $scope.bloodPressure,
-        bloodOxygenSat : $scope.bloodOxygenSat,
+        vitalsDate : $scope.vitalsDate ,
+        height : $scope.height ? $scope.height : '',
+        weight : $scope.weight ? $scope.weight : '',
+        BMI : $scope.BMI ? $scope.BMI : '',
+        temperature : $scope.temperature ? $scope.temperature : '',
+        pulse : $scope.pulse ? $scope.pulse : '',
+        respiratoryRate : $scope.respiratoryRate ? $scope.respiratoryRate : '',
+        bloodPressure : $scope.bloodPressure ? $scope.bloodPressure : '',
+        bloodOxygenSat : $scope.bloodOxygenSat ? $scope.bloodOxygenSat : '',
         name: 'view vitals'
       }
 
       $http({
         method: 'POST',
-        url: '/patient/editVitals',
+        url: '/patient/addVitals',
         data: fields
-      }).success(function (data) {
       }).error(function (err) {
         console.log("error")
       })
@@ -219,13 +247,16 @@
     var et = new Date(item.stopDate)
     var end = et.getFullYear() + '-' + (et.getMonth() + 1) + '-' + et.getDate()
 
+    var item = item[0];
+    $scope.name = item.name
+
     var name = ['Prescription Name', item.name];
     var dosage = ['Dosage', item.dosage];
-    var startDate = ['Start Date', start];
-    var endDate = ['End Date', end];
+    var startDate = ['Start Date', item.startDate];
+    var endDate = ['End Date', item.stopDate];
     var notes = ['Notes', item.notes];
 
-    $scope.arr = [name, dosage, startDate, endDate, notes];
+    $scope.arr = [dosage, startDate, endDate, notes];
 
     $scope.medications = item.medications; // To populate dropdown
     $scope.visitID = item.visitID;

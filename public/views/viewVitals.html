@@ -8,7 +8,7 @@
       <div class="col-sm-10">
         <div class="input-group">
           <span class="input-group-addon"><i class="fa fa-calendar-o fa-fw"></i></span>
-          <input type="date" name="date" class="form-control" id="date" ng-model="vitalsDate" required>
+          <input type="date" name="date" class="form-control" id="date" ng-model="vitalsDate" required ng-readonly="id">
         </div>
           <div class="help-block" ng-messages="vitalsForm.date.$error" ng-show="vitalsForm.date.$touched">
             <div ng-messages-include="my-custom-messages"></div>
@@ -20,7 +20,7 @@
       <div class="col-sm-10">
         <div class="input-group">
           <span class="input-group-addon"><i class="fa fa-arrows-v fa-fw"></i></span>
-          <input type="number" name="height" class="form-control" id="height" ng-model="height" min="0" max="3">
+          <input type="text" name="height" class="form-control" id="height" ng-model="height" ng-readonly="id">
           <span class="input-group-addon">meters</span>
         </div>
           <div class="help-block" ng-messages="vitalsForm.height.$error" ng-show="vitalsForm.height.$touched">
@@ -33,7 +33,7 @@
       <div class="col-sm-10">
         <div class="input-group">
           <span class="input-group-addon"><i class="fa fa-balance-scale fa-fw"></i></span>
-          <input type="number" name="weight" class="form-control" id="weight" ng-model="weight">
+          <input type="number" name="weight" class="form-control" id="weight" ng-model="weight" ng-readonly="id">
           <span class="input-group-addon">kilograms</span>
         </div>
           <div class="help-block" ng-messages="vitalsForm.weight.$error" ng-show="vitalsForm.weight.$touched">
@@ -46,7 +46,7 @@
       <div class="col-sm-10">
         <div class="input-group">
           <span class="input-group-addon"><i class="fa fa-child fa-fw"></i></span>
-          <input type="number" name="bmi" class="form-control" id="bmi" ng-model="BMI">
+          <input type="number" name="bmi" class="form-control" id="bmi" ng-model="BMI" ng-readonly="id">
           <span class="input-group-addon">kg/m<sup>2</sup></span>
         </div>
           <div class="help-block" ng-messages="vitalsForm.bmi.$error" ng-show="vitalsForm.bmi.$touched">
@@ -59,7 +59,7 @@
       <div class="col-sm-10">
         <div class="input-group">
           <span class="input-group-addon"><i class="fa fa-fire fa-fw"></i></span>
-          <input type="number" name="temp" class="form-control" id="temp" ng-model="temperature">
+          <input type="number" name="temp" class="form-control" id="temp" ng-model="temperature" ng-readonly="id">
           <span class="input-group-addon">&deg;C</span>
         </div>
           <div class="help-block" ng-messages="vitalsForm.temp.$error" ng-show="vitalsForm.temp.$touched">
@@ -72,7 +72,7 @@
       <div class="col-sm-10">
         <div class="input-group">
           <span class="input-group-addon"><i class="fa fa-heartbeat fa-fw"></i></span>
-          <input type="number" name="pulse" class="form-control" id="pulse" ng-model="pulse">
+          <input type="number" name="pulse" class="form-control" id="pulse" ng-model="pulse" ng-readonly="id">
           <span class="input-group-addon">beats/min</span>
         </div>
           <div class="help-block" ng-messages="vitalsForm.pulse.$error" ng-show="vitalsForm.pulse.$touched">
@@ -85,7 +85,7 @@
       <div class="col-sm-10">
         <div class="input-group">
           <span class="input-group-addon"><i class="fa fa-bar-chart fa-fw"></i></span>
-          <input type="number" name="resRate" class="form-control" id="pulse" ng-model="respiratoryRate">
+          <input type="number" name="resRate" class="form-control" id="pulse" ng-model="respiratoryRate" ng-readonly="id">
           <span class="input-group-addon">breaths/min</span>
         </div>
           <div class="help-block" ng-messages="vitalsForm.resRate.$error" ng-show="vitalsForm.resRate.$touched">
@@ -98,7 +98,7 @@
       <div class="col-sm-10">
         <div class="input-group">
           <span class="input-group-addon"><i class="fa fa-heart fa-fw"></i></span>
-          <input type="number" name="bloodPres" class="form-control" id="pulse" ng-model="bloodPressure">
+          <input type="text" name="bloodPres" class="form-control" id="pulse" ng-model="bloodPressure" ng-readonly="id">
           <span class="input-group-addon">mmHg</span>
         </div>
           <div class="help-block" ng-messages="vitalsForm.bloodPres.$error" ng-show="vitalsForm.bloodPres.$touched">
@@ -111,7 +111,7 @@
       <div class="col-sm-10">
         <div class="input-group">
           <span class="input-group-addon"><i class="fa fa-heart fa-fw"></i></span>
-          <input type="number" name="oxySat" class="form-control" id="pulse" ng-model="bloodOxygenSat">
+          <input type="text" name="oxySat" class="form-control" id="pulse" ng-model="bloodOxygenSat" ng-readonly="id">
           <span class="input-group-addon">SO<sub>2</sub></span>
         </div>
           <div class="help-block" ng-messages="vitalsForm.oxySat.$error" ng-show="vitalsForm.oxySat.$touched">
@@ -129,6 +129,6 @@
 
 
 <div class="modal-footer">
-    <button class="btn btn-danger" type="button" ng-click="update()">Update</button>
-    <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+    <button class="btn btn-danger" type="button" ng-hide="id" ng-click="add()">Add</button>
+    <button class="btn btn-warning" type="button" ng-click="cancel()">Done</button>
 </div>
