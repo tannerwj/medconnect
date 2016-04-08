@@ -264,8 +264,8 @@ medconnect.controller('viewVitals', function ($http, $scope, $location, $filter,
     var item = item[0];
     var name = ['Prescription Name', item.name];
     var dosage = ['Dosage', item.dosage];
-    var startDate = ['StartDate', item.startDate];
-    var endDate = ['EndDate', item.endDate];
+    var startDate = ['Start Date', item.startDate];
+    var endDate = ['Stop Date', item.stopDate];
     var notes = ['Notes', item.notes];
     var arrIndex = item[1]; // index
 
@@ -275,23 +275,9 @@ medconnect.controller('viewVitals', function ($http, $scope, $location, $filter,
     $scope.visitID = item.visitID;
 
     $scope.delete = function () {
-
-      var fields = {
-        visitID : $scope.visitID,
-        dosage : $scope.dosage,
-        startDate : $scope.startDate,
-        endDate : $scope.endDate,
-        notes : $scope.notes,
-        medicationID : $scope.med._id
-      }
-
-      $http({
-        method: 'POST',
-        url: '/patient/deletePrescription',
-        data: fields
-      }).success(function (data) {
-        console.log(data)
-
+      $http.post('/patient/removePrescription', {
+        medicationID: item.medicationID,
+        visitID: item.visitID
       }).error(function (err) {
         console.log("error")
       })
@@ -314,7 +300,7 @@ medconnect.controller('viewNote', function ($http, $scope, $location, $filter, $
   $scope.arr = [note];
   $scope.visitID = item.visitID;
 
-//noteid?
+  //noteid?
   $scope.delete = function () {
 
     var fields = {
@@ -343,9 +329,9 @@ medconnect.controller('viewNote', function ($http, $scope, $location, $filter, $
 
 })
 
-    medconnect.controller('imgModal', function ($scope, $location, $filter, $uibModalInstance, item){
+medconnect.controller('imgModal', function ($scope, $location, $filter, $uibModalInstance, item){
 
-       $scope.img = item[0];
+      $scope.img = item[0];
       $scope.delete = function () {
         $uibModalInstance.close(item);
       };
@@ -357,4 +343,4 @@ medconnect.controller('viewNote', function ($http, $scope, $location, $filter, $
 
       })
 
-  }());
+}());
