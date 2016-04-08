@@ -293,9 +293,10 @@ var addVitals = function (v, patientID){
   //patients do not have to attach vitals to visit
   //but if there is a visit, make sure patient had visit with doctor
   if(!v.visitID){ v.visitID = 0 }
-  return hadVisitWithDoctor(patientID, v.visitID).then(function (result){
+  return hadVisitWithPatient(patientID, v.visitID).then(function (result){
     if(!result){ return false }
-    return db.query('INSERT INTO Vitals (userID, visitID, vitalsDate, height, weight, BMI, temperature, pulse, respiratoryRate, bloodPressure, bloodOxygenSat) VALUES (?,?,?,?,?,?,?,?,?,?,?);', [v.patientID, v.visitID, v.vitalsDate, v.height, v.weight, v.BMI, v.temperature, v.pulse, v.respiratoryRate, v.bloodPressure, v.bloodOxygenSat])
+    var date = new Date(v.vitalsDate).toISOString().replace(/T/, ' ').replace(/\..+/, '')
+    return db.query('INSERT INTO Vitals (userID, visitID, vitalsDate, height, weight, BMI, temperature, pulse, respiratoryRate, bloodPressure, bloodOxygenSat) VALUES (?,?,?,?,?,?,?,?,?,?,?);', [patientID, v.visitID, date, v.height, v.weight, v.BMI, v.temperature, v.pulse, v.respiratoryRate, v.bloodPressure, v.bloodOxygenSat])
     .then(function (result){
       return result[0].affectedRows === 1
     })
@@ -312,6 +313,13 @@ var editVitals = function (v, patientID){
       return result[0].affectedRows === 1
     })
   })
+}
+
+var getVitals = function(patientID){
+  return db.query('SELECT * from Vitals where userID=?;',[patientID])
+    .then(function(results){
+      return results[0]
+    })
 }
 
 var addNote = function (n, patientID){
@@ -419,6 +427,7 @@ module.exports = {
   updateRejectedAppointment: updateRejectedAppointment,
   editAppointmentDetails: editAppointmentDetails,
   addVitals: addVitals,
+  getVitals: getVitals,
   addNote: addNote,
   getNotes: getNotes,
   removeNote: removeNote,

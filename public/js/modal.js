@@ -85,63 +85,9 @@
       $uibModalInstance.dismiss('cancel');
     };
 
-})
-
-    medconnect.controller('prescriptions', function ($http, $scope, $location, $filter, $uibModalInstance, item){
-
-      $scope.visitID = item.visitID;
-
-      $http({
-        method: 'POST',
-        url: '/data/getStatic',
-        data: {
-          type : 'medications'
-        }
-      }).success(function (data) {
-        $scope.medications = data;
-
-      }).error(function (err) {
-        console.log("error")
-      })
-
-      $scope.update = function () {
-
-        var fields = {
-          visitID : $scope.visitID,
-          dosage : $scope.dosage,
-          startDate : $scope.startDate,
-          stopDate : $scope.stopDate,
-          notes : $scope.notes,
-          doctorName : $scope.doctorName,
-          medicationID : $scope.medication._id,
-          name : $scope.medication.name,
-          doctorName: $scope.docName
-        }
-        console.log($scope.medication._id)
-
-        $http.post('/patient/addPrescription', {
-          visitID : $scope.visitID,
-          dosage : $scope.dosage,
-          startDate : $scope.startDate,
-          stopDate : $scope.stopDate,
-          notes : $scope.notes,
-          medicationID : $scope.medication._id,
-          doctorName: $scope.docName
-        }).success(function (data) {
-          console.log(data)
-
-        }).error(function (err) {
-          console.log("error")
-        })
-        $uibModalInstance.close(fields);
-      };
-
-      $scope.cancel = function () {
-        $uibModalInstance.dismiss('cancel');
-      };
   })
 
-medconnect.controller('Note', function ($http, $scope, $location, $filter, $uibModalInstance, item){
+  medconnect.controller('Note', function ($http, $scope, $location, $filter, $uibModalInstance, item){
 
     $scope.update = function () {
       var fields = {
@@ -158,6 +104,39 @@ medconnect.controller('Note', function ($http, $scope, $location, $filter, $uibM
         console.log("error")
       })
       console.log('before', fields)
+      $uibModalInstance.close(fields);
+    };
+
+    $scope.cancel = function () {
+      $uibModalInstance.dismiss('cancel');
+    };
+  })
+
+  medconnect.controller('Vitals', function ($http, $scope, $location, $filter, $uibModalInstance, item){
+
+    $scope.add = function () {
+      var fields = {
+        visitID : null,
+        vitalsDate : $scope.vitalsDate,
+        height : $scope.height,
+        weight : $scope.weight,
+        BMI : $scope.BMI,
+        temperature : $scope.temperature,
+        pulse : $scope.pulse,
+        respiratoryRate : $scope.respiratoryRate,
+        bloodPressure : $scope.bloodPressure,
+        bloodOxygenSat : $scope.bloodOxygenSat
+      }
+
+      $http({
+        method: 'POST',
+        url: '/patient/addVitals',
+        data: fields
+      }).success(function (data) {
+
+      }).error(function (err) {
+        console.log("error")
+      })
       $uibModalInstance.close(fields);
     };
 
@@ -215,38 +194,38 @@ medconnect.controller('Note', function ($http, $scope, $location, $filter, $uibM
   })
 
   medconnect.controller('viewVitals', function ($http, $scope, $location, $filter, $uibModalInstance, item){
+    $scope.id = item.vitalID
+    $scope.vitalsDate = new Date(item.vitalsDate)
+    $scope.height = Number(item.height)
+    $scope.weight = Number(item.weight)
+    $scope.BMI = Number(item.BMI)
+    $scope.temperature = Number(item.temperature)
+    $scope.pulse = Number(item.pulse)
+    $scope.respiratoryRate = Number(item.respiratoryRate)
+    $scope.bloodPressure = item.bloodPressure
+    $scope.bloodOxygenSat = item.bloodOxygenSat
 
-    $scope.vitalsDate = new Date(item.vitalsDate);
-    $scope.height = Number(item.height);
-    $scope.weight = Number(item.weight);
-    $scope.BMI = Number(item.BMI);
-    $scope.temperature = Number(item.temperature);
-    $scope.pulse = Number(item.pulse);
-    $scope.respiratoryRate = Number(item.respiratoryRate);
-    $scope.bloodPressure = Number(item.bloodPressure);
-    $scope.bloodOxygenSat = Number(item.bloodOxygenSat);
-
-    $scope.update = function () {
+    $scope.add = function () {
 
       var fields = {
+        vitalID: -1,
         visitID : item.visitID,
-        vitalsDate : $scope.vitalsDate,
-        height : $scope.height,
-        weight : $scope.weight,
-        BMI : $scope.BMI,
-        temperature : $scope.temperature,
-        pulse : $scope.pulse,
-        respiratoryRate : $scope.respiratoryRate,
-        bloodPressure : $scope.bloodPressure,
-        bloodOxygenSat : $scope.bloodOxygenSat,
+        vitalsDate : $scope.vitalsDate ,
+        height : $scope.height ? $scope.height : '',
+        weight : $scope.weight ? $scope.weight : '',
+        BMI : $scope.BMI ? $scope.BMI : '',
+        temperature : $scope.temperature ? $scope.temperature : '',
+        pulse : $scope.pulse ? $scope.pulse : '',
+        respiratoryRate : $scope.respiratoryRate ? $scope.respiratoryRate : '',
+        bloodPressure : $scope.bloodPressure ? $scope.bloodPressure : '',
+        bloodOxygenSat : $scope.bloodOxygenSat ? $scope.bloodOxygenSat : '',
         name: 'view vitals'
       }
 
       $http({
         method: 'POST',
-        url: '/patient/editVitals',
+        url: '/patient/addVitals',
         data: fields
-      }).success(function (data) {
       }).error(function (err) {
         console.log("error")
       })

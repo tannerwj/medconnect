@@ -726,4 +726,51 @@ medconnect.controller('patientNotes', ['$http', '$scope', '$uibModal', function(
   }
 }])
 
+medconnect.controller('patientVitals', ['$http', '$scope', '$uibModal', function($http, $scope, $uibModal){
+  $scope.vitals = []
+  $scope.init = function(){
+    getData()
+  }
+
+  $scope.add = function(){
+    $scope.item = {}
+    var modalInstance = $uibModal.open({
+      animation: true,
+      templateUrl: '/views/viewVitals.html',
+      controller: 'viewVitals',
+      resolve: {
+        item : function(){
+          return $scope.item
+        }
+      }
+    })
+    modalInstance.result.then(function(fields){
+      $scope.vitals.push(fields)
+    })
+  }
+
+  $scope.viewVitals = function (vitals) {
+    var modalInstance = $uibModal.open({
+      animation: true,
+      templateUrl: '/views/viewVitals.html',
+      controller: 'viewVitals',
+      resolve: {
+        item : function(){
+          return vitals;
+        }
+      }
+    });
+    modalInstance.result.then(function () {
+      
+    });
+  }
+
+  var getData = function(){
+    $http.get('/patient/getVitals')
+      .success(function(result){
+        $scope.vitals = result
+      })
+  }
+}])
+
 }());

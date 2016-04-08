@@ -135,9 +135,10 @@ router.post('/patient/addVitals', auth, function (req, res){
 	})
 })
 
-router.post('/patient/editVitals', auth, function (req, res){
-	pat.editVitals(req.body, req.user.id).then(function (result){
-		res.sendStatus(result ? 200 : 400)
+router.get('/patient/getVitals', auth, function(req, res){
+	pat.getVitals(req.user.id).then(function(result){
+		if(result){return res.json(result)}
+		return res.sendStatus(400)
 	})
 })
 
