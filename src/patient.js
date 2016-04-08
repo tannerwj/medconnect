@@ -173,7 +173,7 @@ var getPatient = function (userId){
 }
 
 var requestAppointment = function (patientId, doctorId, requestedDate){
-  var date = new Date(requestedDate).toISOString().replace(/T/, ' ').replace(/\..+/, '')
+  var date = new Date(requestedDate)
   return db.query("INSERT INTO Visits (visitStatus, patientID, doctorID, visitDate, diagnosis, symptoms) VALUES (?,?,?,?,'','');", [db.REQUESTED_VISIT, patientId, doctorId, date]).then(function (result){
     return db.query("INSERT INTO Vitals (userID, visitID, vitalsDate, height, weight, BMI, temperature, pulse, respiratoryRate, bloodPressure, bloodOxygenSat) VALUES (?,?,'0000-00-00 00-00-00','','','','','','','','');", [patientId, result[0].insertId])
     .then(function (result){
