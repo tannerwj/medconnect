@@ -30,13 +30,152 @@
 
   });
 
-  medconnect.controller('vitals', function ($http, $scope, $location, $filter, $uibModalInstance, item){
+  medconnect.controller('prescriptions', function ($http, $scope, $location, $filter, $uibModalInstance, item){
 
-    $scope.visitID = item.visitID;
+    var visitID = item;
+
+    $http({
+      method: 'POST',
+      url: '/data/getStatic',
+      data: {
+        type : 'medications'
+      }
+    }).success(function (data) {
+      $scope.medications = data;
+    }).error(function (err) {
+      console.log("error")
+    })
+
+    $scope.update = function () {
+      var st = $scope.startDate
+      var start = st.getFullYear() + '-' + (st.getMonth() + 1) + '-' + st.getDate()
+
+      var et = $scope.endDate
+      var end = et.getFullYear() + '-' + (et.getMonth() + 1) + '-' + et.getDate()
+
+      var fields = {
+        visitID : visitID,
+        dosage : $scope.dosage,
+        startDate : start,
+        endDate : end,
+        notes : $scope.notes || '',
+        doctorName : '',
+        medicationID : $scope.medID
+      }
+
+      $http({
+        method: 'POST',
+        url: '/patient/addPrescription',
+        data: fields
+      }).success(function () {
+      }).error(function (err) {
+        console.log("error")
+      })
+
+      for(var i = 0, len = $scope.medications.length; i < len; i++){
+        if($scope.medications[i]._id == $scope.medID){
+          fields.name = $scope.medications[i].name
+          break
+        }
+      }
+      $uibModalInstance.close(fields);
+    };
+
+    $scope.cancel = function () {
+      $uibModalInstance.dismiss('cancel');
+    };
+
+  })
+
+  medconnect.controller('Note', function ($http, $scope, $location, $filter, $uibModalInstance, item){
+
+    $scope.update = function () {
+      var fields = {
+        visitID : item,
+        note : $scope.note + ''
+      }
+
+      $http({
+        method: 'POST',
+        url: '/patient/addNote',
+        data: fields
+      }).success(function (data) {
+      }).error(function (err) {
+        console.log("error")
+      })
+      console.log('before', fields)
+      $uibModalInstance.close(fields);
+    };
+
+    $scope.cancel = function () {
+      $uibModalInstance.dismiss('cancel');
+    };
+  })
+
+  medconnect.controller('upload', function ($http, Upload, $window, $scope, $uibModalInstance, item){
+
+    var visitID = item;
+
+    $http({
+      method: 'POST',
+      url: '/data/getStatic',
+      data: {
+        type : 'datatypes'
+      }
+    }).success(function (data) {
+      $scope.datatypes = data;
+    }).error(function (err) {
+      console.log("error")
+    })
+
+
+    $scope.submit = function(){
+      if ($scope.upload_form.file.$valid && $scope.file) {
+         $scope.upload($scope.file)
+      }
+    }
+
+    $scope.upload = function (file){
+      $scope.fields = {
+        file: file,
+        dataTypeID: $scope.type,
+        dataName: $scope.name,
+        visitID: visitID
+      }
+
+      Upload.upload({
+        url:'/patient/addFile',
+        data: $scope.fields
+      }).then(function (data) {
+          $uibModalInstance.close(data.data[0])
+      }, function (resp) {
+          console.log('Error status: ' + resp.status)
+      })
+
+    }
+
+    $scope.cancel = function () {
+      $uibModalInstance.dismiss('cancel');
+    };
+
+  })
+
+  medconnect.controller('viewVitals', function ($http, $scope, $location, $filter, $uibModalInstance, item){
+
+    $scope.vitalsDate = new Date(item.vitalsDate);
+    $scope.height = Number(item.height);
+    $scope.weight = Number(item.weight);
+    $scope.BMI = Number(item.BMI);
+    $scope.temperature = Number(item.temperature);
+    $scope.pulse = Number(item.pulse);
+    $scope.respiratoryRate = Number(item.respiratoryRate);
+    $scope.bloodPressure = Number(item.bloodPressure);
+    $scope.bloodOxygenSat = Number(item.bloodOxygenSat);
 
     $scope.update = function () {
 
       var fields = {
+        visitID : item.visitID,
         vitalsDate : $scope.vitalsDate,
         height : $scope.height,
         weight : $scope.weight,
@@ -45,16 +184,15 @@
         pulse : $scope.pulse,
         respiratoryRate : $scope.respiratoryRate,
         bloodPressure : $scope.bloodPressure,
-        bloodOxygenSat : $scope.bloodOxygenSat
+        bloodOxygenSat : $scope.bloodOxygenSat,
+        name: 'view vitals'
       }
 
       $http({
         method: 'POST',
-        url: '/patient/addVitals',
+        url: '/patient/editVitals',
         data: fields
       }).success(function (data) {
-        console.log(data)
-
       }).error(function (err) {
         console.log("error")
       })
@@ -66,208 +204,20 @@
       $uibModalInstance.dismiss('cancel');
     };
 
-})
-
-    medconnect.controller('prescriptions', function ($http, $scope, $location, $filter, $uibModalInstance, item){
-
-      $scope.visitID = item.visitID;
-
-      $http({
-        method: 'POST',
-        url: '/data/getStatic',
-        data: {
-          type : 'medications'
-        }
-      }).success(function (data) {
-        $scope.medications = data;
-
-      }).error(function (err) {
-        console.log("error")
-      })
-
-      $scope.update = function () {
-
-        var fields = {
-          visitID : $scope.visitID,
-          dosage : $scope.dosage,
-          startDate : $scope.startDate,
-          endDate : $scope.endDate,
-          notes : $scope.notes,
-          doctorName : $scope.doctorName,
-          medicationID : $scope.name
-        }
-
-        $http({
-          method: 'POST',
-          url: '/patient/addPrescription',
-          data: fields
-        }).success(function (data) {
-          console.log(data)
-
-        }).error(function (err) {
-          console.log("error")
-        })
-
-        fields.name = $scope.med.name;
-        $uibModalInstance.close(fields);
-      };
-
-      $scope.cancel = function () {
-        $uibModalInstance.dismiss('cancel');
-      };
-
   })
-
-  medconnect.controller('Note', function ($http, $scope, $location, $filter, $uibModalInstance, item){
-
-    $scope.visitID = item;
-    var fields = {
-      visitID : item,
-      note : $scope.note
-    }
-
-    $scope.update = function () {
-
-      $http({
-        method: 'POST',
-        url: '/patient/addNote',
-        data: fields
-      }).success(function (data) {
-        console.log(data)
-
-      }).error(function (err) {
-        console.log("error")
-      })
-
-      $uibModalInstance.close(fields);
-    };
-
-    $scope.cancel = function () {
-      $uibModalInstance.dismiss('cancel');
-    };
-
-})
-
-medconnect.controller('upload', function ($http, Upload, $window, $scope, $uibModalInstance, item){
-
-  $scope.visitID = item;
-
-  $http({
-    method: 'POST',
-    url: '/data/getStatic',
-    data: {
-      type : 'datatypes'
-    }
-  }).success(function (data) {
-    $scope.datatypes = data;
-  }).error(function (err) {
-    console.log("error")
-  })
-
-
-  $scope.submit = function(){
-    if ($scope.upload_form.file.$valid && $scope.file) {
-       $scope.upload($scope.file)
-    }
-  }
-
-  $scope.upload = function (file){
-
-    $scope.type;
-    $scope.name; //title
-
-    $scope.fields = {
-      file: file,
-      dataTypeID: 10,
-      dataName: 'work'
-    }
-
-    Upload.upload({
-      url:'/patient/addFile',
-      data: $scope.fields
-    }).then(function (resp) {
-        if(resp.data.error_code === 0){
-            console.log('Success ' + resp.config.data.file.name + ' uploaded')
-            // $uibModalInstance.close(fields);
-        } else{
-          console.log('an error occured')
-        }
-    }, function (resp) {
-        console.log('Error status: ' + resp.status)
-    })
-
-  }
-
-  $scope.cancel = function () {
-    $uibModalInstance.dismiss('cancel');
-  };
-
-})
-
-medconnect.controller('viewVitals', function ($http, $scope, $location, $filter, $uibModalInstance, item){
-
-  var item = item[0];
-  $scope.vitalsDate = item.vitalsDate;
-  $scope.height = item.height;
-  $scope.weight = item.weight;
-  $scope.BMI = item.BMI;
-  $scope.temperature = item.temperature;
-  $scope.pulse = item.pulse;
-  $scope.respiratoryRate = item.respiratoryRate;
-  $scope.bloodPressure = item.bloodPressure;
-  $scope.bloodOxygenSat = item.bloodOxygenSat;
-
-  var arrIndex = item[1]; // index
-  $scope.visitID = item[2];
-
-  // var fields = {
-  //   visitID : $scope.visitID,
-  //   vitalsDate : $scope.vitalsDate,
-  //   height : $scope.height,
-  //   weight : $scope.weight,
-  //   BMI : $scope.BMI,
-  //   temperature : $scope.temperature,
-  //   pulse : $scope.pulse,
-  //   respiratoryRate : $scope.respiratoryRate,
-  //   bloodPressure : $scope.bloodPressure,
-  //   bloodOxygenSat : $scope.bloodOxygenSat
-  // }
-
-  $scope.delete = function () {
-
-    var fields = { // to delete
-      visitID : $scope.visitID
-    }
-
-    $http({
-      method: 'POST',
-      url: '/patient/deleteVitals',
-      data: fields
-    }).success(function (data) {
-      console.log(data)
-
-    }).error(function (err) {
-      console.log("error")
-    })
-
-    $uibModalInstance.close(arrIndex);
-  };
-
-  $scope.cancel = function () {
-    $uibModalInstance.dismiss('cancel');
-  };
-
-})
 
   medconnect.controller('viewPrescriptions', function ($http, $scope, $location, $filter, $uibModalInstance, item){
+    var st = new Date(item.startDate)
+    var start = st.getFullYear() + '-' + (st.getMonth() + 1) + '-' + st.getDate()
 
-    var item = item[0];
+    var et = new Date(item.stopDate)
+    var end = et.getFullYear() + '-' + (et.getMonth() + 1) + '-' + et.getDate()
+
     var name = ['Prescription Name', item.name];
     var dosage = ['Dosage', item.dosage];
-    var startDate = ['Start Date', item.startDate];
-    var endDate = ['Stop Date', item.stopDate];
+    var startDate = ['Start Date', start];
+    var endDate = ['End Date', end];
     var notes = ['Notes', item.notes];
-    var arrIndex = item[1]; // index
 
     $scope.arr = [name, dosage, startDate, endDate, notes];
 
@@ -275,72 +225,55 @@ medconnect.controller('viewVitals', function ($http, $scope, $location, $filter,
     $scope.visitID = item.visitID;
 
     $scope.delete = function () {
-      $http.post('/patient/removePrescription', {
-        medicationID: item.medicationID,
-        visitID: item.visitID
+
+      var fields = {
+        visitID : $scope.visitID,
+        medicationID : item.medicationID
+      }
+
+      $http({
+        method: 'POST',
+        url: '/patient/removePrescription',
+        data: fields
+      }).success(function (data) {
       }).error(function (err) {
         console.log("error")
       })
 
-      $uibModalInstance.close(arrIndex);
+      $uibModalInstance.close();
+    };
+
+    $scope.cancel = function () {
+      $uibModalInstance.dismiss('cancel');
+    };
+  })
+
+  medconnect.controller('viewNote', function ($http, $scope, $location, $filter, $uibModalInstance, item){
+
+    $scope.note = item
+
+    $scope.delete = function () {
+      console.log('id', $scope.note.noteID)
+      $http({
+        method: 'POST',
+        url: '/patient/removeNote',
+        data: {
+          noteID: $scope.note.noteID
+        }
+      }).success(function (data) {
+        console.log(data)
+
+      }).error(function (err) {
+        console.log("error")
+      })
+
+      $uibModalInstance.close(item.nodeID);
     };
 
     $scope.cancel = function () {
       $uibModalInstance.dismiss('cancel');
     };
 
-})
-
-medconnect.controller('viewNote', function ($http, $scope, $location, $filter, $uibModalInstance, item){
-
-  var item = item[0];
-  var note = ['Note', item.note];
-  var arrIndex = item[1];
-
-  $scope.arr = [note];
-  $scope.visitID = item.visitID;
-
-  //noteid?
-  $scope.delete = function () {
-
-    var fields = {
-      visitID : $scope.visitID,
-      note : note
-      // medicationID : $scope.med._id
-    }
-
-    $http({
-      method: 'POST',
-      url: '/patient/deleteNote',
-      data: fields
-    }).success(function (data) {
-      console.log(data)
-
-    }).error(function (err) {
-      console.log("error")
-    })
-
-    $uibModalInstance.close(arrIndex);
-  };
-
-  $scope.cancel = function () {
-    $uibModalInstance.dismiss('cancel');
-  };
-
-})
-
-medconnect.controller('imgModal', function ($scope, $location, $filter, $uibModalInstance, item){
-
-      $scope.img = item[0];
-      $scope.delete = function () {
-        $uibModalInstance.close(item);
-      };
-
-      $scope.cancel = function () {
-        $uibModalInstance.dismiss('cancel');
-      };
-
-
-      })
+  })
 
 }());
