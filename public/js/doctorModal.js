@@ -1,5 +1,5 @@
 (function(){
-  var medconnect = angular.module("mcModal", []);
+  var medconnect = angular.module("docModal", []);
 
   medconnect.controller('DoctorPrescriptions', function ($http, $scope, $location, $filter, $uibModalInstance, item){
 
