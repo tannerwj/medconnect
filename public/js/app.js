@@ -216,6 +216,12 @@ medconnect.config(['$routeProvider', '$locationProvider',
           isDoctor: isDoctor
         }
       })
+      .when('/doctor/appointmentDetails/:visit_id', {
+        templateUrl: '/views/doctor/appointmentDetails.html',
+        resolve:{
+          isDoctor: isDoctor
+        }
+      })
       .when('/doctor/pastAppointments/:id', {
         templateUrl: '/views/doctor/pastAppointments.html',
         resolve:{

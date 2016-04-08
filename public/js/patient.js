@@ -673,6 +673,18 @@ medconnect.controller('patientPrescriptions', ['$http', '$scope', '$uibModal', f
   }
 }])
 
+  medconnect.controller('VisitHistory',  ['$http', '$scope', '$location', function($http, $scope, $location){
+
+    $http.get('/patient/getPastAppointments').success(function (data){
+      $scope.visits = data
+    })
+
+    $scope.appointmentDetails = function(visitID){
+      $location.url('/patient/appointmentDetails/' + visitID)
+    }
+
+  }])
+
 medconnect.controller('patientNotes', ['$http', '$scope', '$uibModal', function($http, $scope, $uibModal){
   $scope.notes = []
   $scope.init = function(){

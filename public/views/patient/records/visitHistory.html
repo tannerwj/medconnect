@@ -1,0 +1,11 @@
+<div class='main' ng-controller='VisitHistory'>
+  <h1>Visit History</h1>
+  <div class="list-group">
+    <li class="list-group-item" ng-show="!visits.length">You have no past appointments</li>
+    <li ng-repeat="doc in visits" ng-click="appointmentDetails(doc.visitID)" class="list-group-item">
+      <strong>Dr. {{doc.firstName}} {{doc.lastName}}</strong>
+      <em>{{doc.visitDate | date : 'short'}}</em>
+      <i class="fa fa-chevron-right fa-fw fa-pull-right"></i>
+    </li>
+  </div>
+</div>

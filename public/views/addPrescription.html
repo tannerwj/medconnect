@@ -10,22 +10,10 @@
       <div class="col-sm-4">
         <div class="input-group">
           <span class="input-group-addon"><i class="fa fa-info fa-fw"></i></span>
-          <select name="name" id="name" ng-options="med.name for med in medications" class="form-control" ng-model="medication">
+            <select name="name" id="name" ng-options="med.name for med in medications" class="form-control" ng-model="medication">
           </select>
         </div>
           <div class="help-block" ng-messages="preForm.name.$error" ng-show="preForm.name.$touched">
-            <div ng-messages-include="my-custom-messages"></div>
-        </div>
-      </div>
-    </div>
-    <div class="form-group required">
-      <label for="doc" class="col-sm-4 control-label">Prescribing Doctor</label>
-      <div class="col-sm-4">
-        <div class="input-group">
-          <span class="input-group-addon"><i class="fa fa-medkit fa-fw"></i></span>
-          <input type="text" name="doc" class="form-control" id="doc" ng-model="docName">
-        </div>
-          <div class="help-block" ng-messages="preForm.dosage.$error" ng-show="preForm.dosage.$touched">
             <div ng-messages-include="my-custom-messages"></div>
         </div>
       </div>
