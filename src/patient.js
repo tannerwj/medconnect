@@ -416,6 +416,16 @@ var removePrescription = function (medicationID, patientID, visitID){
   })
 }
 
+var getPrescriptions = function (patientID){
+  return db.query('SELECT m.name, mp.* FROM MedicationPatient mp join medications m on m._id = mp.medicationID where mp.userID = ?;',[patientID])
+  .then(function (results){
+    return results[0]
+  }).catch(function (err){
+    console.log(err)
+    return false
+  })
+}
+
 module.exports = {
   register: register,
   edit: edit,
@@ -439,6 +449,7 @@ module.exports = {
   getNotes: getNotes,
   removeNote: removeNote,
   addFile: addFile,
-  addPrescription: addPrescription,
+  addPrescription: addPrescription, 
+  getPrescriptions: getPrescriptions,
   removePrescription: removePrescription
 }
