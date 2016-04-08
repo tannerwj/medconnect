@@ -133,10 +133,13 @@ h3{
   margin-bottom:0;
   padding:5px;
 }
-.profileAlerts .fullWidth{
+.fullWidth{
   width:100%;
 }
 
+.halfWidth{
+  width:50%;
+}
 
 .fa-check-circle-o{
   color:green;

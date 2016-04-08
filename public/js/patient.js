@@ -627,16 +627,13 @@ medconnect.controller('patientPrescriptions', ['$http', '$scope', '$uibModal', f
     getData()
   }
 
-  $scope.viewPrescription = function(script){
-    var props = [script]
+  $scope.viewPrescription = function(prescriptions){
     var modalInstance = $uibModal.open({
       animation: true,
       templateUrl: '/views/viewPrescriptions.html',
       controller: 'viewPrescriptions',
       resolve: {
-        item : function(){
-          return props;
-        }
+        item : prescriptions
       }
     });
     modalInstance.result.then(function() {
@@ -767,7 +764,7 @@ medconnect.controller('patientVitals', ['$http', '$scope', '$uibModal', function
       }
     });
     modalInstance.result.then(function () {
-      
+
     });
   }
 
