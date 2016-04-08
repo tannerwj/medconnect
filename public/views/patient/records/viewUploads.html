@@ -1,0 +1,19 @@
+<div class = "main" ng-controller="patientUploads" ng-init="init()">
+	<div class="text-center">
+	    <h1>Uploads</h1>
+		<button ng-click="add()" class="btn btn-sm btn-primary btn-block">Add Upload</button>
+	    <br/>
+	    <form class="form-horizontal">
+			<div class="form-group">
+				<div class="input-group">
+					<span class="input-group-addon"><i class="fa fa-search fa-fw"></i></span>
+					<input type="text" id="search" class="form-control" ng-model="query">
+				</div>
+			</div>
+		</form>
+	    <div class="list-group">
+			<a class="list-group-item" ng-hide="uploads.length">You have no uploads</a>
+			<a ng-repeat="u in uploads | filter:query | orderBy:'-uploadDate'" ng-click="viewUpload(u)" class="list-group-item list-group-item-info"><strong>{{u.dataName}}</strong><br/><em>Type: {{u.name}}<br/>Upload date: {{u.uploadDate| date:'MM/dd/yyyy'}}</em><i class="fa fa-chevron-right fa-fw fa-pull-right"></i></a>
+	    </div>
+	</div>
+</div>
