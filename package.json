@@ -16,6 +16,7 @@
     "bcrypt-nodejs": "*",
     "bluebird": "^3.3.3",
     "body-parser": "*",
+    "compression": "^1.6.1",
     "cookie-parser": "*",
     "dotenv": "^2.0.0",
     "express": "*",
