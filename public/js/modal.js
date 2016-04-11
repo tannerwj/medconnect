@@ -96,7 +96,7 @@
     $scope.update = function () {
       var fields = {
         visitID : item,
-        note : $scope.note
+        note : $scope.note,
         noteDate: new Date()
       }
 
