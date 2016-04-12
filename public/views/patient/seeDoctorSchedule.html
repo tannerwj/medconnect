@@ -2,19 +2,26 @@
   <h3>Dr. {{lastName}}'s Schedule</h3>
 
   <table class="table table-striped table-bordered table-hover">
-    <tr ng-repeat="s in availability"><td>{{s[0]}}</td><td>{{s[1] | date : 'shortTime'}} to {{s[2] | date : 'shortTime'}}</td></tr>
+    <tr ng-repeat="s in availability">
+      <td>{{s[0]}}</td>
+      <td ng-show="{{s[1] === 'unavaliable'}}">{{s[1][0].toUpperCase() + s[1].slice(1)}}</td>
+      <td ng-hide="{{s[1] === 'unavaliable'}}">{{s[1] | date : 'shortTime'}} to {{s[2] | date : 'shortTime'}}</td>
+    </tr>
   </table>
 
-  <h4>Select Date</h4>
+  <h4>Choose Date</h4>
   <uib-datepicker ng-model="date" class="well well-sm" datepicker-options="inlineOptions"></uib-datepicker>
-  <hr />
-  <h4>Select time</h4>
+
+  <h4>Choose Time</h4>
   <uib-timepicker ng-model='time' hour-step="1" minute-step="30" show-meridian="true"></uib-timepicker>
 
-  <pre>Date is: <em>{{date | date:'fullDate' }} </em></pre>
-  <pre>Time is: <em>{{time | date:'shortTime'}} </em></pre>
+  <div class="panel panel-info">
+  <div class="panel-heading">Selected time</div>
+    <div class="panel-body">
+      {{date | date:'fullDate' }} At {{time | date:'shortTime'}}
+    </div>
+  </div>
 
-<hr />
 <div class="text-center">
   <button class="btn btn-primary" ng-click="submit()">Request Appointment</button>
 </div>
