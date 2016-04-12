@@ -18,9 +18,11 @@
 		var receiveInputs = function () {
 			if (vm.email && vm.firstName && vm.lastName && vm.address && vm.phoneNumber && vm.password && vm.passwordConfirm && vm.code) {
 				if (vm.password === vm.passwordConfirm) {
+					console.log(true)
 					return true;
 				}
 			}
+			console.log(false)
 			return false;
 		}
 
@@ -34,7 +36,7 @@
 
 			var modalInstance = $uibModal.open({
 				animation: true,
-				templateUrl: '../views/modal.html',
+				templateUrl: '/views/modal.html',
 				controller: 'ModalInstanceCtrl',
 				resolve: {
 					item : function(){
@@ -64,8 +66,6 @@
 					$scope.open(true);
 					console.log('Server error: ' + err);
 				})
-			} else {
-				$scope.open(true);
 			}
 		}
 
@@ -133,27 +133,36 @@
 			}
 		}
 
+		var receiveInputs = function () {
+			if (vm.firstName && vm.lastName && vm.address && vm.phoneNumber && vm.code) {
+				return true;
+			}
+			return false;
+		}
+
 		vm.save = function () {
-			$http({
-					method: 'POST',
-					url: '/doctor/edit',
-					data: {
-						'firstName': vm.firstName,
-						'lastName': vm.lastName,
-						'address': vm.address,
-						'phone': vm.phoneNumber,
-						'experience': vm.experience,
-						'volunteerNotes': vm.volunteerNotes,
-						'otherNotes': vm.otherNotes,
-						'specialties' : vm.ids,
-						'code': vm.code
-					}
-				}).success(function(data){
-	        $scope.open();
-	      }).error(function(err){
-	        $scope.open(true);
-	        console.log('Server error: ' + err);
-	      })
+			if(receiveInputs()){
+				$http({
+						method: 'POST',
+						url: '/doctor/edit',
+						data: {
+							'firstName': vm.firstName,
+							'lastName': vm.lastName,
+							'address': vm.address,
+							'phone': vm.phoneNumber,
+							'experience': vm.experience,
+							'volunteerNotes': vm.volunteerNotes,
+							'otherNotes': vm.otherNotes,
+							'specialties' : vm.ids,
+							'code': vm.code
+						}
+					}).success(function(data){
+						$scope.open();
+					}).error(function(err){
+						$scope.open(true);
+						console.log('Server error: ' + err);
+					})
+			}
 		}
 		// Modal open
 		$scope.open = function (error) {
@@ -165,7 +174,7 @@
 	    }
 	    var modalInstance = $uibModal.open({
 	      animation: true,
-	      templateUrl: '../views/modal.html',
+	      templateUrl: '/views/modal.html',
 	      controller: 'ModalInstanceCtrl',
 	      resolve: {
 	        item : function(){
