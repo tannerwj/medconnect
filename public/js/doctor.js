@@ -432,6 +432,7 @@
 	      visitID : visitID
 	    }
 	  }).success(function (data) {
+			console.log(data)
 	    $scope.name = data.visit.firstName + " " + data.visit.lastName;
 	    $scope.date = data.visit.visitDate;
 	    $scope.diagnosis = data.visit.diagnosis;
@@ -493,15 +494,16 @@
 
 	  $scope.addPre = function () {
 
-	    $scope.item = visitID;
+	    var item = [visitID, "doctor"];
+
 
 	    var modalInstance = $uibModal.open({
 	      animation: true,
 	      templateUrl: '/views/addPrescription.html',
-	      controller: 'DoctorPrescriptions',
+	      controller: 'prescriptions',
 	      resolve: {
 	           item : function(){
-	             return visitID;
+	             return item;
 	           }
 	         }
 	    });
@@ -511,13 +513,15 @@
 	  }
 
 	  $scope.addNote = function () {
+
+			var item = [visitID, "doctor"];
 	    var modalInstance = $uibModal.open({
 	      animation: true,
 	      templateUrl: '/views/addNote.html',
-	      controller: 'DoctorNote',
+	      controller: 'Note',
 	      resolve: {
 	           item : function(){
-	             return visitID
+	             return item
 	           }
 	         }
 	    });
@@ -544,15 +548,15 @@
 
 	  $scope.addImage = function () {
 
-	    $scope.item = visitID;
+	    var item= [visitID, "doctor"];
 
 	    var modalInstance = $uibModal.open({
 	      animation: true,
 	      templateUrl: '/views/addUpload.html',
-	      controller: 'DoctorUpload',
+	      controller: 'upload',
 	      resolve: {
 	           item : function(){
-	             return $scope.item;
+	             return item;
 	           }
 	         }
 	    });
@@ -562,13 +566,14 @@
 	  }
 
 	  $scope.viewNote = function (note) {
+			var item = [note, "doctor"];
 	    var modalInstance = $uibModal.open({
 	      animation: true,
 	      templateUrl: '/views/viewNote.html',
-	      controller: 'DoctorViewNote',
+	      controller: 'viewNote',
 	      resolve: {
 	        item : function(){
-	          return note;
+	          return item;
 	        }
 	      }
 	    });

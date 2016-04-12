@@ -6,7 +6,11 @@
     {{item}}
    </p>
    <table class="table table-striped table-bordered" ng-hide="{{!schedule}}">
-     <tr ng-repeat="s in schedule"><td>{{s[0]}}</td><td>{{s[1] | date : 'shortTime'}} to {{s[2] | date : 'shortTime'}}</td></tr>
+     <tr ng-repeat="s in schedule">
+       <td>{{s[0]}}</td>
+       <td ng-show="{{s[1] === 'unavaliable'}}">{{s[1][0].toUpperCase() + s[1].slice(1)}}</td>
+       <td ng-hide="{{s[1] === 'unavaliable'}}">{{s[1] | date : 'shortTime'}} to {{s[2] | date : 'shortTime'}}</td>
+     </tr>
    </table>
 </div>
 <div class="modal-footer">

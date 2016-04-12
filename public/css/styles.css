@@ -4,6 +4,7 @@ body {
 h1{
   text-align: center;
   line-height: 125%;
+  padding-bottom: 20px;
 }
 .navbar-brand{
   position: absolute;
@@ -204,4 +205,8 @@ h3{
     background: white;
     cursor: inherit;
     display: block;
+}
+
+.uib-daypicker{
+  margin:0 auto;
 }
