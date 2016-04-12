@@ -64,11 +64,11 @@ medconnect.controller('PatientRegister', ['$http', '$location', '$uibModal', '$s
         $scope.open(true);
         console.log('Server error: ' + err);
       })
-  }else{
-    $scope.open(true);
   }
 
-}}]);
+}
+
+}]);
 
 medconnect.controller('PatientProfile', ['$http', '$location', '$uibModal', '$scope', function($http, $location, $uibModal, $scope){
 
@@ -108,7 +108,15 @@ medconnect.controller('PatientProfile', ['$http', '$location', '$uibModal', '$sc
     });
   };
 
+  var receiveInputs = function () {
+    if (vm.firstName && vm.lastName && vm.address && vm.phoneNumber && vm.code) {
+      return true;
+    }
+    return false;
+  }
+
   vm.save = function(){
+    if(receiveInputs()){
       $http({
         method:'POST',
         url:'/patient/edit',
@@ -125,6 +133,7 @@ medconnect.controller('PatientProfile', ['$http', '$location', '$uibModal', '$sc
         $scope.open(true);
         console.log('Server error: ', err);
       })
+    }
   }
 
 }])
