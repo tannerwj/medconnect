@@ -1,5 +1,5 @@
 <div class = "main apptDetails" ng-controller="patientRejectedAppts" ng-init="init()">
-  <h1>Appointment Details</h1>
+  <h1>Request new appointment</h1>
   <div class="alert alert-danger" role="alert" ng-show='error'>
     <button type='button' class='close' aria-label='Close' ng-click='failure = false'>
       <span aria-hidden='true'>&times;</span>
@@ -21,8 +21,13 @@
     <h4>Select time</h4>
     <uib-timepicker ng-model='newTime' hour-step="1" minute-step="30" show-meridian="true"></uib-timepicker>
 
-    <pre>Date is: <em>{{newDate | date:'fullDate' }} </em></pre>
-    <pre>Time is: <em>{{newTime | date:'shortTime'}} </em></pre>
+    <div class="panel panel-info">
+    <div class="panel-heading">Selected time</div>
+      <div class="panel-body">
+        {{newDate | date:'fullDate' }} At {{newTime | date:'shortTime'}}
+      </div>
+    </div>
+
   </div>
   <button ng-click="request()" class="btn btn-lg btn-primary btn-block" ng-hide="editable">Request new time</button>
   <button ng-click="submit()" class="btn btn-lg btn-primary btn-block" ng-show="editable">Submit</button>

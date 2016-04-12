@@ -352,6 +352,13 @@ medconnect.controller('appointments', ['$http', '$location', '$scope', function(
 }]);
 
 medconnect.controller('patientRejectedAppts', ['$http', '$scope', '$routeParams', '$location', function($http, $scope, $routeParams, $location){
+
+  var d = new Date();
+  d.setHours( 0 );
+  d.setMinutes( 0 );
+  $scope.newTime = d;
+  $scope.newDate = new Date();
+
   $scope.editable = false
   $scope.visit = {}
   $scope.error = null
@@ -520,7 +527,7 @@ medconnect.controller('appointmentDetails', ['$http', '$location', '$scope', '$u
 
   $scope.addPre = function () {
 
-    $scope.item = visitID;
+    var item = [visitID, "patient"];
 
     var modalInstance = $uibModal.open({
       animation: true,
@@ -528,7 +535,7 @@ medconnect.controller('appointmentDetails', ['$http', '$location', '$scope', '$u
       controller: 'prescriptions',
       resolve: {
            item : function(){
-             return visitID;
+             return item
            }
          }
     });
@@ -538,13 +545,15 @@ medconnect.controller('appointmentDetails', ['$http', '$location', '$scope', '$u
   }
 
   $scope.addNote = function () {
+
+    var item = [visitID, "patient"];
     var modalInstance = $uibModal.open({
       animation: true,
       templateUrl: '/views/addNote.html',
       controller: 'Note',
       resolve: {
            item : function(){
-             return visitID
+             return item
            }
          }
     });
@@ -571,7 +580,7 @@ medconnect.controller('appointmentDetails', ['$http', '$location', '$scope', '$u
 
   $scope.addImage = function () {
 
-    $scope.item = visitID;
+    var item = [visitID, "patient"];
 
     var modalInstance = $uibModal.open({
       animation: true,
@@ -579,7 +588,7 @@ medconnect.controller('appointmentDetails', ['$http', '$location', '$scope', '$u
       controller: 'upload',
       resolve: {
            item : function(){
-             return $scope.item;
+             return item;
            }
          }
     });
@@ -589,13 +598,15 @@ medconnect.controller('appointmentDetails', ['$http', '$location', '$scope', '$u
   }
 
   $scope.viewNote = function (note) {
+
+    var item = [note, "patient"];
     var modalInstance = $uibModal.open({
       animation: true,
       templateUrl: '/views/viewNote.html',
       controller: 'viewNote',
       resolve: {
         item : function(){
-          return note;
+          return item;
         }
       }
     });
