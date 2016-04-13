@@ -415,7 +415,7 @@ var addPrescription = function (p, patientID){
 }
 
 var getPrescriptions = function (patientID){
-  return db.query('SELECT m.name, mp.* FROM MedicationPatient mp JOIN medications m ON m._id = mp.medicationID WHERE mp.userID =?;', [patientID])
+  return db.query('SELECT m.name, mp.* FROM MedicationPatient mp JOIN Medications m ON m._id = mp.medicationID WHERE mp.userID =?;', [patientID])
   .then(function (results){
     return results[0]
   }).catch(function (err){
