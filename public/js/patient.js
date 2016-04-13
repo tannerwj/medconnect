@@ -165,6 +165,7 @@ medconnect.controller('seeDoctor', ['$http', '$location', '$routeParams', functi
   $http.post('/patient/specific-doctor', {
     'id' : doctorID
   }).success(function(doctor){
+    vm.verified = doctor.ver
     vm.name = doctor.first + ' ' + doctor.last
     vm.location = doctor.loc
     vm.specialties = doctor.specialties.map(function (s){ return s.name }).join(', ')

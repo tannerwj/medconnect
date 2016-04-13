@@ -83,7 +83,7 @@ var info = function (id){
 }
 
 var getDoctors = function (){
-  return db.query('SELECT userID, address, experience FROM DoctorProfile;').then(function (doctors){
+  return db.query('SELECT userID, address, experience FROM DoctorProfile WHERE verified =? OR verified =?;', [db.DOCTOR_VERIFIED, db.DOCTOR_UNVERIFIED]).then(function (doctors){
     return Promise.map(doctors[0], function (doctor){
       return Promise.all([
         db.query('SELECT firstName, lastName FROM Users WHERE userID =?;', doctor.userID),

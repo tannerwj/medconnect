@@ -29,7 +29,7 @@ exports.view = function (type){
 
 exports.viewAdmins = function (userId){
   return Promise.all([
-    db.query('SELECT * FROM Users where userType = 2 and userID != ? order by lastName, firstName;', [userId])
+    db.query('SELECT * FROM Users WHERE userType =? AND userID !=? ORDER BY lastName, firstName;', [db.ADMIN, userId])
   ]).then(function (result){
     return {
       currentAdmins: result[0][0]
@@ -39,14 +39,9 @@ exports.viewAdmins = function (userId){
 
 exports.viewDoctors = function (userId){
   return Promise.all([
-    /*
-      Unverified doctors: verified = 0
-      Denied doctors: verified = -1
-      Verified doctors: verified = 1
-    */
-    db.query('SELECT * FROM DoctorProfile dp join Users u on u.userID = dp.userID where verified = -1 order by u.lastName, u.firstName;'),
-    db.query('SELECT * FROM DoctorProfile dp join Users u on u.userID = dp.userID where verified = 0 order by u.lastName, u.firstName;'),
-    db.query('SELECT * FROM DoctorProfile dp join Users u on u.userID = dp.userID where verified = 1 order by u.lastName, u.firstName;')
+    db.query('SELECT * FROM DoctorProfile dp JOIN Users u ON u.userID = dp.userID WHERE verified =? ORDER BY u.lastName, u.firstName;', [db.DOCTOR_DENIED]),
+    db.query('SELECT * FROM DoctorProfile dp JOIN Users u ON u.userID = dp.userID WHERE verified =? ORDER BY u.lastName, u.firstName;', [db.DOCTOR_UNVERIFIED]),
+    db.query('SELECT * FROM DoctorProfile dp JOIN Users u ON u.userID = dp.userID WHERE verified =? ORDER BY u.lastName, u.firstName;', [db.DOCTOR_VERIFIED])
   ]).then(function (result){
     return {
       denied: result[0][0],
@@ -57,19 +52,19 @@ exports.viewDoctors = function (userId){
 }
 
 exports.verifyDoctor = function (user){
-  return db.query('UPDATE DoctorProfile SET verified = 1 WHERE userID =?;', [user.userID]).then(function (result){
-    return result[0].affectedRows === 1
-  })
+  return updateVerification(user.userID, db.DOCTOR_VERIFIED)
 }
 
 exports.denyDoctor = function (user){
-  return db.query('UPDATE DoctorProfile SET verified = -1 WHERE userID =?;', [user.userID]).then(function (result){
-    return result[0].affectedRows === 1
-  })
+  return updateVerification(user.userID, db.DOCTOR_DENIED)
 }
 
 exports.unverifyDoctor = function (user){
-  return db.query('UPDATE DoctorProfile SET verified = 0 WHERE userID =?;', [user.userID]).then(function (result){
+  return updateVerification(user.userID, db.DOCTOR_UNVERIFIED)
+}
+
+var updateVerification = function (userID, verifiedStatus){
+  return db.query('UPDATE DoctorProfile SET verified =? WHERE userID =?;', [verifiedStatus, userID]).then(function (result){
     return result[0].affectedRows === 1
   })
 }
