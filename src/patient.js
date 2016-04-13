@@ -207,8 +207,8 @@ var getAppointmentDetail = function (visitID, patientID){
    db.query('SELECT Visits.visitID, Visits.visitStatus, Visits.visitDate, Visits.diagnosis, Visits.symptoms, Users.firstName, Users.lastName FROM Visits, Users WHERE Users.userID = Visits.doctorID AND Visits.visitID =? AND Visits.patientID =? LIMIT 1;', [visitID, patientID]),
    db.query('SELECT noteID, note FROM Notes WHERE visitID =?;', [visitID]),
    db.query('SELECT * FROM Vitals WHERE visitID =? LIMIT 1;', [visitID]),
-   db.query('SELECT ExternalData.dataID, ExternalData.filePath, ExternalData.dataName, DataType.name FROM ExternalData, DataType WHERE ExternalData.dataTypeID = DataType._id AND ExternalData.visitID =?;', [visitID]),
-   db.query('SELECT * FROM ExternalData, DataType WHERE ExternalData.dataID = DataType._id AND ExternalData.visitID =?;', [visitID])
+   db.query('SELECT * FROM MedicationPatient, Medications WHERE MedicationPatient.medicationID = Medications._id AND MedicationPatient.visitID =?;', [visitID]),
+   db.query('SELECT ExternalData.dataID, ExternalData.filePath, ExternalData.dataName, DataType.name FROM ExternalData, DataType WHERE ExternalData.dataTypeID = DataType._id AND ExternalData.visitID =?;', [visitID])
  ]).then(function (results){
    var visit = results[0][0][0]
    if(!visit){ return false }
@@ -332,20 +332,20 @@ var addNote = function (n, patientID){
     if(!result){ return false }
     return db.query('INSERT INTO Notes (userID, visitID, note) VALUES (?,?,?);', [patientID, n.visitID, n.note])
     .then(function (result){
-      return result[0].affectedRows === 1
+      return result[0].insertId
     })
   })
 }
 
 var getNotes = function(patientID){
-  return db.query('SELECT * from Notes where userID =?', [patientID])
-    .then(function(results){
-      return results[0]
-    })
+  return db.query('SELECT * FROM Notes WHERE userID =?', [patientID])
+  .then(function(results){
+    return results[0]
+  })
 }
 
-var removeNote = function (noteID, patientID){
-  return db.query('DELETE FROM Notes WHERE noteID =? AND userID =?;',  [noteID, patientID])
+var removeNote = function (noteID){
+  return db.query('DELETE FROM Notes WHERE noteID =?;',  [noteID])
   .then(function (result){
     return result[0].affectedRows === 1
   })
@@ -403,10 +403,8 @@ var addPrescription = function (p, patientID){
   if(!p.doctorID){ p.doctorID = 0 }
   return hadVisitWithDoctor(patientID, p.visitID).then(function (result){
     if(!result){ return false }
-    var start = new Date(p.startDate).toISOString().replace(/T/, ' ').replace(/\..+/, '')
-    var end = new Date(p.stopDate).toISOString().replace(/T/, ' ').replace(/\..+/, '')
     return db.query('INSERT INTO MedicationPatient (medicationID, userID, visitID, dosage, startDate, stopDate, notes, doctorID, doctorName) VALUES (?,?,?,?,?,?,?,0,?);',
-      [p.medicationID, patientID, p.visitID, p.dosage, start, end, p.notes, p.doctorID, p.doctorName])
+      [p.medicationID, patientID, p.visitID, p.dosage, p.startDate, p.endDate, p.notes, p.doctorID, p.doctorName])
     .then(function (result){
       return result[0].affectedRows === 1
     })

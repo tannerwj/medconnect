@@ -41,7 +41,7 @@
 
   medconnect.controller('prescriptions', function ($http, $scope, $location, $filter, $uibModalInstance, item){
 
-    var visitID = item[0];
+    var visitID = item[0]
 
     $http({
       method: 'POST',
@@ -57,9 +57,11 @@
 
     $scope.update = function () {
       var st = $scope.startDate
+      if(!st){ return }
       var start = st.getFullYear() + '-' + (st.getMonth() + 1) + '-' + st.getDate()
 
       var et = $scope.endDate
+      if(!et){ return }
       var end = et.getFullYear() + '-' + (et.getMonth() + 1) + '-' + et.getDate()
 
       var fields = {
@@ -69,30 +71,17 @@
         endDate : end,
         notes : $scope.notes || '',
         doctorName : '',
-        medicationID : $scope.medID
+        medicationID : $scope.medication._id
       }
 
-
-      if(item[1] === "patient"){
-        $http({
-          method: 'POST',
-          url: '/patient/addPrescription',
-          data: fields
-        }).success(function () {
-        }).error(function (err) {
-          console.log("error")
-        })
-      }else if(item[1] === "doctor"){
-        $http({
-          method: 'POST',
-          url: '/doctor/addPrescription',
-          data: fields
-        }).success(function () {
-        }).error(function (err) {
-          console.log("error")
-        })
-      }
-
+      $http({
+        method: 'POST',
+        url: '/'+item[1]+'/addPrescription',
+        data: fields
+      }).success(function () {
+      }).error(function (err) {
+        console.log("error")
+      })
 
       fields.name = $scope.medication.name
       $uibModalInstance.close(fields);
@@ -113,27 +102,16 @@
         noteDate: new Date()
       }
 
-      if(item[1] === "patient"){
-        $http({
-          method: 'POST',
-          url: '/patient/addNote',
-          data: fields
-        }).success(function (data) {
-        }).error(function (err) {
-          console.log("error")
-        })
-      }else if(item[1] === "doctor"){
-        $http({
-          method: 'POST',
-          url: '/doctor/addNote',
-          data: fields
-        }).success(function (data) {
-        }).error(function (err) {
-          console.log("error")
-        })
-      }
-
-      $uibModalInstance.close(fields);
+      $http({
+        method: 'POST',
+        url: '/'+item[1]+'/addNote',
+        data: fields
+      }).success(function (data){
+        fields.noteID = data
+        $uibModalInstance.close(fields)
+      }).error(function (err) {
+        console.log("error")
+      })
     };
 
     $scope.cancel = function () {
@@ -205,29 +183,15 @@
         visitID: visitID
       }
 
-      if(item[1] === "patient"){
-        Upload.upload({
-          url:'/patient/addFile',
-          data: $scope.fields
-        }).then(function (data) {
-            data.data.uploadDate = new Date()
-            $uibModalInstance.close(data.data)
-        }, function (resp) {
-            console.log('Error status: ' + resp.status)
-        })
-      }else if(item[1] === "doctor"){
-        Upload.upload({
-          url:'/doctor/addFile',
-          data: $scope.fields
-        }).then(function (data) {
-            data.data.uploadDate = new Date()
-            $uibModalInstance.close(data.data)
-        }, function (resp) {
-            console.log('Error status: ' + resp.status)
-        })
-      }
-
-
+      Upload.upload({
+        url:'/'+item[1]+'/addFile',
+        data: $scope.fields
+      }).then(function (data) {
+          data.data.uploadDate = new Date()
+          $uibModalInstance.close(data.data)
+      }, function (resp) {
+          console.log('Error status: ' + resp.status)
+      })
     }
 
     $scope.cancel = function () {
@@ -267,7 +231,7 @@
 
       $http({
         method: 'POST',
-        url: '/patient/addVitals',
+        url: '/'+item.userType+'/addVitals',
         data: fields
       }).error(function (err) {
         console.log("error")
@@ -286,7 +250,7 @@
     var st = new Date(item.startDate)
     var start = st.getFullYear() + '-' + (st.getMonth() + 1) + '-' + st.getDate()
 
-    var et = new Date(item.stopDate)
+    var et = new Date(item.stopDate || item.endDate)
     var end = et.getFullYear() + '-' + (et.getMonth() + 1) + '-' + et.getDate()
 
     var name = ['Prescription Name', item.name];
@@ -310,7 +274,7 @@
 
       $http({
         method: 'POST',
-        url: '/patient/removePrescription',
+        url: '/'+item.userType+'/removePrescription',
         data: fields
       }).success(function (data) {
       }).error(function (err) {
@@ -330,31 +294,16 @@
     $scope.note = item[0];
 
     $scope.delete = function () {
-      console.log($scope.note.noteID)
-      if(item[1] === "patient"){
-        $http({
-          method: 'POST',
-          url: '/patient/removeNote',
-          data: {
-            noteID: $scope.note.noteID
-          }
-        }).success(function (data) {
-        }).error(function (err) {
-          console.log("error")
-        })
-      }else if(item[1] === "doctor"){
-        $http({
-          method: 'POST',
-          url: '/doctor/removeNote',
-          data: {
-            noteID: $scope.note.noteID
-          }
-        }).success(function (data) {
-        }).error(function (err) {
-          console.log("error")
-        })
-      }
-
+      $http({
+        method: 'POST',
+        url: '/'+item[1]+'/removeNote',
+        data: {
+          noteID: $scope.note.noteID
+        }
+      }).success(function () {
+      }).error(function (err) {
+        console.log("error")
+      })
       $uibModalInstance.close(item.nodeID);
     };
 

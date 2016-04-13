@@ -18,11 +18,9 @@
 		var receiveInputs = function () {
 			if (vm.email && vm.firstName && vm.lastName && vm.address && vm.phoneNumber && vm.password && vm.passwordConfirm && vm.code) {
 				if (vm.password === vm.passwordConfirm) {
-					console.log(true)
 					return true;
 				}
 			}
-			console.log(false)
 			return false;
 		}
 
@@ -425,6 +423,8 @@
 	  var diaEdit = false
 	  var symEdit = false
 
+		$scope.waiting = true
+
 	  $http({
 	    method: 'POST',
 	    url: '/doctor/getAppointmentDetail',
@@ -432,7 +432,6 @@
 	      visitID : visitID
 	    }
 	  }).success(function (data) {
-			console.log(data)
 	    $scope.name = data.visit.firstName + " " + data.visit.lastName;
 	    $scope.date = data.visit.visitDate;
 	    $scope.diagnosis = data.visit.diagnosis;
@@ -447,6 +446,7 @@
 			}else{
 				$scope.requested = false
 			}
+			$scope.waiting = false
 	  }).error(function (err) {
 	    console.log("error")
 	  })
@@ -476,11 +476,11 @@
 	  }
 
 	  $scope.viewVital = function (vitals) {
-
+	    vitals.userType = 'doctor'
 	    var modalInstance = $uibModal.open({
 	      animation: true,
 	      templateUrl: '/views/viewVitals.html',
-	      controller: 'DoctorViewVitals',
+	      controller: 'viewVitals',
 	      resolve: {
 	        item : function(){
 	          return vitals
@@ -496,16 +496,15 @@
 
 	    var item = [visitID, "doctor"];
 
-
 	    var modalInstance = $uibModal.open({
 	      animation: true,
 	      templateUrl: '/views/addPrescription.html',
 	      controller: 'prescriptions',
 	      resolve: {
-	           item : function(){
-	             return item;
-	           }
-	         }
+           item : function(){
+             return item;
+           }
+         }
 	    });
 	    modalInstance.result.then(function (fields) {
 	      $scope.prescriptions.push(fields)
@@ -531,10 +530,11 @@
 	  }
 
 	  $scope.viewPre = function (pre) {
+	    pre.userType = 'doctor'
 	    var modalInstance = $uibModal.open({
 	      animation: true,
 	      templateUrl: '/views/viewPrescriptions.html',
-	      controller: 'DoctorViewPrescriptions',
+	      controller: 'viewPrescriptions',
 	      resolve: {
 	        item : function(){
 	          return pre;
