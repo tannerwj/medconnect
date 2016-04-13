@@ -151,7 +151,8 @@ router.get('/patient/getVitals', auth, function(req, res){
 
 router.post('/patient/addNote', auth, function (req, res){
 	pat.addNote(req.body, req.user.id).then(function (result){
-		res.sendStatus(result ? 200 : 400)
+		if(result){ return res.json(result) }
+		res.sendStatus(400)
 	})
 })
 
@@ -163,9 +164,8 @@ router.get('/patient/getNotes', auth, function(req, res){
 })
 
 router.post('/patient/removeNote', auth, function (req, res){
-	pat.removeNote(req.body.noteID, req.user.id).then(function (result){
-		if(result){ return res.json(result) }
-		res.sendStatus(400)
+	pat.removeNote(req.body.noteID).then(function (result){
+		res.sendStatus(result ? 200 : 400)
 	})
 })
 

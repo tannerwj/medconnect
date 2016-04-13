@@ -126,6 +126,7 @@
   })
 
   medconnect.controller('DoctorViewVitals', function ($http, $scope, $location, $filter, $uibModalInstance, item){
+    console.log("view vitals", item)
 
     $scope.vitalsDate = new Date(item.vitalsDate);
     $scope.height = Number(item.height);

@@ -64,9 +64,8 @@ medconnect.controller('PatientRegister', ['$http', '$location', '$uibModal', '$s
         $scope.open(true);
         console.log('Server error: ' + err);
       })
+    }
   }
-
-}
 
 }]);
 
@@ -509,7 +508,7 @@ medconnect.controller('appointmentDetails', ['$http', '$location', '$scope', '$u
   }
 
   $scope.viewVital = function (vitals) {
-
+    vitals.userType = 'patient'
     var modalInstance = $uibModal.open({
       animation: true,
       templateUrl: '/views/viewVitals.html',
@@ -563,6 +562,7 @@ medconnect.controller('appointmentDetails', ['$http', '$location', '$scope', '$u
   }
 
   $scope.viewPre = function (pre) {
+    pre.userType = 'patient'
     var modalInstance = $uibModal.open({
       animation: true,
       templateUrl: '/views/viewPrescriptions.html',

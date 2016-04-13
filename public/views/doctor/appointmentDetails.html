@@ -13,7 +13,7 @@
     <input type="text" class="form-control" id="date" value = "{{date | date : 'short' }}" readonly>
 </div>
 
-<div ng-hide="requested">
+<div ng-show="!waiting && !requested">
 <div class = "form-group">
   <label for="dia">Diagnosis</label>
     <div class="input-group">
@@ -67,7 +67,7 @@
 </div>
 <hr />
 </div>
-<div ng-show="requested">
+<div ng-show="!waiting && requested">
   <button class = "btn btn-success btn-lg halfWidth" ng-click="accept()">Accept</button>
   <button class = "btn btn-danger btn-lg halfWidth pull-right" ng-click="reject()">Reject</button>
 </div>

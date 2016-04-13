@@ -149,12 +149,13 @@ router.post('/doctor/editVitals', auth, function (req, res){
 
 router.post('/doctor/addNote', auth, function (req, res){
 	doc.addNote(req.body, req.user.id).then(function (result){
-		res.sendStatus(result ? 200 : 400)
+		if(result){ return res.json(result) }
+		res.sendStatus(400)
 	})
 })
 
 router.post('/doctor/removeNote', auth, function (req, res){
-	doc.removeNote(req.body.noteID, req.user.id).then(function (result){
+	doc.removeNote(req.body.noteID).then(function (result){
 		res.sendStatus(result ? 200 : 400)
 	})
 })
