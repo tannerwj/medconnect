@@ -488,6 +488,7 @@ medconnect.controller('appointmentDetails', ['$http', '$location', '$scope', '$u
       visitID : visitID
     }
   }).success(function (data) {
+    $scope.canComplete = data.visit.visitStatus === 3
     $scope.name = data.visit.firstName + " " + data.visit.lastName;
     $scope.date = data.visit.visitDate;
     $scope.diagnosis = data.visit.diagnosis;
@@ -499,6 +500,14 @@ medconnect.controller('appointmentDetails', ['$http', '$location', '$scope', '$u
   }).error(function (err) {
     console.log("error")
   })
+
+  $scope.complete = function (){
+    $http.post('/patient/completeAppointment', {
+      visitID: visitID
+    }).success(function (){
+      $location.path('/patient/viewAppointments')
+    })
+  }
 
   $scope.saveVisit = function (){
     $http.post('/patient/editAppointmentDetails', {

@@ -432,6 +432,7 @@
 	      visitID : visitID
 	    }
 	  }).success(function (data) {
+	    $scope.canComplete = data.visit.visitStatus === 3
 	    $scope.name = data.visit.firstName + " " + data.visit.lastName;
 	    $scope.date = data.visit.visitDate;
 	    $scope.diagnosis = data.visit.diagnosis;
@@ -450,6 +451,14 @@
 	  }).error(function (err) {
 	    console.log("error")
 	  })
+
+	  $scope.complete = function (){
+	    $http.post('/doctor/completeAppointment', {
+	      visitID: visitID
+	    }).success(function (){
+	      $location.path('/doctor/appointments')
+	    })
+	  }
 
 		$scope.accept = function(){
 			$http.post('/doctor/handleRequestedAppointment', {

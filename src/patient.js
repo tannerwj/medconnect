@@ -241,7 +241,7 @@ var completeAppointment = function (visitID, patientID){
   .then(function (result){
     if(!result[0][0]){ return false }
     return db.query('UPDATE Visits SET visitStatus =? WHERE visitID =?;', [db.COMPLETED_VISIT, visitID]).then(function (result){
-      return result[0][0].changedRows === 1
+      return result[0].changedRows === 1
     })
   }).catch(function (err){
     console.log(err)

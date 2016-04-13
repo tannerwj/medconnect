@@ -229,8 +229,12 @@ var getPastAppointments = function (doctorID, patientID){
 }
 
 var completeAppointment = function (visitID, doctorID){
-  return db.query('UPDATE Visits SET visitStatus =? WHERE visitID =? AND doctorID =?;', [db.COMPLETED_VISIT, visitID, doctorID]).then(function (result){
-    return results[0].changedRows === 1
+  return db.query('SELECT 1 FROM Visits WHERE visitID =? AND visitStatus =? AND doctorID =? LIMIT 1;', [visitID, db.ACCEPTED_VISIT, doctorID])
+  .then(function (result){
+    if(!result[0][0]){ return false }
+    return db.query('UPDATE Visits SET visitStatus =? WHERE visitID =?;', [db.COMPLETED_VISIT, visitID]).then(function (result){
+      return result[0].changedRows === 1
+    })
   }).catch(function (err){
     console.log(err)
     return false
