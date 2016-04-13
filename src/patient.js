@@ -83,7 +83,7 @@ var info = function (id){
 }
 
 var getDoctors = function (){
-  return db.query('SELECT userID, address, experience FROM DoctorProfile;').then(function (doctors){
+  return db.query('SELECT userID, address, experience FROM DoctorProfile WHERE verified =? OR verified =?;', [db.DOCTOR_VERIFIED, db.DOCTOR_UNVERIFIED]).then(function (doctors){
     return Promise.map(doctors[0], function (doctor){
       return Promise.all([
         db.query('SELECT firstName, lastName FROM Users WHERE userID =?;', doctor.userID),
@@ -241,7 +241,7 @@ var completeAppointment = function (visitID, patientID){
   .then(function (result){
     if(!result[0][0]){ return false }
     return db.query('UPDATE Visits SET visitStatus =? WHERE visitID =?;', [db.COMPLETED_VISIT, visitID]).then(function (result){
-      return result[0][0].changedRows === 1
+      return result[0].changedRows === 1
     })
   }).catch(function (err){
     console.log(err)
