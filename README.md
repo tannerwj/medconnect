@@ -25,6 +25,7 @@ Maps default to 4.4.5
 nvm alias default 4.4.5
 ```
 
+Install all the Node modules required.
 ```bash
 npm install
 ```
