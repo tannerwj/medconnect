@@ -20,7 +20,8 @@ Specifies which version of NVM to be using.
 nvm use 4.4.5
 ```
 
-```Maps default to 4.4.5
+Maps default to 4.4.5
+```
 nvm alias default 4.4.5
 ```
 
