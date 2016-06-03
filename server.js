@@ -18,7 +18,7 @@ const compress = require('compression')
 const app	= express()
 const acc = require('./src/account')
 
-const port = process.env.PORT || 80
+const port = process.env.PORT || 3000
 
 const db = require('./config/db')
 
