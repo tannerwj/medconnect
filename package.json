@@ -29,7 +29,8 @@
     "passport": "*",
     "passport-local": "*",
     "q": "*",
-    "serve-favicon": "^2.3.0"
+    "serve-favicon": "^2.3.0",
+    "crypto": "*"
   },
   "license": "MIT",
   "devDependencies": {
