@@ -10,12 +10,12 @@ Install NVM
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.1/install.sh
 ```
 
-Installs the version of NVM that we want.
+Installs the version of Node that we want.
 ```
 nvm install 4.4.5 
 ```
 
-Specifies which version of NVM to be using.
+Specifies which version of Node to be using.
 ```
 nvm use 4.4.5
 ```
